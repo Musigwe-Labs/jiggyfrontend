@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import AuthIcons from '../common/AuthIcons'
 import TermsOfService from '../common/TermsOfService'
-import Logo from '../../assets/logo.png'
 import Banner from '../common/Banner'
 
 const Login = () => {
