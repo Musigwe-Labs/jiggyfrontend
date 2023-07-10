@@ -1,11 +1,16 @@
-#root {
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+} */
+*{
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #fff;
 }
-
-.logo {
+/* .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
@@ -35,8 +40,25 @@
 
 .card {
   padding: 2em;
-}
+} */
 
-.read-the-docs {
+/* .read-the-docs {
   color: #888;
+} */
+
+.dull_color{
+  color: #B3B9C9;
+}
+.tabs .tab.active{
+  transform: translateY(-.4rem);
+}
+.tabs .tab.active::after{
+  content: '';
+  width: 4rem;
+  border-bottom: .4rem solid;
+  margin: 0 auto;
+  transform: translateY(.4rem);
+
+  border-color: #00CCCC;
+  display: block;
 }
