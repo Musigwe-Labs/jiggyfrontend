@@ -16,4 +16,4 @@ const HomeInfo = () => {
   )
 }
 
-export default HomeInfo
+export default HomeInfo 
