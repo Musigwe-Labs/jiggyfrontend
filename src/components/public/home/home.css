@@ -1,0 +1,14 @@
+.hometab{
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    border-bottom-width: 4px;
+    border-radius: 0.125rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.7s ease;
+  }
+  .liked{
+    color: #43fff6;
+  }
