@@ -1,9 +1,9 @@
-//import Logo from '../../assets/logo.png'
+import React from 'react'
 
 const Banner = () => {
     return (
         <div className='hidden md:block md:px-6 lg:px-12 border-r border-gray-900'>
-            <img src='logo.png' alt='logo' className='w-[70px] mt-16' />
+            <img src={'/logo.png'} alt='logo' className='w-[70px] mt-16' />
             <h1 className='md:text-5xl lg:text-7xl text-gray-400 my-6'>JIGGY APP</h1>
             <div className='space-y-4 text-gray-500'>
                 <div>
