@@ -13,10 +13,7 @@ const Register = () => {
         document.getElementById('username').innerText = 'Enter a user name'
         }
         if(data.email===''){
-        document.getElementById('email').innerText = 'Enter an email or a phone number'
-    }
-        if(data.email !== ''){
-        document.getElementById('email').innerText = 'Enter an email or a phone number'
+        document.getElementById('email').innerText = 'Enter an email'
         }
         if(data.password===''){
         document.getElementById('password').innerText = 'Enter a password'
@@ -58,18 +55,6 @@ const Register = () => {
             }
             if('email' in errorMsg){
                 document.getElementById('email').innerText = errorMsg['email']
-            }
-            if('password' in errorMsg){
-                document.getElementById('password').innerText = errorMsg['password']
-            }
-            if('first_name' in errorMsg){
-                document.getElementById('firstname').innerText = errorMsg['first_name']
-            }
-            if('last_name' in errorMsg){
-                document.getElementById('lastname').innerText = errorMsg['last_name']
-            }
-            if('school' in errorMsg){
-                document.getElementById('school').innerText = errorMsg['school']
             }
         }
     }
@@ -147,7 +132,7 @@ const Register = () => {
                     </div>
                     <div>
                         <button 
-                        className='w-full p-3 bg-[#007aff] rounded-lg text-white mb-2'>
+                        className='w-full p-3 bg-[#007aff] rounded-lg text-white mb-2 hover:-translate-y-0.5'>
                             Join Now
                         </button>
                     </div>
