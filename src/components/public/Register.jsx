@@ -15,6 +15,7 @@ const Register = () => {
     const [confirm_password, setConfirm_password] = useState();
     const [first_name, setFirst_name] = useState();
     const [last_name, setLast_name] = useState();
+    const [school, setSchool] = useState();
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null)
 
@@ -26,7 +27,7 @@ const Register = () => {
         e.preventDefault();
 
         const data = {
-            username, first_name, last_name, email, password
+            username, first_name, last_name, email, password, school
         }
 
         if (password !== confirm_password ) {alert('Password mismatch')}
@@ -124,6 +125,17 @@ const Register = () => {
                                 className='w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700'
                                 placeholder='Retype your password'
                                 onChange={(e) => setConfirm_password(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <div className='relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max'>School</div>
+                            <input 
+                                type='text'
+                                className='w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700'
+                                placeholder='Enter school'
+                                onChange={(e) => setSchool(e.target.value)}
                                 required
                             />
                         </div>
