@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Reply from "./common/Reply";
 import { BsSend } from "react-icons/bs";
 export default function Jiggy() {
@@ -8,6 +8,7 @@ export default function Jiggy() {
     { person: "Stranger", reply: "I'll send you some works to work on" },
     { person: "you", reply: "Alright, I'd be anticipating it" },
   ];
+  const textareaRef = useRef();
   return (
     <div className=" py-4">
       <div className="">
@@ -29,19 +30,26 @@ export default function Jiggy() {
           />
         ))}
       </div>
-      <form>
-        <div className="relati">
-          <input
-            type="text"
+      <div className="flex gap-2 px-4 mt-12 items-center">
+        <form className="bg-[#D03631] items-center rounded-[1.5rem] py-2 px-6 flex gap-3">
+          <textarea
             placeholder="Message"
-            className="bg-[#D03631] rounded-[1.5rem] py-2 font-['Mulish'] px-8"
+            // ref={textareaRef}
+            onChange={(e) =>
+              (e.target.rows = e.target.textLength >= 20 ? "2" : "1")
+            }
+            rows="1"
+            // rows={textareaRef.current.textLength >= 20 ? "2" : "1"}
+            className=" font-['Mulish'] resize-none break-words focus:outline-none p-0 bg-transparent w-full"
           />
-          <button type="submit" className=" -translate-x-12 my-auto h-fit z-10">
+          <button type="submit" className=" mt-1 ml-auto h-fit z-10">
             <BsSend className="rotate-[45deg] fill-[#9398A7]" />
           </button>
-          <button className="bg-[#F01D1D] px-8 opacity-90 py-1 rounded-lg">Skip</button>
-        </div>
-      </form>
+        </form>
+        <button className="bg-[#F01D1D] px-8 opacity-90 py-1 rounded-lg">
+          Skip
+        </button>
+      </div>
     </div>
   );
 }

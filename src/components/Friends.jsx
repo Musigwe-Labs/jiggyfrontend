@@ -23,11 +23,11 @@ export default function Friends() {
 }
 
 const Friend = ({ profilePic, friend, last_message, message_time }) => {
-  // let { friend_name } = useParams();
-// let navigate = useNavigate();
+  let { friend_name } = useParams();
+let navigate = useNavigate();
 let openChat = () => {
     friend_name = friend;
-    // navigate(`/chat${friend_name}`)
+    navigate(`/chat/${friend_name}`)
 }
   return (
     <li

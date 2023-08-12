@@ -1,12 +1,14 @@
 import React from "react";
 import { FaArrowLeft, FaEllipsisV } from "react-icons/fa";
-import Reply from "../common/Reply";
+import Reply from "../../common/Reply";
+import { useNavigate } from "react-router-dom";
 
 export default function Chat({ friend, profilePic, chat }) {
+  const navigate = useNavigate();
   return (
     <div>
       <nav className="flex items-center px-8 py-6">
-        <button className="pr-6">
+        <button className="pr-6" onClick={() => navigate(-1)}>
           <FaArrowLeft />
         </button>
         <img

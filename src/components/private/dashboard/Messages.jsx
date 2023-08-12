@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import Friends from "../Friends";
-import Jiggy from "../Jiggy";
+import Friends from "../../Friends";
+import Jiggy from "../../Jiggy";
+
 export default function Messages() {
   const [selectedTab, setSelectedTab] = useState("friends");
   return (
