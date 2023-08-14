@@ -29,7 +29,7 @@ const HomeFooter = ()=>{
     ]
 
     return (
-        <div className='w-full flex z-10 justify-evenly fixed bottom-0 bg-gray-900 py-2'>
+        <div className='w-full flex z-10 justify-evenly fixed bottom-0 border-t border-y-[#4B5563] bg-black py-3'>
             {
                 navlinks.map(nav => {
                     return(
