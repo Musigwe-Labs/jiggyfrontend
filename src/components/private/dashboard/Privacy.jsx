@@ -2,14 +2,12 @@ import React from "react";
 import { BsThreeDots } from "react-icons/bs";
 import {
   HiArrowLeft,
-  HiOutlineDuplicate,
   HiPlus,
   HiReply,
   HiUser,
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import PrivacyHeader from "../common/PrivacyHeader";
-import HomeFooter from "../../public/home/homeFooter";
 
 export const Privacy = () => {
   const navigate = useNavigate();
@@ -118,7 +116,6 @@ export const Privacy = () => {
           <HiPlus />
         </i>
       </button>
-      <HomeFooter />
     </div>
   );
 };

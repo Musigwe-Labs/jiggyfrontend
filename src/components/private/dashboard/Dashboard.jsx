@@ -3,7 +3,6 @@ import AuthSidebar from '../common/AuthSidebar'
 import { AiOutlineUser } from 'react-icons/ai'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { userInfo } from '../../../apis/authenticationApis'
-import HomeFooter from '../../public/home/homeFooter'
 
 const Dashboard = () => {
 
@@ -17,7 +16,7 @@ const Dashboard = () => {
     return (
         <div className="grid md:grid-cols-8 pt-16">
             <AuthSidebar />
-            <div className='col-span-7 px-6 md:px-12'>
+            <div className='col-span-7 px-6 md:px-12 mb-12'>
                 <div className='flex justify-between items-center text-gray-100 pb-2 mt-4 md:mt-8'>
                     <div className='flex justify-start items-center space-x-3'>
                         <div className='max-w-max rounded-full bg-white text-gray-900'><AiOutlineUser size={30} /></div>
@@ -71,7 +70,6 @@ YOU MUST BE 18 OR OLDER TO USE JIGGY.
                     </div>
                 </div>
             </div>
-            <HomeFooter className="fixed bottom-0" />
         </div>
     )
 }

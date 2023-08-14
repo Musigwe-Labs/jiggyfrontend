@@ -49,7 +49,7 @@ const HomeFooter = ()=>{
     ]
 
     return (
-        <div className='w-full flex justify-center fixed bottom-0 bg-gray-900 space-x-10 p-4'>
+        <div className='w-full flex z-10 justify-center fixed bottom-0 bg-gray-900 space-x-10 p-4'>
             {
                 navlinks.map(nav => {
                     return(

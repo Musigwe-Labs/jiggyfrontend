@@ -11,6 +11,7 @@ import { Profile } from './components/private/dashboard/Profile'
 import Messages from './components/private/dashboard/Messages'
 import Chat from './components/private/dashboard/Chat'
 import "./App.css";
+import { Wrapper } from './components/private/common/Wrapper'
 
 const App = () => {
 
@@ -21,14 +22,14 @@ const App = () => {
             <Header />
             <Routes>
               <Route exact path="/" element={<Login />} />
-              <Route exact path="/home" element={<Home />} />
               <Route exact path="/login" element={<Login />} />
               <Route exact path='/register' element={<Register />} />
-              <Route exact path='/dashboard' element={<Dashboard />} />
-              <Route exact path='/profile' element={<Profile />} />
-              <Route exact path='/privacy' element={<Privacy />} />
-              <Route exact path='/messages' element={<Messages />} />
-              <Route exact path='/chat/:friend_name' element={<Chat />} />
+              <Route exact path="/home" element={Wrapper(Home)} />
+              <Route exact path='/dashboard' element={Wrapper(Dashboard)} />
+              <Route exact path='/profile' element={Wrapper(Profile)} />
+              <Route exact path='/privacy' element={Wrapper(Privacy)} />
+              <Route exact path='/messages' element={Wrapper(Messages)} />
+              <Route exact path='/chat/:friend_name' element={Wrapper(Chat)} />
             </Routes>
         </Router>
       </AuthContextProvider>
@@ -36,5 +37,6 @@ const App = () => {
     
   )
 }
+
 
 export default App
