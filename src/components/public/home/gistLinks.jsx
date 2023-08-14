@@ -11,20 +11,20 @@ const GistLinks = ({ post }) => {
     return (
     <div className='flex justify-between px-5 mt-4 text-white'>
         <div className='flex items-center cursor-pointer'>
-            <FaRegComments />
+            <FaRegComments className='cursor-pointer text-2xl'/>
             <p className='ml-3'>{comments.length}</p>
         </div>
         <div className='flex items-center cursor-pointer' onClick={()=>{
                 setIsLiked(!isLiked)
             }}>
-            <VscFlame className={isLiked?'liked':''} />
+            <VscFlame className={`${isLiked?'liked':'text-2xl'} cursor-pointer`} />
             <p className='ml-3'>{likes.length}</p>
         </div>
         <div className='flex items-center cursor-pointer'>
-            <AiOutlineEye />
+            <AiOutlineEye className='cursor-pointer text-2xl'/>
             <p className='ml-3'>{views}</p>
         </div>
-        <AiOutlineShareAlt  className='cursor-pointer'/>
+        <AiOutlineShareAlt  className='cursor-pointer text-2xl'/>
     </div>
 )
   }

@@ -11,7 +11,6 @@ const HomeInfo = ({ post }) => {
               <p className='px-1 text-sm text-gray-400'>FUTO</p>
               <span className='border border-gray-400'></span>
               <span className='text-sm text-gray-400 ml-2'>{'17h'}</span>
-              <span className={`text-base text-[10px] border px-4 rounded-full ml-3 ${post.post_type}`}>{post.post_type}</span>
             </div>
             <AiOutlineMore className='cursor-pointer'/>
         </div>
