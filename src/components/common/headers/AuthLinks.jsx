@@ -13,21 +13,6 @@ const AuthLinks = ({ logout }) => {
                 <img src={Logo} alt='Logo' width='40px' />
                 <span className='hidden md:flex text-2xl font-medium text-gray-300'>JIGGY</span>
             </div>
-
-            <div className='flex space-x-8'>
-                <Link to='/dashboard' className='cursor-pointer text-gray-400 hover:text-green-400'>
-                    <AiFillHome size={20} />
-                </Link>
-                <span className='cursor-pointer text-gray-400 hover:text-green-400'>
-                    <RxEnvelopeClosed size={20} />
-                </span>
-                <span className='cursor-pointer text-gray-400 hover:text-green-400'>
-                    <HiOutlineBell size={20} />
-                </span>
-                <span onClick={() => logout()} className='cursor-pointer text-red-600 hover:text-red-800'>
-                    <AiOutlineLogout size={20} />
-                </span>
-            </div>
         </div>
     )
 }

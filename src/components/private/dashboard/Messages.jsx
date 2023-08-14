@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Friends from "../../Friends";
 import Jiggy from "../../Jiggy";
+import HomeFooter from "../../public/home/homeFooter";
 
 export default function Messages() {
   const [selectedTab, setSelectedTab] = useState("friends");
   return (
-    <div className="text-white">
+    <div className="text-white pt-16">
       <div className="flex justify-between items-center px-8 py-6">
         <h1 className="font-[600] text-[28px] leading-[42px]">Messages</h1>
         <button>
@@ -35,6 +36,7 @@ export default function Messages() {
 
       {selectedTab === "friends" ? <Friends /> : <Jiggy />}
       </div>
+      <HomeFooter />
     </div>
   );
 }

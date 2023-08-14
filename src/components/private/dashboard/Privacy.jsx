@@ -8,34 +8,21 @@ import {
   HiUser,
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import PrivacyHeader from "../common/PrivacyHeader";
+import HomeFooter from "../../public/home/homeFooter";
 
 export const Privacy = () => {
   const navigate = useNavigate();
   return (
-    <div>
+    <div className="pt-16">
       <header className="px-[1.7rem] bg-[#321616] py-6 rounded-b-2xl">
         <button onClick={() => navigate(-1)} className="text-white font-bolder text-[1.5rem] absolute  mt-1">
           <HiArrowLeft />
         </button>
-        <div className="flex flex-col items-center gap-2">
-          <div className="bg-[rgb(20,20,20)] w-fit text-[3rem] rounded-full px-2 py-2">
-            <HiUser />
-          </div>
-          <h3 className="capitalize  font-bold text-center">
-            Sircumsalot <p>profile</p>
-          </h3>
-          <p className="flex items-center gap-2">
-            <a href="#" className="text-[#5119F0]">
-              https://jiggy/sircumsalot
-            </a>
-            <i>
-              <HiOutlineDuplicate />
-            </i>
-          </p>
-        </div>
+        <PrivacyHeader />
         <div className="text-[.625rem] mt-4">
           <h5 className="font-bold">Description</h5>
-          <p className="li leading-3 mt-1">
+          <p className="text-sm mt-1">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. A
             consectetur nemo ut, exercitationem consequatur aspernatur magni
             hic, numquam, enim reprehenderit officia. Ipsum ipsa culpa nostrum
@@ -131,6 +118,7 @@ export const Privacy = () => {
           <HiPlus />
         </i>
       </button>
+      <HomeFooter />
     </div>
   );
 };

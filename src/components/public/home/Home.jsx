@@ -30,7 +30,7 @@ const Home = () => {
           (post)=>{
             return(
               <div key={post.id} className='text-base mt-2'>
-                <div className='mx-4 p-3 border-b border-y-[#4B5563]'>
+                <div className='mx-4 md:mx-16 p-3 border-b border-y-[#4B5563]'>
                   <HomeInfo post={post}/>
                   <span className={`text-base text-[7.5px] border px-2 rounded-full ml-8 ${post.post_type}`}>{post.post_type}</span>
                   <Gist post={post}/>
