@@ -36,7 +36,7 @@ const HomeFooter = ()=>{
                         <Link 
                             to={nav.url} 
                             key={nav.id} 
-                            className={`cursor-pointer ${urlpath === nav.url ? 'text-green-400' : 'text-gray-400'} hover:text-green-400`}
+                            className={`cursor-pointer ${urlpath === nav.url ? 'text-[#f33f5e]' : 'text-gray-400'} hover:text-[#f33f5e]`}
                         >
                             {nav.icon}
                         </Link>

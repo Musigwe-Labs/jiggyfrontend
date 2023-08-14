@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom'
 
 const HomeHeader = () => {
     return (
-      <div className='flex items-end pt-6'>
+      <div className='flex items-center pt-6'>
         <Link to='/profile'>
-          <img className='w-16 rounded-full mx-3' src={profile_pic} />
+          <img className='w-14 rounded-full mx-[9px]' src={profile_pic} />
         </Link>
-        <h1 className='text-white text-4xl'>Home</h1>
+        <h1 className='text-3xl text-center font-bold from-[#f33f5e] via-[#ff008a9e] to-[#b416fe66] bg-gradient-to-r bg-clip-text text-transparent'>Home</h1>
       </div>
     )
   }

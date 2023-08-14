@@ -14,7 +14,6 @@ const Home = () => {
         "https://cruise.pythonanywhere.com/annon/posts/"
       );
       setPost(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -33,7 +32,7 @@ const Home = () => {
           return (
             <div key={post.id} className='text-base mt-2'>
               <div className='mx-4 md:mx-16 p-3 border-b border-y-[#4B5563]'>
-                <HomeInfo post={post} />
+                <HomeInfo school={post.user.school} name={post.user.generated_username}/>
                 <span
                   className={`text-base text-[7.5px] border px-2 rounded-full ml-8 ${post.post_type}`}
                 >
@@ -43,7 +42,7 @@ const Home = () => {
                 <GistLinks post={post} />
               </div>
             </div>
-          );
+          )
         })}
       </div>
     </div>

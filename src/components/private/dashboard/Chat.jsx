@@ -40,6 +40,7 @@ export default function Chat({ friend, profilePic, chat }) {
           <Reply reply={"comment"} />
         </div>
       </section>
+      <input type="text" />
     </div>
   );
 }
