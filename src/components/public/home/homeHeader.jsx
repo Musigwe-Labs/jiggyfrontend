@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const HomeHeader = () => {
     return (
-      <div className='flex items-end'>
+      <div className='flex items-end pt-6'>
         <Link to='/profile'>
           <img className='w-16 rounded-full mx-3' src={profile_pic} />
         </Link>

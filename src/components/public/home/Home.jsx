@@ -24,13 +24,15 @@ const Home = () => {
   }, []);
   return (
     <div>
+      <div className='sticky top-0 bg-black'> 
       <HomeHeader />
       <HomeTabs />
-      <div className="mb-12">
+      </div>
+      <div className='pb-[29px]'>
         {posts.map((post) => {
           return (
-            <div key={post.id} className="text-base mt-2">
-              <div className="mx-4 md:mx-16 p-3 border-b border-y-[#4B5563]">
+            <div key={post.id} className='text-base mt-2'>
+              <div className='mx-4 md:mx-16 p-3 border-b border-y-[#4B5563]'>
                 <HomeInfo post={post} />
                 <span
                   className={`text-base text-[7.5px] border px-2 rounded-full ml-8 ${post.post_type}`}

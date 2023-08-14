@@ -6,50 +6,30 @@ import { MdOutlineDashboard } from "react-icons/md"
 import { useNavigate, useLocation } from 'react-router-dom'
 
 const HomeFooter = ()=>{
-
-    const navigate = useNavigate();
-
     const location = useLocation();
 
     const urlpath = location.pathname;
 
-    const logout = () => {
-        localStorage.removeItem('login');
-        navigate('/');
-        window.location.reload();
-    }
-
-
     const navlinks = [
         {
+            id: 0,
+            url: "/home",
+            icon: <AiFillHome size={35} />,
+        },
+        {
             id: 1,
-            url: "/dashboard",
-            icon: <MdOutlineDashboard size={20} />,
+            url: "/messages",
+            icon: <RxEnvelopeClosed size={35} />,
         },
         {
             id: 2,
-            url: "/home",
-            icon: <AiFillHome size={20} />,
-        },
-        {
-            id: 3,
-            url: "/messages",
-            icon: <RxEnvelopeClosed size={20} />,
-        },
-        {
-            id: 4,
-            url: "/profile",
-            icon: <AiOutlineUser size={20} />,
-        },
-        {
-            id: 5,
-            url: "/messages",
-            icon: <HiOutlineBell size={20} />,
+            url: "/notifications",
+            icon: <HiOutlineBell size={35} />,
         },
     ]
 
     return (
-        <div className='w-full flex z-10 justify-center fixed bottom-0 bg-gray-900 space-x-10 p-4'>
+        <div className='w-full flex z-10 justify-evenly fixed bottom-0 bg-gray-900 py-2'>
             {
                 navlinks.map(nav => {
                     return(
@@ -63,10 +43,6 @@ const HomeFooter = ()=>{
                     )
                 })
             }
-            
-            <span onClick={() => logout()} className='cursor-pointer text-red-600 hover:text-red-800'>
-                <AiOutlineLogout size={20} />
-            </span>
         </div>
     )
 

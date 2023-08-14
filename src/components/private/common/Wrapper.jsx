@@ -1,5 +1,4 @@
-import React from "react";
-import HomeFooter from "../../public/home/homeFooter";
+import HomeFooter from '../../public/home/homeFooter';
 
 export const Wrapper = (Component) => {
   return (
