@@ -29,10 +29,10 @@ const Home = () => {
         posts.map(
           (post)=>{
             return(
-              <div key={post.id} className='text-base mt-6'>
+              <div key={post.id} className='text-base mt-2'>
                 <div className='mx-4 p-3 border-b border-y-[#4B5563]'>
                   <HomeInfo post={post}/>
-                  <span className={`text-base text-[7.5px] border px-1 rounded-full ml-8 ${post.post_type}`}>{post.post_type}</span>
+                  <span className={`text-base text-[7.5px] border px-2 rounded-full ml-8 ${post.post_type}`}>{post.post_type}</span>
                   <Gist post={post}/>
                   <GistLinks post={post}/>
                 </div>

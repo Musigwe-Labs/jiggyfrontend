@@ -5,24 +5,24 @@ import { useState } from "react";
 import './home.css'
 
 const GistLinks = ({ post }) => {
-    const {likes,comments,views} = post
+   
     const [isLiked , setIsLiked] = useState(false)  //currently using a state but we will have to get this info from the backend
     // const [isSeen , setIsSeen] = useState(false)  //currently using a state but we will have to get this info from the backend
     return (
     <div className='flex justify-between px-5 mt-4 text-white'>
         <div className='flex items-center cursor-pointer'>
             <FaRegComments className='cursor-pointer text-2xl'/>
-            <p className='ml-3'>{comments.length}</p>
+            <p className='ml-3'>{post.comments.length}</p>
         </div>
         <div className='flex items-center cursor-pointer' onClick={()=>{
                 setIsLiked(!isLiked)
             }}>
             <VscFlame className={`${isLiked?'liked':'text-2xl'} cursor-pointer`} />
-            <p className='ml-3'>{likes.length}</p>
+            <p className='ml-3'>{post.likes.length}</p>
         </div>
         <div className='flex items-center cursor-pointer'>
             <AiOutlineEye className='cursor-pointer text-2xl'/>
-            <p className='ml-3'>{views}</p>
+            <p className='ml-3'>{post.views}</p>
         </div>
         <AiOutlineShareAlt  className='cursor-pointer text-2xl'/>
     </div>

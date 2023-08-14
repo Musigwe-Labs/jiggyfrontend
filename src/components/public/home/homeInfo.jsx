@@ -6,7 +6,7 @@ const HomeInfo = ({ post }) => {
         <div className='flex justify-between items-center'>
             <div className='flex items-center'>
               <img className='w-6 rounded-3xl mr-3' src={profile_pic} alt='profile-img' />
-              <h4 className='text-white mr-2 text-xl font-bold'>Emmanuel</h4>
+              <h4 className='text-white mr-2 text-base font-bold'>Emmanuel</h4>
               <span className='border border-gray-400'></span>
               <p className='px-1 text-sm text-gray-400'>FUTO</p>
               <span className='border border-gray-400'></span>
