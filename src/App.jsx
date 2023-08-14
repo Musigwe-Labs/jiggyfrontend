@@ -19,7 +19,7 @@ const App = () => {
     <div className='bg-black text-white min-h-screen'>
       <AuthContextProvider>
         <Router>
-            {/* <Header /> */}
+            <Header />
             <Routes>
               <Route exact path="/" element={<Login />} />
               <Route exact path="/login" element={<Login />} />
