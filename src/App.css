@@ -8,7 +8,7 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
   font-size: 14px;
-  color: #fff;
+  box-sizing: border-box;
 }
 /* .logo {
   height: 6em;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthIcons from '../common/AuthIcons'
 import TermsOfService from '../common/TermsOfService'
@@ -28,7 +28,7 @@ const Login = () => {
             setError("");
             setUsername("");
             setPassword("");
-            navigate('/dashboard');
+            navigate('/home');
             window.location.reload();
         }
 
@@ -117,7 +117,7 @@ const Login = () => {
                 <AuthIcons />
 
                 <div className='flex justify-center text-gray-400 space-x-1 my-10'>
-                    <span>Don't have an Account?</span> <Link to='/register' className='text-[#007aff]'>Sign up</Link>
+                    <span>{"Don't have an Account?"}</span> <Link to='/register' className='text-[#007aff]'>Sign up</Link>
                 </div>
 
                 <TermsOfService />

@@ -1,0 +1,48 @@
+.hometab{
+  font-size: 1.5rem;
+  line-height: 2.25rem;
+  border-bottom-width: 4px;
+  border-radius: 0.125rem;
+  padding: 0 10px;
+  cursor: pointer;
+  transition: all 0.7s ease;
+}
+.liked{
+  color: #43fff6;
+  font-size: 24px;
+}
+.Question{
+  border: 1px solid #f91880;
+  color: #f91880;
+}
+.Confession{
+  border: 1px solid #1d9bf0;
+  color: #1d9bf0;
+}
+.Crush{
+  border: 1px solid #f01d1d;
+  color: #f01d1d;
+}
+.Dm{
+  border: 1px solid #ffd635;
+  color: #ffd635;
+}
+.Advice{
+  border: 1px solid #349e48;
+  color: #349e48;
+}
+.bQuestion{
+  background-color: rgba(249, 24, 129, 0.2);
+}
+.bConfession{
+  background-color: rgba(29, 156, 240, 0.2);
+}
+.bCrush{
+  background-color: rgba(240, 29, 29, 0.2);
+}
+.bDm{
+  background-color: rgba(255, 215, 53, 0.2);
+}
+.Abdvice{
+  background-color: rgba(52, 158, 71, 0.2);
+}

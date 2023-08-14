@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const PubLinks = () => {
     return (
-        <div className='w-full flex justify-center md:justify-between items-center px-12 py-6 md:py-3 m-0'> 
+        <div className='flex justify-center md:justify-between items-center px-2 py-6 md:py-3 m-0'> 
             <div className={`flex md:hidden space-x-3 items-center`}>
                 <img src={Logo} alt='Logo' />
                 <span className='text-2xl font-medium text-gray-300'>JIGGY</span>

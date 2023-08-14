@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Banner from '../common/Banner'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthIcons from '../common/AuthIcons'
@@ -33,7 +33,7 @@ const Register = () => {
         if (password !== confirm_password ) {alert('Password mismatch')}
         else {
             registerUser(data, setSuccess, setError, setRegister);
-        };
+        }
     }
 
     if(error !== null) {
