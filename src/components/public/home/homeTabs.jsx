@@ -5,7 +5,7 @@ const HomeTabs = () => {
     const [isAll , setIsAll] = useState(true)
     const [isTrending , setIsTrending] = useState(false)
     return (
-            <div className='text-white border-b border-y-[#4B5563] flex justify-between px-12 mt-2'>
+            <div className='text-white border-b border-y-[#4B5563] flex justify-between px-20 mt-2'>
                 <h2 
                     onClick={()=>{
                         setIsAll(true)

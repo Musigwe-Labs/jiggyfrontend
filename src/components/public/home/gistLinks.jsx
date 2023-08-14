@@ -1,6 +1,6 @@
 import { FaRegComments } from "react-icons/fa";
 import { AiOutlineEye , AiOutlineShareAlt } from "react-icons/ai";
-import { VscFlame } from "react-icons/vsc";
+import { IoMdFlame } from "react-icons/io";
 import { useState } from "react";
 import './home.css'
 
@@ -17,7 +17,7 @@ const GistLinks = ({ post }) => {
         <div className='flex items-center cursor-pointer' onClick={()=>{
                 setIsLiked(!isLiked)
             }}>
-            <VscFlame className={`${isLiked?'liked':'text-2xl'} cursor-pointer`} />
+            <IoMdFlame className={`${isLiked?'liked':'text-2xl'} cursor-pointer`} />
             <p className='ml-3'>{post.likes.length}</p>
         </div>
         <div className='flex items-center cursor-pointer'>
