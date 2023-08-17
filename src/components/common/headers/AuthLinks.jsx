@@ -1,9 +1,5 @@
-import React from 'react'
+
 import Logo from '../../../assets/logo.png'
-import { Link } from 'react-router-dom'
-import { AiFillHome, AiOutlineLogout } from 'react-icons/ai'
-import { RxEnvelopeClosed } from 'react-icons/rx'
-import { HiOutlineBell } from 'react-icons/hi'
 
 const AuthLinks = ({ logout }) => {
 

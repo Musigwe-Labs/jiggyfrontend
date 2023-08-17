@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom'
-import { AiFillHome, AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
+import { AiFillHome } from "react-icons/ai";
 import { RxEnvelopeClosed } from "react-icons/rx";
 import { HiOutlineBell } from "react-icons/hi";
-import { MdOutlineDashboard } from "react-icons/md"
-import { useNavigate, useLocation } from 'react-router-dom'
+import {  useLocation } from 'react-router-dom'
 
 const HomeFooter = ()=>{
     const location = useLocation();
@@ -29,7 +28,7 @@ const HomeFooter = ()=>{
     ]
 
     return (
-        <div className='w-full flex z-10 justify-evenly fixed bottom-0 border-t border-y-[#4B5563] bg-black py-3'>
+        <div className='w-full flex z-10 justify-evenly fixed bottom-0 border-t border-y-[#4B5563] bg-black py-3 '>
             {
                 navlinks.map(nav => {
                     return(

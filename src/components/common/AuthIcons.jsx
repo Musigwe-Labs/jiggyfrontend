@@ -1,4 +1,3 @@
-import React from "react";
 import Google from "../../assets/google.png";
 import Microsoft from "../../assets/microsoft.png";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -6,7 +5,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 const AuthIcons = () => {
   const googleSignIn = useGoogleLogin({
     onSuccess: (response) => console.log(response),
-  });
+  })
   return (
     <div className="flex justify-between mt-4 space-x-4 text-gray-400 text-sm">
       <a
@@ -23,7 +22,7 @@ const AuthIcons = () => {
         <span>Microsoft</span>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default AuthIcons;
