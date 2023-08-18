@@ -5,8 +5,7 @@ export const AuthContext = createContext();
 
 const AuthContextProvider = (props) => {
 
-    const loginData = JSON.parse(localStorage.getItem('login'));
-    
+    const loginData = JSON.parse(localStorage.getItem('login')); 
     const [key, setKey] = useState(loginData ? loginData.key : '');
 
     const logout = () => {
@@ -16,9 +15,7 @@ const AuthContextProvider = (props) => {
     }
 
     useEffect(() => {
-        
-        if(localStorage.getItem('login')){
-            
+        if(localStorage.getItem('login')){90
             setKey(loginData.key);
         }
     }, [loginData])

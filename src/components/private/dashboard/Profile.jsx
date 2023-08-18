@@ -1,15 +1,13 @@
 /* eslint-disable react/prop-types */
+import { useContext } from 'react'
+import { AuthContext } from '../../../contexts/AuthContext'
 import { Link } from 'react-router-dom'
 import { HiArrowLeft, HiChevronRight, HiCog, HiEye, HiLockClosed, HiOutlinePencilAlt , HiOutlineLogout} from 'react-icons/hi'
 import PrivacyHeader from '../common/PrivacyHeader';
 
 //add two div side by side the secondone transparent on key press,chande profile state
 export const Profile = ({setProfilePage}) => {
-
-  const logout = () => {
-    localStorage.removeItem('login');
-    window.location.reload();
-}
+  const { logout } = useContext(AuthContext);
 
   return (
     <div className='fixed top-0 z-50 flex flex-col justify-between h-[100vh] pt-6 pb-16 w-3/4 bg-black'>

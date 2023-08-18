@@ -18,7 +18,7 @@ const PrivacyHeader = () => {
                 <img src={profile_pic} alt="" className='h-[100%] w=[100%]'/>
             </div>
             {console.log('userinfo is',userinfo)}
-            <h3 className='capitalize text-white text-2xl mt-2'>userinfo?.username</h3>
+            <h3 className='capitalize text-white text-2xl mt-2'>{ userinfo?.username }</h3>
         </section>
     )
 }
