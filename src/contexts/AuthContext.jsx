@@ -11,7 +11,7 @@ const AuthContextProvider = (props) => {
     const logout = () => {
         setKey('');
         localStorage.removeItem('login');
-        window.location.reload();
+        window.location.href='/login'
     }
 
     useEffect(() => {
