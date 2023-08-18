@@ -51,7 +51,7 @@ const CreatePostPage = ({setCreatePost})=>{
                 <button className='Confession rounded-full px-2 m-2' onClick={()=>handleBtnClick('Confession')}>Confession</button>
                 <button className='Question rounded-full px-2 m-2' onClick={()=>handleBtnClick('Question')}>Question</button>
                 <button className='Crush rounded-full px-2 m-2' onClick={()=>handleBtnClick('Crush')}>Crush</button>
-                <button className='Dm rounded-full px-2 m-2' onClick={()=>handleBtnClick('Dm')}>Dm</button>
+                <button className='Dm rounded-full px-2 m-2' onClick={()=>handleBtnClick('DM')}>DM</button>
                 <button className='Advice rounded-full px-2 m-2' onClick={()=>handleBtnClick('Advice')}>Advice</button>
             </div>
         </div>
