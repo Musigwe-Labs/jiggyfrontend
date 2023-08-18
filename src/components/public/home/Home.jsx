@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 import Gist from './gist'
 import GistLinks from './gistLinks'
 import HomeHeader from './homeHeader'
 import HomeInfo from './homeInfo'
 import HomeTabs from './homeTabs'
 import axios from 'axios'
-import CreatePostBtn from "./createPostBtn";
-import CreatePostPage from "./createPostPage";
+import CreatePostBtn from './createPostBtn'
+import CreatePostPage from './createPostPage'
+import { Profile } from '../../private/dashboard/Profile'
+import HomeFooter from './homeFooter'
 
 const Home = () => {
   const [createPost,setCreatePost] = useState(false)
+  const [profilePage,setProfilePage] = useState(false)
   const [posts, setPost] = useState([])
 
   
@@ -34,8 +37,9 @@ const Home = () => {
 
   return (
     <div>
+    {profilePage ? <Profile setProfilePage={setProfilePage}/> :''}
       <div className='sticky top-0 bg-black'> 
-        <HomeHeader />
+        <HomeHeader setProfilePage={setProfilePage}/>
         <HomeTabs />
       </div>
       <div className='pb-[29px]'>
@@ -55,6 +59,7 @@ const Home = () => {
         })}
       </div>
       <CreatePostBtn setCreatePost={setCreatePost}/>
+      <HomeFooter />
     </div>
   )
 }

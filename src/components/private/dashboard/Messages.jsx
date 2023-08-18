@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Friends from "../../Friends";
 import Jiggy from "../../Jiggy";
+import HomeFooter from "../../public/home/homeFooter";
 
 export default function Messages() {
   const [selectedTab, setSelectedTab] = useState("friends");
@@ -34,6 +35,7 @@ export default function Messages() {
         <div className="bg-[#0B0B09]">
           {selectedTab === "friends" ? <Friends /> : <Jiggy />}
         </div>
+        <HomeFooter />
     </div>
   );
 }

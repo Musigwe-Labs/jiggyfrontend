@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { LiaTimesSolid , LiaCheckSolid } from 'react-icons/lia'
 import axios from 'axios'
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../../contexts/AuthContext';
 
-const CreatePostPage = ({setCreatePost})=>{
+const CreatePostPage = ({setCreatePost })=>{
     const [content , setContent] = useState()
     const [post_type , setSelectedOption] = useState('Confession')
 
@@ -23,7 +24,6 @@ const CreatePostPage = ({setCreatePost})=>{
     const handlePost= async()=>{
         try {
             const data = { content , post_type }
-            console.log(data)
             await axios.post("https://cruise.pythonanywhere.com/annon/posts/create/" , data , {headers})
             // window.location.reload()
             setCreatePost(false)
@@ -51,7 +51,7 @@ const CreatePostPage = ({setCreatePost})=>{
                 <button className='Confession rounded-full px-2 m-2' onClick={()=>handleBtnClick('Confession')}>Confession</button>
                 <button className='Question rounded-full px-2 m-2' onClick={()=>handleBtnClick('Question')}>Question</button>
                 <button className='Crush rounded-full px-2 m-2' onClick={()=>handleBtnClick('Crush')}>Crush</button>
-                <button className='Dm rounded-full px-2 m-2' onClick={()=>handleBtnClick('DM')}>DM</button>
+                <button className='DM rounded-full px-2 m-2' onClick={()=>handleBtnClick('DM')}>DM</button>
                 <button className='Advice rounded-full px-2 m-2' onClick={()=>handleBtnClick('Advice')}>Advice</button>
             </div>
         </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
@@ -5,7 +6,6 @@ export const AuthContext = createContext();
 const AuthContextProvider = (props) => {
 
     const loginData = JSON.parse(localStorage.getItem('login'));
-
     
     const [key, setKey] = useState(loginData ? loginData.key : '');
 

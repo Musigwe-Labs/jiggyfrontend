@@ -7,7 +7,6 @@ import AuthContextProvider from './contexts/AuthContext'
 // import PrivateRoute from './components/private/PrivateRoute'
 import Dashboard from './components/private/dashboard/Dashboard'
 import { Privacy } from './components/private/dashboard/Privacy'
-import { Profile } from './components/private/dashboard/Profile'
 import Messages from './components/private/dashboard/Messages'
 import Chat from './components/private/dashboard/Chat'
 import "./App.css";
@@ -26,7 +25,6 @@ const App = () => {
               <Route exact path='/register' element={<Register />} />
               <Route exact path="/home" element={Wrapper(Home)} />
               <Route exact path='/dashboard' element={Wrapper(Dashboard)} />
-              <Route exact path='/profile' element={Wrapper(Profile)} />
               <Route exact path='/privacy' element={Wrapper(Privacy)} />
               <Route exact path='/messages' element={Wrapper(Messages)} />
               <Route exact path='/chat/:friend_name' element={Wrapper(Chat)} />

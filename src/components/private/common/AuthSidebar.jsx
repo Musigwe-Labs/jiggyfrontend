@@ -1,4 +1,3 @@
-import React from 'react'
 import { HiUser } from 'react-icons/hi'
 
 const AuthSidebar = () => {

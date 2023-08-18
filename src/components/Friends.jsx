@@ -1,4 +1,3 @@
-import React from "react";
 import friendsDummyApi from "../utils/friendsDummyApi.json";
 import { useNavigate, useParams } from "react-router-dom";
 
