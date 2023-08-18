@@ -34,7 +34,6 @@ const Home = () => {
       <CreatePostPage setCreatePost={setCreatePost}/>
     )
   }
-
   return (
     <div>
     {profilePage ? <Profile setProfilePage={setProfilePage}/> :''}
