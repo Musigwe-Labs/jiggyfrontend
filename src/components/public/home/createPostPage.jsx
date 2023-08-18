@@ -35,17 +35,17 @@ const CreatePostPage = ({setCreatePost})=>{
     return(
         <div className='fixed top-0 z-50 h-full w-full bg-[#321616]'>
             <div className='flex justify-between px-5 pt-12 pb-2 border-b align-center'>
-                <LiaTimesSolid size='25' color='black' cursor='pointer' onClick={()=>{setCreatePost(false)}}/>
+                <LiaTimesSolid size='25' color='white' cursor='pointer' onClick={()=>{setCreatePost(false)}}/>
                 <p className='font-bold'>Create an anonymous post</p>
-                <LiaCheckSolid size='25'color='black' cursor='pointer' onClick={handlePost}/>
+                <LiaCheckSolid size='25'color='white' cursor='pointer' onClick={handlePost}/>
             </div>
-            <button className={`${post_type} rounded-full px-2 m-4`}>{post_type}</button>
+            <button className={`${post_type} rounded-full px-2 mx-3 mt-3 mb-1`}>{post_type}</button>
 
             <textarea
             value={content}
             onChange={handleTextareaChange} 
             placeholder="Secret crush ? Confession ? Share ? what's on your mind...."  
-            className='w-full bg-transparent p-4 resize-none h-3/5 placeholder-gray-200 placeholder-opacity-50 focus:outline-none post-placeholder'></textarea>
+            className='focus:outline-none post-placeholder'></textarea>
 
             <div className='px-3'>
                 <button className='Confession rounded-full px-2 m-2' onClick={()=>handleBtnClick('Confession')}>Confession</button>
