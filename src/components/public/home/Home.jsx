@@ -24,7 +24,7 @@ const Home = () => {
 
   useEffect(() => {
     getPost();
-  }, [])
+  }, [createPost])
 
   if(createPost){
     return(

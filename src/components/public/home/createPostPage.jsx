@@ -25,7 +25,8 @@ const CreatePostPage = ({setCreatePost})=>{
             const data = { content , post_type }
             console.log(data)
             await axios.post("https://cruise.pythonanywhere.com/annon/posts/create/" , data , {headers})
-            window.reload()
+            // window.location.reload()
+            setCreatePost(false)
         } catch (error) {
             console.log(error)
         }
