@@ -7,6 +7,9 @@
   cursor: pointer;
   transition: all 0.7s ease;
 }
+.post-placeholder::placeholder{
+  font-size: 18px;
+}
 .liked{
   color: #f33f5e;
   font-size: 28px;

@@ -4,8 +4,8 @@ import { useContext, useState } from 'react';
 import { AuthContext } from '../../../contexts/AuthContext';
 
 const CreatePostPage = ({setCreatePost})=>{
-    const[inputValue , setInputValue] = useState('')
-    const[content , setContent] = useState()
+    const [content , setContent] = useState()
+    const [post_type , setSelectedOption] = useState('Confession')
 
     const { key } = useContext(AuthContext)
     console.log("key is ",key)
@@ -13,43 +13,46 @@ const CreatePostPage = ({setCreatePost})=>{
         "Authorization" : `Token ${key}`
     }
 
-    const handleInputChange = (e)=>{
-        setInputValue(e.target.value)
-    }
-
     const handleTextareaChange = (e)=>{
         setContent(e.target.value)
     }
+
+    const handleBtnClick = (option)=>{
+        setSelectedOption(option)
+    }
     const handlePost= async()=>{
         try {
-            const data = {content , post_type:'Confession'}
+            const data = { content , post_type }
             console.log(data)
             await axios.post("https://cruise.pythonanywhere.com/annon/posts/create/" , data , {headers})
-            setCreatePost(false)
+            window.reload()
         } catch (error) {
             console.log(error)
         }
     }
 
     return(
-        <div className='fixed top-0 z-50 h-full w-full bg-[#d36666]'>
+        <div className='fixed top-0 z-50 h-full w-full bg-[#321616]'>
             <div className='flex justify-between px-5 pt-12 pb-2 border-b align-center'>
-                <LiaTimesSolid size='25' color='black' onClick={()=>{setCreatePost(false)}}/>
+                <LiaTimesSolid size='25' color='black' cursor='pointer' onClick={()=>{setCreatePost(false)}}/>
                 <p className='font-bold'>Create an anonymous post</p>
-                <LiaCheckSolid size='25'color='black' onClick={handlePost}/>
+                <LiaCheckSolid size='25'color='black' cursor='pointer' onClick={handlePost}/>
             </div>
-            <input 
-            type='text'
-            value={inputValue}
-            onChange={handleInputChange} 
-            placeholder='Choose a nick name(optional)' 
-            className='w-full bg-transparent p-2 border-b'/>
+            <button className={`${post_type} rounded-full px-2 m-4`}>{post_type}</button>
 
             <textarea
             value={content}
             onChange={handleTextareaChange} 
             placeholder="Secret crush ? Confession ? Share ? what's on your mind...."  
-            className='w-full bg-transparent p-4'></textarea>
+            className='w-full bg-transparent p-4 resize-none h-3/5 placeholder-gray-200 placeholder-opacity-50 focus:outline-none post-placeholder'></textarea>
+
+            <div className='px-3'>
+                <button className='Confession rounded-full px-2 m-2' onClick={()=>handleBtnClick('Confession')}>Confession</button>
+                <button className='Question rounded-full px-2 m-2' onClick={()=>handleBtnClick('Question')}>Question</button>
+                <button className='Crush rounded-full px-2 m-2' onClick={()=>handleBtnClick('Crush')}>Crush</button>
+                <button className='Dm rounded-full px-2 m-2' onClick={()=>handleBtnClick('Dm')}>Dm</button>
+                <button className='Advice rounded-full px-2 m-2' onClick={()=>handleBtnClick('Advice')}>Advice</button>
+            </div>
         </div>
     )
 }
