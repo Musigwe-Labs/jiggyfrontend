@@ -1,10 +1,17 @@
 import { LiaTimesSolid , LiaCheckSolid } from 'react-icons/lia'
 import axios from 'axios'
-import { useState } from 'react'
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../../contexts/AuthContext';
 
 const CreatePostPage = ({setCreatePost})=>{
     const[inputValue , setInputValue] = useState('')
     const[content , setContent] = useState()
+
+    const { key } = useContext(AuthContext)
+    console.log("key is ",key)
+    const headers = {
+        "Authorization" : `Token ${key}`
+    }
 
     const handleInputChange = (e)=>{
         setInputValue(e.target.value)
@@ -17,7 +24,7 @@ const CreatePostPage = ({setCreatePost})=>{
         try {
             const data = {content , post_type:'Confession'}
             console.log(data)
-            await axios.post("https://cruise.pythonanywhere.com/annon/posts/create/" , data)
+            await axios.post("https://cruise.pythonanywhere.com/annon/posts/create/" , data , {headers})
             setCreatePost(false)
         } catch (error) {
             console.log(error)
