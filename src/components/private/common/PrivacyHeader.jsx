@@ -14,7 +14,7 @@ const PrivacyHeader = () => {
 
     return (
         <section className='flex flex-col items-center mt-4'>
-            <div className='h-[180px] w-[180px] rounded-full border-none'>
+            <div className='h-[150px] w-[150px] rounded-full border-none'>
                 <img src={profile_pic} alt="" className='h-[100%] w=[100%]'/>
             </div>
             {console.log('userinfo is',userinfo)}

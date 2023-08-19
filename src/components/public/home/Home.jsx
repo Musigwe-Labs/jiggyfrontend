@@ -9,9 +9,11 @@ import CreatePostBtn from './createPostBtn'
 import CreatePostPage from './createPostPage'
 import { Profile } from '../../private/dashboard/Profile'
 import HomeFooter from './homeFooter'
+import Comment from './comments'
 
 const Home = () => {
   const [createPost,setCreatePost] = useState(false)
+  const [comment,setComment] = useState(false)
   const [profilePage,setProfilePage] = useState(false)
   const [posts, setPost] = useState([])
 
@@ -34,6 +36,12 @@ const Home = () => {
       <CreatePostPage setCreatePost={setCreatePost}/>
     )
   }
+
+  if(comment){
+    return(
+      <Comment setComment={setComment}/>
+    )
+  }
   return (
     <div>
     {profilePage ? <Profile setProfilePage={setProfilePage}/> :''}
@@ -51,7 +59,7 @@ const Home = () => {
                   {post.post_type}
                 </span>
                 <Gist post={post} />
-                <GistLinks post={post} />
+                <GistLinks post={post} setComment={setComment}/>
               </div>
             </div>
           )

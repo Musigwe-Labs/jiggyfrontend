@@ -24,7 +24,7 @@ const Register = () => {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        const data = {username, first_name, last_name, email, password, school:selectedOption}
+        const data = {username, first_name, last_name, email, password, school:selectedOption.school_acronym}
         if (password !== confirm_password ) {alert('Password mismatch')}
         else {
             registerUser(data, setSuccess, setError, setRegister);

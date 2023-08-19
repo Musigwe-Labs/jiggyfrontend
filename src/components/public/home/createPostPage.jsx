@@ -9,7 +9,6 @@ const CreatePostPage = ({setCreatePost })=>{
     const [post_type , setSelectedOption] = useState('Confession')
 
     const { key } = useContext(AuthContext)
-    console.log("key is ",key)
     const headers = {
         "Authorization" : `Token ${key}`
     }
