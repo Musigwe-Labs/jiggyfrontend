@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react'
-import Gist from './gist'
-import GistLinks from './gistLinks'
 import HomeHeader from './homeHeader'
-import HomeInfo from './homeInfo'
 import HomeTabs from './homeTabs'
 import axios from 'axios'
 import CreatePostBtn from './createPostBtn'
@@ -10,13 +7,18 @@ import CreatePostPage from './createPostPage'
 import { Profile } from '../../private/dashboard/Profile'
 import HomeFooter from './homeFooter'
 import Comment from './comments'
+import Posts from './posts'
 
 const Home = () => {
   const [createPost,setCreatePost] = useState(false)
-  const [comment,setComment] = useState(false)
+  // const [comment,setComment] = useState(false)
   const [profilePage,setProfilePage] = useState(false)
   const [posts, setPost] = useState([])
+  const [selectedPost, setSelectedPost] = useState(null)
 
+  const handlePostClick = (post) => {
+    setSelectedPost(post);
+  }
   
   const getPost = async () => {
     try {
@@ -37,11 +39,18 @@ const Home = () => {
     )
   }
 
-  if(comment){
+  // if(comment){
+  //   return(
+  //     <Comment setComment={setComment}/>
+  //   )
+  // }
+  
+  if(selectedPost !== null){
     return(
-      <Comment setComment={setComment}/>
+      <Comment post={selectedPost}/>
     )
   }
+
   return (
     <div>
     {profilePage ? <Profile setProfilePage={setProfilePage}/> :''}
@@ -49,22 +58,7 @@ const Home = () => {
         <HomeHeader setProfilePage={setProfilePage}/>
         <HomeTabs />
       </div>
-      <div className='pb-[29px]'>
-        {posts.map((post) => {
-          return (
-            <div key={post.id} className='text-base mt-2'>
-              <div className='mx-4 md:mx-16 p-3 border-b border-y-[#4B5563]'>
-                <HomeInfo school={post.user.school} name={post.user.generated_username}/>
-                <span className={`text-base text-[7.5px] border px-2 rounded-full ml-8 ${post.post_type}`} >
-                  {post.post_type}
-                </span>
-                <Gist post={post} />
-                <GistLinks post={post} setComment={setComment}/>
-              </div>
-            </div>
-          )
-        })}
-      </div>
+      <Posts posts={posts} onPostClick={handlePostClick}/>
       <CreatePostBtn setCreatePost={setCreatePost}/>
       <HomeFooter />
     </div>
