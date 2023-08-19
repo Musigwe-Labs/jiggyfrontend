@@ -32,7 +32,7 @@ const CreatePostPage = ({setCreatePost })=>{
     }
 
     return(
-        <div className='fixed top-0 z-50 h-full w-full bg-[#321616]'>
+        <div className='fixed top-0 z-50 h-screen w-full bg-[#321616]'>
             <div className='flex justify-between px-5 pt-12 pb-2 border-b align-center'>
                 <LiaTimesSolid size='25' color='white' cursor='pointer' onClick={()=>{setCreatePost(false)}}/>
                 <p className='font-bold'>Create an anonymous post</p>

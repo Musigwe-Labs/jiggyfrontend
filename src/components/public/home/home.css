@@ -14,11 +14,6 @@
   resize:none; 
   height:60%; 
 }
-.post-placeholder:focus{
-  height: 30%;
-  margin: 2px 0;
-  border:1px solid rgba(139, 139, 139, 0.5);
-}
 .post-placeholder::placeholder{
   color:rgb(139, 139, 139);
   filter:opacity(.65);
