@@ -1,57 +1,45 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import AuthIcons from "../common/AuthIcons";
-import TermsOfService from "../common/TermsOfService";
-import Banner from "../common/Banner";
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+// import AuthIcons from '../common/AuthIcons'
+import TermsOfService from '../common/TermsOfService'
+import Banner from '../common/Banner'
 //import { useLoginUserMutation } from '../../services/authApi'
-import { loginUser } from "../../apis/authenticationApis";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { loginUser } from '../../apis/authenticationApis'
+// import { GoogleOAuthProvider } from '@react-oauth/google'
 
 const Login = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   /**const [email, setEmail] = useState();*/
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [signing, setSigning] = useState(false);
-  const [success, setSuccess] = useState(null);
-  const [error, setError] = useState(null);
+  const [username, setUsername] = useState()
+  const [password, setPassword] = useState()
+  const [signing, setSigning] = useState(false)
+  const [success, setSuccess] = useState(null)
+  const [error, setError] = useState(null)
 
   //const [loginUser, {data, isError, error}] = useLoginUserMutation();
-
   useEffect(() => {
     if (success !== null) {
-      localStorage.setItem(
-        "login",
-        JSON.stringify({
-          key: success.key,
-        })
-      );
+      localStorage.setItem( 'login',JSON.stringify({ key: success.key}))
 
-      setError("");
-      setUsername("");
-      setPassword("");
-      navigate("/home");
-      window.location.reload();
+      setError('')
+      setUsername('')
+      setPassword('')
+      navigate('/home')
+      window.location.reload()
     }
-
     if (error !== null) {
-      alert(error.non_field_errors[0]);
-      setSigning(false);
-      setError(null);
+      alert(error.non_field_errors[0])
+      setSigning(false)
+      setError(null)
     }
-  }, [success, error]);
+  }, [success, error])
 
   const handleLogin = (e) => {
-    e.preventDefault();
-
-    const data = {
-      username,
-      password,
-    };
-
+    e.preventDefault()
+    const data = { username , password }
     loginUser(data, setSuccess, setError, setSigning);
-  };
+  }
 
   useEffect(() => {
     if (localStorage.getItem("login") !== null) {
@@ -114,9 +102,9 @@ const Login = () => {
           <div>Or signin with</div>
           <div className="grow border border-gray-500 h-0"></div>
         </div>
-        <GoogleOAuthProvider clientId="524267745289-99tcul9q2eos9crnc5krameenh2p59gb.apps.googleusercontent.com">
+        {/* <GoogleOAuthProvider clientId="524267745289-99tcul9q2eos9crnc5krameenh2p59gb.apps.googleusercontent.com">
           <AuthIcons />
-        </GoogleOAuthProvider>
+        </GoogleOAuthProvider> */}
 
         <div className="flex justify-center text-gray-400 space-x-1 my-10">
           <span>{"Don't have an Account?"}</span>{" "}
