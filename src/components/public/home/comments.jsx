@@ -8,6 +8,7 @@ import profile_pic from '../../../assets/profile_pics/pic1.png'
 import { userInfo } from '../../../apis/authenticationApis'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 import axios from 'axios'
+import { IoIosSend } from 'react-icons/io'
 
 const Comment =({post , setSelectedPost })=>{
     const [content , setContent] = useState()
@@ -63,14 +64,14 @@ const Comment =({post , setSelectedPost })=>{
                       })
                 }
             </div>
-            <div className='absolute w-[100%] border-t border-gray-500 left-0 bottom-0 px-2 bg-black'>
+            <div className='absolute w-[100%] border-t border-gray-500 left-0 bottom-3 px-2 bg-black'>
                 <input 
                 type='text'
                 placeholder='Comment your thought'
-                className='h-[50%] mb-[10px] w-[80%] border-b border-gray-600 bg-transparent text-black p-2'
+                className='h-[50%] w-[85%] border-b border-gray-600 bg-transparent text-white p-2'
                 value={content}
                 onChange={handleTextareaChange}/>
-                <button className='bg-[#5357B6] ml-2 py-1 px-2 rounded-xl font-bold text-sm' onClick={handleSendComment}>ND</button>
+                <button className='bg-[#5357B6] ml-2 py-1 px-2 fixed bottom-[10px] rounded-xl font-bold text-sm' onClick={handleSendComment}><IoIosSend size={21}/></button>
             </div>
         </div>
     )
