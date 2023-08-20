@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import TermsOfService from '../common/TermsOfService'
 import Banner from '../common/Banner'
 //import { useLoginUserMutation } from '../../services/authApi'
-import { loginUser } from '../../apis/authenticationApis'
-// import { GoogleOAuthProvider } from '@react-oauth/google'
+import { loginUser, loginUserWithGoogle} from '../../apis/authenticationApis'
+import { GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -41,6 +41,15 @@ const Login = () => {
     loginUser(data, setSuccess, setError, setSigning);
   }
 
+//handle google sign
+  function googleSignInSuccess(response){
+      loginUserWithGoogle(data, setSuccess, setError, setSigning);
+  }
+  function googleSignInErr(){
+      // setError(true)
+      console.log('login could not be completed')
+  }
+
   useEffect(() => {
     if (localStorage.getItem("login") !== null) {
       navigate("/dashboard");
@@ -48,6 +57,7 @@ const Login = () => {
   }, [navigate]);
 
   return (
+    <GoogleOAuthProvider clientId="112378194921-q972f6g6oe61gpkq8gnugbtj9ua0s77s.apps.googleusercontent.com"> 
     <div className="grid grid-cols-1 md:grid-cols-2 px-6 lg:px-24 mt-4">
       <Banner />
 
@@ -106,6 +116,8 @@ const Login = () => {
           <AuthIcons />
         </GoogleOAuthProvider> */}
 
+        <GoogleLogin  onSuccess={response=>googleSignInSuccess(response)} onError={googleSignInErr}/>
+
         <div className="flex justify-center text-gray-400 space-x-1 my-10">
           <span>{"Don't have an Account?"}</span>{" "}
           <Link to="/register" className="text-[#007aff]">
@@ -116,6 +128,7 @@ const Login = () => {
         <TermsOfService />
       </div>
     </div>
+    </GoogleOAuthProvider>
   );
 };
 
