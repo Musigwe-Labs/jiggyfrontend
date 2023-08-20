@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { LiaTimesSolid , LiaCheckSolid } from 'react-icons/lia'
 import axios from 'axios'
-import { useContext, useState } from 'react';
-import { AuthContext } from '../../../contexts/AuthContext';
+import { useContext, useState } from 'react'
+import { AuthContext } from '../../../contexts/AuthContext'
 
 const CreatePostPage = ({setCreatePost })=>{
     const [content , setContent] = useState()

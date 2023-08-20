@@ -47,7 +47,9 @@ const Home = () => {
   
   if(selectedPost !== null){
     return(
-      <Comment post={selectedPost}/>
+    <div className='overflow-hidden'>
+      <Comment post={selectedPost} setSelectedPost={setSelectedPost}/>
+    </div>
     )
   }
 
