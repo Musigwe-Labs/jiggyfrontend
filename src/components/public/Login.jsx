@@ -4,8 +4,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import TermsOfService from '../common/TermsOfService'
 import Banner from '../common/Banner'
 //import { useLoginUserMutation } from '../../services/authApi'
+import GoogleButton from './GoogleButton'
+import MSoftButton from './MSoftButton'
 import { loginUser, loginUserWithGoogle} from '../../apis/authenticationApis'
-import { GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google'
+import { GoogleOAuthProvider, useGoogleLogin} from '@react-oauth/google'
+import jwt_decode from 'jwt-decode'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -42,14 +45,16 @@ const Login = () => {
   }
 
 //handle google sign
-  function googleSignInSuccess(response){
-      loginUserWithGoogle(data, setSuccess, setError, setSigning);
+  function googleSignInSuccess(token){
+      console.log(token)
+      // console.log(jwt_decode(token.access_token))
+      // loginUserWithGoogle(token, setSuccess, setError, setSigning);
   }
-  function googleSignInErr(){
+  function googleSigninErr(){
       // setError(true)
       console.log('login could not be completed')
   }
-
+ 
   useEffect(() => {
     if (localStorage.getItem("login") !== null) {
       navigate("/dashboard");
@@ -112,11 +117,11 @@ const Login = () => {
           <div>Or signin with</div>
           <div className="grow border border-gray-500 h-0"></div>
         </div>
-        {/* <GoogleOAuthProvider clientId="524267745289-99tcul9q2eos9crnc5krameenh2p59gb.apps.googleusercontent.com">
-          <AuthIcons />
-        </GoogleOAuthProvider> */}
-
-        <GoogleLogin  onSuccess={response=>googleSignInSuccess(response)} onError={googleSignInErr}/>
+       
+        <div className="alternate-sign-in  flex justify-center gap-x-8 my-6">
+          <GoogleButton  success={googleSignInSuccess} err={googleSigninErr} />
+          <MSoftButton />
+        </div>
 
         <div className="flex justify-center text-gray-400 space-x-1 my-10">
           <span>{"Don't have an Account?"}</span>{" "}

@@ -35,7 +35,7 @@ export const loginUser = async ( data, setSuccess, setError, setSigning) => {
 export const loginUserWithGoogle= async (data, setSuccess, setError, setSigning)=>{
     setSigning('true')
     try{
-        const response=await axios.post('account/rest-auth/google-sign-in')
+        const response=await axios.post('account/rest-auth/google-sign-in', data)
         setSuccess(response)
     }
     catch(err){
