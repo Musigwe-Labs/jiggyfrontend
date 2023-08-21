@@ -74,7 +74,7 @@ const Comment =({post , setSelectedPost })=>{
                     })
                 }
             </div>
-            <div className='absolute w-[100%] border-t border-gray-500 left-0 bottom-3 px-2'>
+            <div className='absolute w-[100%] border-t border-gray-500 left-0 bottom-0 py-2 px-2'>
                 <textarea
                 style={{ height: inputHeight }}
                 className='resize-none bg-transparent p-2 border-b border-gray-600 w-[85%] rounded-md text-white focus:outline-none focus:border-gray-600 focus:border'
