@@ -5,32 +5,43 @@ import CommentInfo from './commentInfo'
 import Gist from './gist'
 import GistLinks from './gistLinks'
 import profile_pic from '../../../assets/profile_pics/pic1.png'
-import { userInfo } from '../../../apis/authenticationApis'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 import axios from 'axios'
 import { IoIosSend } from 'react-icons/io'
 
 const Comment =({post , setSelectedPost })=>{
     const [content , setContent] = useState()
+    const [inputValue, setInputValue] = useState('')
+    const [inputHeight, setInputHeight] = useState('35px')
+    const maxInputHeight = 220 // Adjust this value as needed
 
+  
     const { key } = useContext(AuthContext)
-    const [userinfo, setUserinfo] = useState(null);
-
-    useEffect(() => {
-        userInfo(key, setUserinfo);
-    }, [key])
+    
     const headers = {
         "Authorization" : `Token ${key}`
     }
-
-    const handleTextareaChange = (e)=>{
-        setContent(e.target.value)
+    const handleInputChange = (event) => {
+        const { value, scrollHeight } = event.target
+        setInputValue(value)
+        
+        // Calculate the new height within the maximum limit
+        const newHeight = Math.min(scrollHeight, maxInputHeight)
+        
+        // setInputHeight('auto') // Reset the height to auto
+        setInputHeight(`${newHeight}px`) // Update the height based on newHeight
     }
+
+    useEffect(()=>{
+        if(inputValue === ''){
+            setInputHeight('35px')
+        }    
+    },[inputValue])
 
     const handleSendComment = async()=>{
         try {
-            const data = {post:post.id ,user:userinfo.pk , content }
-            await axios.post('https://cruise.pythonanywhere.com/annon/comments/' , data , {headers})
+            const data = {post:post.id , content }
+            await axios.post('https://cruise.pythonanywhere.com/annon/posts/comment/' , data , {headers})
             setContent('')
         } catch (error) {
             console.log(error)
@@ -40,7 +51,7 @@ const Comment =({post , setSelectedPost })=>{
     return(
         <div className='z-50 h-screen pt-4 px-3'>
             <div className='flex align-center'>
-                <FaArrowLeftLong size={25} onClick={()=>setSelectedPost(null)}/>
+                <FaArrowLeftLong size={25} onClick={()=>setSelectedPost(null)} className='cursor-pointer'/>
                 <h1 className='text-3xl ml-6 text-center font-bold from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br bg-clip-text text-transparent'>Comment</h1>
             </div>
             <div className='z-10 md:mx-10 p-3'>
@@ -61,17 +72,18 @@ const Comment =({post , setSelectedPost })=>{
                             <p className='text-base'><span className='text-[14.5px] text-blue-500 mr-2 font-light'>@{post.user.generated_username}</span>{comment.content}</p>
                         </div>
                         )
-                      })
+                    })
                 }
             </div>
-            <div className='absolute w-[100%] border-t border-gray-500 left-0 bottom-3 px-2 bg-black'>
-                <input 
-                type='text'
+            <div className='absolute w-[100%] border-t border-gray-500 left-0 bottom-3 px-2'>
+                <textarea
+                style={{ height: inputHeight }}
+                className='resize-none bg-transparent mb-[-7px] p-2 border-b border-gray-600 w-[85%] rounded-md text-white focus:outline-none focus:border-gray-600 focus:border'
                 placeholder='Comment your thought'
-                className='h-[50%] w-[85%] border-b border-gray-600 bg-transparent text-white p-2'
-                value={content}
-                onChange={handleTextareaChange}/>
-                <button className='bg-[#5357B6] ml-2 py-1 px-2 fixed bottom-[10px] rounded-xl font-bold text-sm' onClick={handleSendComment}><IoIosSend size={21}/></button>
+                value={inputValue}
+                onChange={handleInputChange}
+                />
+                <button className=' py-1 px-2 fixed bottom-[10px] rounded-xl font-bold text-sm' onClick={handleSendComment}><IoIosSend size={21}/></button>
             </div>
         </div>
     )

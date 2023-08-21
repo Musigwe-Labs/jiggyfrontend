@@ -6,7 +6,7 @@ import { AuthContext } from '../../../contexts/AuthContext'
 
 const CreatePostPage = ({setCreatePost })=>{
     const [content , setContent] = useState()
-    const [post_type , setSelectedOption] = useState('Confession')
+    const [post_type , setSelectedOption] = useState('Others')
 
     const { key } = useContext(AuthContext)
     const headers = {
@@ -52,6 +52,9 @@ const CreatePostPage = ({setCreatePost })=>{
                 <button className='Crush rounded-full px-2 m-2' onClick={()=>handleBtnClick('Crush')}>Crush</button>
                 <button className='DM rounded-full px-2 m-2' onClick={()=>handleBtnClick('DM')}>DM</button>
                 <button className='Advice rounded-full px-2 m-2' onClick={()=>handleBtnClick('Advice')}>Advice</button>
+                <button className='Cruise rounded-full px-2 m-2' onClick={()=>handleBtnClick('Cruise')}>Cruise</button>
+                <button className='Talk rounded-full px-2 m-2' onClick={()=>handleBtnClick('Talk')}>Talk</button>
+                <button className='Others rounded-full px-2 m-2' onClick={()=>handleBtnClick('Others')}>Others</button>
             </div>
         </div>
     )

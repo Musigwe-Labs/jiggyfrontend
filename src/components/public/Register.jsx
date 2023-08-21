@@ -10,12 +10,9 @@ import axios from 'axios'
 const Register = () => {
     const navigate = useNavigate()
 
-    const [username, setUsername] = useState()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const [confirm_password, setConfirm_password] = useState()
-    const [first_name, setFirst_name] = useState()
-    const [last_name, setLast_name] = useState()
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null)
     const [register, setRegister] = useState(false)
@@ -23,8 +20,8 @@ const Register = () => {
     const [selectedOption , setSelectedOption] = useState(null)
 
     const handleRegister = (e) => {
-        e.preventDefault();
-        const data = {username, first_name, last_name, email, password, school:selectedOption.school_acronym}
+        e.preventDefault()
+        const data = {email, password, school:selectedOption.value.school_acronym}
         if (password !== confirm_password ) {alert('Password mismatch')}
         else {
             registerUser(data, setSuccess, setError, setRegister);
@@ -67,43 +64,11 @@ const Register = () => {
                 <div className='my-12'>
                     <form onSubmit={handleRegister} className='space-y-4'>
                         <div>
-                            <div className='relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max'>Username</div>
-                            <input 
-                                type='text'
-                                className='w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700'
-                                placeholder='first name'
-                                onChange={(e) => setUsername(e.target.value)}
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <div className='relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max'>First Name</div>
-                            <input 
-                                type='text'
-                                className='w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700'
-                                placeholder='first name'
-                                onChange={(e) => setFirst_name(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <div className='relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max'>Last Name</div>
-                            <input 
-                                type='text'
-                                className='w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700'
-                                placeholder='last name'
-                                onChange={(e) => setLast_name(e.target.value)}
-                                required
-                            />
-                        </div>
-
-                        <div>
                             <div className='relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max'>E-mail</div>
                             <input 
                                 type='email'
                                 className='w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700'
-                                placeholder='Email/Phone'
+                                placeholder='Enter an Email'
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                             />

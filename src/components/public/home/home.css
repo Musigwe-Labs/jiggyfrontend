@@ -23,38 +23,60 @@
   color: #f33f5e;
   font-size: 28px;
 }
-.Question{
-  border: 1px solid #f91880;
-  color: #f91880;
-}
 .Confession{
-  border: 1px solid #1d9bf0;
-  color: #1d9bf0;
+  border: 1px solid #A31A3E;
+  color: #A31A3E;
+}
+.Question{
+border: 1px solid #A85387;
+  color: #A85387;
 }
 .Crush{
-  border: 1px solid #f01d1d;
-  color: #f01d1d;
+  border: 1px solid #F78EA7;
+  color: #F78EA7;
 }
 .DM{
-  border: 1px solid #ffd635;
-  color: #ffd635;
+  border: 1px solid #299EF3;
+  color: #299EF3;
 }
 .Advice{
-  border: 1px solid #349e48;
-  color: #349e48;
+  border: 1px solid #7CB45B;
+  color: #7CB45B;
 }
+.Cruise{
+  border: 1px solid #FF6B6B;
+  color: #FF6B6B;
+}
+.Talk{
+  border: 1px solid #FFC200;
+  color: #FFC200;
+}
+.Others{
+  border: 1px solid #4D3580;
+  color: #4D3580;
+}
+
 .bQuestion{
-  background-color: rgba(249, 24, 129, 0.2);
+  background-color: rgba(168, 83, 135, 0.2);
 }
 .bConfession{
-  background-color: rgba(29, 156, 240, 0.2);
+  background-color: rgba(163, 26, 62, 0.2);
 }
 .bCrush{
-  background-color: rgba(240, 29, 29, 0.2);
+  background-color: rgba(247, 142, 167, 0.2);
 }
 .bDM{
-  background-color: rgba(255, 215, 53, 0.2);
+  background-color: rgba(41, 158, 243, 0.2);
 }
 .bAdvice{
-  background-color: rgba(52, 158, 71, 0.2);
+  background-color: rgba(124, 180, 91, 0.2);
+}
+.bCruise{
+  background-color: rgba(255, 107, 107, 0.2);
+}
+.bTalk{
+  background-color: rgba(255, 194, 0, 0.2);
+}
+.bOthers{
+  background-color: rgba(77, 53, 128, 0.2);
 }
