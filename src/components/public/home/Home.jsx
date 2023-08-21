@@ -1,37 +1,24 @@
-import { useEffect, useState } from 'react'
+/* eslint-disable react/prop-types */
+import { useState } from 'react'
 import HomeHeader from './homeHeader'
 import HomeTabs from './homeTabs'
-import axios from 'axios'
 import CreatePostBtn from './createPostBtn'
 import CreatePostPage from './createPostPage'
 import { Profile } from '../../private/dashboard/Profile'
 import HomeFooter from './homeFooter'
 import Comment from './comments'
 import Posts from './posts'
+import { usePosts } from '../../../contexts/postContext'
 
 const Home = () => {
   const [createPost,setCreatePost] = useState(false)
-  // const [comment,setComment] = useState(false)
   const [profilePage,setProfilePage] = useState(false)
-  const [posts, setPost] = useState([])
   const [selectedPost, setSelectedPost] = useState(null)
+  const { posts } = usePosts()
 
   const handlePostClick = (post) => {
     setSelectedPost(post);
   }
-  
-  const getPost = async () => {
-    try {
-      const response = await axios.get( 'https://cruise.pythonanywhere.com/annon/posts/' )
-      setPost(response.data)
-    } catch (error){
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    getPost();
-  }, [createPost])
 
   if(createPost){
     return(
@@ -39,12 +26,6 @@ const Home = () => {
     )
   }
 
-  // if(comment){
-  //   return(
-  //     <Comment setComment={setComment}/>
-  //   )
-  // }
-  
   if(selectedPost !== null){
     return(
     <div className='overflow-hidden'>
@@ -67,4 +48,4 @@ const Home = () => {
   )
 }
 
-export default Home;
+export default Home
