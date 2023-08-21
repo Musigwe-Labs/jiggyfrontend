@@ -10,7 +10,6 @@ import axios from 'axios'
 import { IoIosSend } from 'react-icons/io'
 
 const Comment =({post , setSelectedPost })=>{
-    const [content , setContent] = useState()
     const [inputValue, setInputValue] = useState('')
     const [inputHeight, setInputHeight] = useState('35px')
     const maxInputHeight = 220 // Adjust this value as needed
@@ -28,8 +27,7 @@ const Comment =({post , setSelectedPost })=>{
         // Calculate the new height within the maximum limit
         const newHeight = Math.min(scrollHeight, maxInputHeight)
         
-        // setInputHeight('auto') // Reset the height to auto
-        setInputHeight(`${newHeight}px`) // Update the height based on newHeight
+        setInputHeight(`${newHeight}px`) //Update the height based on newHeight
     }
 
     useEffect(()=>{
@@ -40,9 +38,10 @@ const Comment =({post , setSelectedPost })=>{
 
     const handleSendComment = async()=>{
         try {
-            const data = {post:post.id , content }
+            const data = {post:post.id , content : inputValue }
+            console.log("headers is ",headers)
             await axios.post('https://cruise.pythonanywhere.com/annon/posts/comment/' , data , {headers})
-            setContent('')
+            setInputValue('')
         } catch (error) {
             console.log(error)
         }
@@ -59,15 +58,15 @@ const Comment =({post , setSelectedPost })=>{
               <Gist post={post} />
               <GistLinks post={post}/>
             </div>
-            <p className='px-3 my-3 text-gray-400'>{post.comments.length} comments</p>
-            <div className='mx-2 max-h-[100%] overflow-auto border-l border-gray-500'>
+                <p className='px-3 my-3 text-gray-400'>{post.comments.length} comments</p>
+            <div className='mx-2 max-h-screen overflow-auto border-l border-gray-500'>
                 {
                     post.comments.map((comment) =>{
                         return (
                         <div key={comment.created_at} className='text-base bg-[#1717171a] mt-2 px-3 rounded-xl'>
                             <div className='flex items-center mb-1'>
                                 <img className='w-6 rounded-3xl mr-2' src={profile_pic} alt='profile-img' />
-                                <h4 className='text-white mr-1 text-base font-bold'>{comment.name}</h4>
+                                <h4 className='text-white mr-1 text-base font-bold'>{comment.user.generated_username}</h4>
                             </div>
                             <p className='text-base'><span className='text-[14.5px] text-blue-500 mr-2 font-light'>@{post.user.generated_username}</span>{comment.content}</p>
                         </div>
@@ -78,12 +77,12 @@ const Comment =({post , setSelectedPost })=>{
             <div className='absolute w-[100%] border-t border-gray-500 left-0 bottom-3 px-2'>
                 <textarea
                 style={{ height: inputHeight }}
-                className='resize-none bg-transparent mb-[-7px] p-2 border-b border-gray-600 w-[85%] rounded-md text-white focus:outline-none focus:border-gray-600 focus:border'
+                className='resize-none bg-transparent p-2 border-b border-gray-600 w-[85%] rounded-md text-white focus:outline-none focus:border-gray-600 focus:border'
                 placeholder='Comment your thought'
                 value={inputValue}
                 onChange={handleInputChange}
                 />
-                <button className=' py-1 px-2 fixed bottom-[10px] rounded-xl font-bold text-sm' onClick={handleSendComment}><IoIosSend size={21}/></button>
+                <button className='ml-3 rounded-xl font-bold text-sm' onClick={handleSendComment}><IoIosSend size={21}/></button>
             </div>
         </div>
     )

@@ -18,7 +18,7 @@ const Register = () => {
     const [register, setRegister] = useState(false)
     const [options , setOptions] = useState([])
     const [selectedOption , setSelectedOption] = useState(null)
-
+    
     const handleRegister = (e) => {
         e.preventDefault()
         const data = {email, password, school:selectedOption.value.school_acronym}
