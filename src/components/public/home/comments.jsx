@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext, useState , useEffect } from 'react'
+import { useContext, useState , useEffect,useRef } from 'react'
 import { AuthContext } from '../../../contexts/AuthContext'
 import CommentInfo from './commentInfo'
 import Gist from './gist'
@@ -8,6 +8,9 @@ import profile_pic from '../../../assets/profile_pics/pic1.png'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 import axios from 'axios'
 import { IoIosSend } from 'react-icons/io'
+import ResizeObserver from 'resize-observer-polyfill'
+import _ from 'lodash';
+
 
 const Comment =({post , setSelectedPost })=>{
     const [inputValue, setInputValue] = useState('')
@@ -30,6 +33,21 @@ const Comment =({post , setSelectedPost })=>{
         setInputHeight(`${newHeight}px`) //Update the height based on newHeight
     }
 
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        const observer = new ResizeObserver((entries) => {
+            const newContainerHeight = entries[0].contentRect.height + 'px'
+            containerRef.current.style.height = newContainerHeight
+        })
+
+        observer.observe(containerRef.current)
+
+        return () => {
+            observer.disconnect()
+        }
+    }, [])
+
     useEffect(()=>{
         if(inputValue === ''){
             setInputHeight('35px')
@@ -39,13 +57,13 @@ const Comment =({post , setSelectedPost })=>{
     const handleSendComment = async()=>{
         try {
             const data = {post:post.id , content : inputValue }
-            console.log("headers is ",headers)
             await axios.post('https://cruise.pythonanywhere.com/annon/posts/comment/' , data , {headers})
             setInputValue('')
         } catch (error) {
             console.log(error)
         }
     }
+    const throttledApiRequest = _.throttle(handleSendComment, 2000);
 
     return(
         <div className='z-50 h-screen pt-4 px-3'>
@@ -82,7 +100,7 @@ const Comment =({post , setSelectedPost })=>{
                 value={inputValue}
                 onChange={handleInputChange}
                 />
-                <button className='ml-3 rounded-xl font-bold text-sm' onClick={handleSendComment}><IoIosSend size={21}/></button>
+                <button className='ml-3 rounded-xl font-bold text-sm' onClick={throttledApiRequest}><IoIosSend size={21}/></button>
             </div>
         </div>
     )
