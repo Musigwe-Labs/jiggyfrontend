@@ -1,29 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../../contexts/AuthContext'
-import { userInfo } from '../../../apis/authenticationApis';
-import { HiUser } from 'react-icons/hi';
+import { userInfo } from '../../../apis/authenticationApis'
+import profile_pic from '../../../assets/profile_pics/pic1.png'
 
 const PrivacyHeader = () => {
 
     const { key } = useContext(AuthContext);
-
     const [userinfo, setUserinfo] = useState(null);
 
     useEffect(() => {
         userInfo(key, setUserinfo);
-    }, [key])
+    }, [])
 
     return (
-        <section className='flex flex-col items-center'>
-            <div className='bg-[rgb(20,20,20)] w-fit text-[3rem] rounded-full px-2 py-2'>
-            <HiUser />
+        <section className='flex flex-col items-center mt-4'>
+            <div className='h-[150px] w-[150px] rounded-full border-none'>
+                <img src={profile_pic} alt="" className='h-[100%] w=[100%]'/>
             </div>
-            <h3 className='capitalize'>{userinfo?.username}</h3>
-            <p>
-            <a href='#' className='text-[#0E09F0]'>
-                {`https://jiggy.com/${userinfo?.username}`}
-            </a>
-            </p>
+            <h3 className='capitalize text-white text-2xl mt-2'>{ userinfo?.username }</h3>
         </section>
     )
 }

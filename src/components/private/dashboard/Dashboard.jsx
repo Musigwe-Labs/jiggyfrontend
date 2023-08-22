@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import AuthSidebar from '../common/AuthSidebar'
 import { AiOutlineUser } from 'react-icons/ai'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { userInfo } from '../../../apis/authenticationApis'
+import HomeFooter from '../../public/home/homeFooter'
 
 const Dashboard = () => {
 
@@ -70,6 +71,7 @@ YOU MUST BE 18 OR OLDER TO USE JIGGY.
                     </div>
                 </div>
             </div>
+            <HomeFooter />
         </div>
     )
 }

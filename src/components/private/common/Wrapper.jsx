@@ -1,12 +1,9 @@
-import HomeFooter from '../../public/home/homeFooter';
-
 export const Wrapper = (Component) => {
   return (
     <>
-      <main className="mb-12">
+      <main className='min-h-screen'>
         <Component />
       </main>
-      <HomeFooter />
     </>
   );
 };

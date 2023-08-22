@@ -1,30 +1,24 @@
-import { useEffect, useState } from "react";
-import Gist from './gist'
-import GistLinks from './gistLinks'
+/* eslint-disable react/prop-types */
+import { useState } from 'react'
 import HomeHeader from './homeHeader'
-import HomeInfo from './homeInfo'
 import HomeTabs from './homeTabs'
-import axios from 'axios'
-import CreatePostBtn from "./createPostBtn";
-import CreatePostPage from "./createPostPage";
+import CreatePostBtn from './createPostBtn'
+import CreatePostPage from './createPostPage'
+import { Profile } from '../../private/dashboard/Profile'
+import HomeFooter from './homeFooter'
+import Comment from './comments'
+import Posts from './posts'
+import { usePosts } from '../../../contexts/postContext'
 
 const Home = () => {
   const [createPost,setCreatePost] = useState(false)
-  const [posts, setPost] = useState([])
+  const [profilePage,setProfilePage] = useState(false)
+  const [selectedPost, setSelectedPost] = useState(null)
+  const { posts } = usePosts()
 
-  
-  const getPost = async () => {
-    try {
-      const response = await axios.get( 'https://cruise.pythonanywhere.com/annon/posts/' )
-      setPost(response.data)
-    } catch (error){
-      console.log(error)
-    }
+  const handlePostClick = (post) => {
+    setSelectedPost(post);
   }
-
-  useEffect(() => {
-    getPost();
-  }, [])
 
   if(createPost){
     return(
@@ -32,31 +26,26 @@ const Home = () => {
     )
   }
 
+  if(selectedPost !== null){
+    return(
+    <div className='overflow-hidden'>
+      <Comment post={selectedPost} setSelectedPost={setSelectedPost}/>
+    </div>
+    )
+  }
+
   return (
     <div>
+    {profilePage ? <Profile setProfilePage={setProfilePage}/> :''}
       <div className='sticky top-0 bg-black'> 
-        <HomeHeader />
+        <HomeHeader setProfilePage={setProfilePage}/>
         <HomeTabs />
       </div>
-      <div className='pb-[29px]'>
-        {posts.map((post) => {
-          return (
-            <div key={post.id} className='text-base mt-2'>
-              <div className='mx-4 md:mx-16 p-3 border-b border-y-[#4B5563]'>
-                <HomeInfo school={post.user.school} name={post.user.generated_username}/>
-                <span className={`text-base text-[7.5px] border px-2 rounded-full ml-8 ${post.post_type}`} >
-                  {post.post_type}
-                </span>
-                <Gist post={post} />
-                <GistLinks post={post} />
-              </div>
-            </div>
-          )
-        })}
-      </div>
+      <Posts posts={posts} onPostClick={handlePostClick}/>
       <CreatePostBtn setCreatePost={setCreatePost}/>
+      <HomeFooter />
     </div>
   )
 }
 
-export default Home;
+export default Home

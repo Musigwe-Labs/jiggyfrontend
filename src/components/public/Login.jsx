@@ -1,56 +1,45 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import AuthIcons from "../common/AuthIcons";
-import TermsOfService from "../common/TermsOfService";
-import Banner from "../common/Banner";
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+// import AuthIcons from '../common/AuthIcons'
+import TermsOfService from '../common/TermsOfService'
+import Banner from '../common/Banner'
 //import { useLoginUserMutation } from '../../services/authApi'
-import { loginUser } from "../../apis/authenticationApis";
+import { loginUser } from '../../apis/authenticationApis'
+// import { GoogleOAuthProvider } from '@react-oauth/google'
 
 const Login = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   /**const [email, setEmail] = useState();*/
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [signing, setSigning] = useState(false);
-  const [success, setSuccess] = useState(null);
-  const [error, setError] = useState(null);
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+  const [signing, setSigning] = useState(false)
+  const [success, setSuccess] = useState(null)
+  const [error, setError] = useState(null)
 
   //const [loginUser, {data, isError, error}] = useLoginUserMutation();
-
   useEffect(() => {
     if (success !== null) {
-      localStorage.setItem(
-        "login",
-        JSON.stringify({
-          key: success.key,
-        })
-      );
+      localStorage.setItem( 'login',JSON.stringify({ key: success.key}))
 
-      setError("");
-      setUsername("");
-      setPassword("");
-      navigate("/home");
-      window.location.reload();
+      setError('')
+      setEmail('')
+      setPassword('')
+      navigate('/home')
+      window.location.reload()
     }
-
     if (error !== null) {
-      alert(error.non_field_errors[0]);
-      setSigning(false);
-      setError(null);
+      alert(error.non_field_errors[0])
+      setSigning(false)
+      setError(null)
     }
-  }, [success, error]);
+  }, [success, error])
 
   const handleLogin = (e) => {
-    e.preventDefault();
-
-    const data = {
-      username,
-      password,
-    };
-
+    e.preventDefault()
+    const data = { email , password }
     loginUser(data, setSuccess, setError, setSigning);
-  };
+  }
 
   useEffect(() => {
     if (localStorage.getItem("login") !== null) {
@@ -72,13 +61,13 @@ const Login = () => {
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <div className="relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max">
-                Username
+                Email
               </div>
               <input
                 type="text"
                 className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your Email"
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -113,9 +102,15 @@ const Login = () => {
           <div>Or signin with</div>
           <div className="grow border border-gray-500 h-0"></div>
         </div>
+<<<<<<< HEAD
         {/* <GoogleOAuthProvider  clientId="524267745289-99tcul9q2eos9crnc5krameenh2p59gb.apps.googleusercontent.com"> */}
           <AuthIcons />
         {/* </GoogleOAuthProvider> */}
+=======
+        {/* <GoogleOAuthProvider clientId="524267745289-99tcul9q2eos9crnc5krameenh2p59gb.apps.googleusercontent.com">
+          <AuthIcons />
+        </GoogleOAuthProvider> */}
+>>>>>>> ea02dca3415694b769e78ef833dd6b37d978cfc2
 
         <div className="flex justify-center text-gray-400 space-x-1 my-10">
           <span>{"Don't have an Account?"}</span>{" "}

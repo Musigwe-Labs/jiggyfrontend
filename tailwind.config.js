@@ -7,6 +7,11 @@ export default {
   theme: {
     extend: {},
   },
+  variants:{
+    extend:{
+      resize:['focus'],
+    },
+  },
   plugins: [],
 }
 
