@@ -6,9 +6,9 @@ import Banner from '../common/Banner'
 //import { useLoginUserMutation } from '../../services/authApi'
 import GoogleButton from './GoogleButton'
 import MSoftButton from './MSoftButton'
-import { loginUser, loginUserWithGoogle} from '../../apis/authenticationApis'
-import { GoogleOAuthProvider, useGoogleLogin} from '@react-oauth/google'
-import jwt_decode from 'jwt-decode'
+import {useLocation, redirect} from 'react-router-dom'
+
+
 
 const Login = () => {
   const navigate = useNavigate()
@@ -20,9 +20,23 @@ const Login = () => {
   const [success, setSuccess] = useState(null)
   const [error, setError] = useState(null)
 
+  const getAndSetGoogleToken= search=>{
+  if(!search &&success) return; // if empty string do nothing
+  const query= new URLSearchParams(search)
+  const token=query.get('token')? query.get('token') : null
+
+  if(token){
+    setSuccess({key:token})
+      // navigate('/home')
+    }
+  }
+
+const {search}= useLocation()
+getAndSetGoogleToken(search)
   //const [loginUser, {data, isError, error}] = useLoginUserMutation();
   useEffect(() => {
     if (success !== null) {
+      console.log('success')
       localStorage.setItem( 'login',JSON.stringify({ key: success.key}))
 
       setError('')
@@ -43,17 +57,6 @@ const Login = () => {
     const data = { username , password }
     loginUser(data, setSuccess, setError, setSigning);
   }
-
-//handle google sign
-  function googleSignInSuccess(token){
-      console.log(token)
-      // console.log(jwt_decode(token.access_token))
-      // loginUserWithGoogle(token, setSuccess, setError, setSigning);
-  }
-  function googleSigninErr(){
-      // setError(true)
-      console.log('login could not be completed')
-  }
  
   useEffect(() => {
     if (localStorage.getItem("login") !== null) {
@@ -62,7 +65,6 @@ const Login = () => {
   }, [navigate]);
 
   return (
-    <GoogleOAuthProvider clientId="112378194921-q972f6g6oe61gpkq8gnugbtj9ua0s77s.apps.googleusercontent.com"> 
     <div className="grid grid-cols-1 md:grid-cols-2 px-6 lg:px-24 mt-4">
       <Banner />
 
@@ -119,7 +121,7 @@ const Login = () => {
         </div>
        
         <div className="alternate-sign-in  flex justify-center gap-x-8 my-6">
-          <GoogleButton  success={googleSignInSuccess} err={googleSigninErr} />
+          <GoogleButton />
           <MSoftButton />
         </div>
 
@@ -133,7 +135,6 @@ const Login = () => {
         <TermsOfService />
       </div>
     </div>
-    </GoogleOAuthProvider>
   );
 };
 
