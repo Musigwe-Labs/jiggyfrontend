@@ -8,6 +8,11 @@ import GoogleButton from './GoogleButton'
 import MSoftButton from './MSoftButton'
 import {useLocation, redirect} from 'react-router-dom'
 
+  const getToken= (search)=>{
+    const query= new URLSearchParams(search) // parse params to object format
+    const token=query.get('token')? query.get('token') : null
+    return token
+  }
 
 
 const Login = () => {
@@ -20,23 +25,18 @@ const Login = () => {
   const [success, setSuccess] = useState(null)
   const [error, setError] = useState(null)
 
-  const getAndSetGoogleToken= search=>{
-  if(!search &&success) return; // if empty string do nothing
-  const query= new URLSearchParams(search)
-  const token=query.get('token')? query.get('token') : null
-
-  if(token){
-    setSuccess({key:token})
-      // navigate('/home')
-    }
-  }
-
-const {search}= useLocation()
-getAndSetGoogleToken(search)
+  const {search}= useLocation()
   //const [loginUser, {data, isError, error}] = useLoginUserMutation();
   useEffect(() => {
+    if(success==null){
+      //handle google sign in
+ // obtain search query from the url
+      if(search){ //if it's not empty
+        const token=getToken(search)
+        token? setSuccess({key:token}): alert('error occurred')
+      }
+    }
     if (success !== null) {
-      console.log('success')
       localStorage.setItem( 'login',JSON.stringify({ key: success.key}))
 
       setError('')
