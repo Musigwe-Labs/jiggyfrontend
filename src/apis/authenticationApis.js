@@ -26,6 +26,30 @@ export const registerUser = async ( data, setSuccess, setError, setRegister) => 
 }
 
 
+export const googleLogin = async ( setSuccess, setError, setSigning) => {
+
+    setSigning(true);
+
+    try{
+        const response = await axios.get('account/auth/google/' );
+        let gmail = window.open(response.data.auth_url, '_self', 'login')
+
+        
+        console.log(response.data);
+        setSuccess(gmail);
+
+    }
+    catch (err) {
+        if (!err?.response) {
+            setError('No Response from Server');
+        } else {
+            console.log(err.response.data);
+            setError(err.response.data);
+        }
+    }
+
+    setSigning(false);
+}
 export const loginUser = async ( data, setSuccess, setError, setSigning) => {
 
     setSigning(true);

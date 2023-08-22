@@ -5,7 +5,6 @@ import TermsOfService from "../common/TermsOfService";
 import Banner from "../common/Banner";
 //import { useLoginUserMutation } from '../../services/authApi'
 import { loginUser } from "../../apis/authenticationApis";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -114,9 +113,9 @@ const Login = () => {
           <div>Or signin with</div>
           <div className="grow border border-gray-500 h-0"></div>
         </div>
-        <GoogleOAuthProvider clientId="524267745289-99tcul9q2eos9crnc5krameenh2p59gb.apps.googleusercontent.com">
+        {/* <GoogleOAuthProvider  clientId="524267745289-99tcul9q2eos9crnc5krameenh2p59gb.apps.googleusercontent.com"> */}
           <AuthIcons />
-        </GoogleOAuthProvider>
+        {/* </GoogleOAuthProvider> */}
 
         <div className="flex justify-center text-gray-400 space-x-1 my-10">
           <span>{"Don't have an Account?"}</span>{" "}
