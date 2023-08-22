@@ -13,17 +13,17 @@ const HomeFooter = ()=>{
         {
             id: 0,
             url: "/home",
-            icon: <AiFillHome size={35} />,
+            icon: <AiFillHome size={30} />,
         },
         {
             id: 1,
             url: "/messages",
-            icon: <RxEnvelopeClosed size={35} />,
+            icon: <RxEnvelopeClosed size={30} />,
         },
         {
             id: 2,
             url: "/notifications",
-            icon: <HiOutlineBell size={35} />,
+            icon: <HiOutlineBell size={30} />,
         },
     ]
 

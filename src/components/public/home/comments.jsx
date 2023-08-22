@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext, useState , useEffect,useRef } from 'react'
+import { useContext, useState , useEffect } from 'react'
 import { AuthContext } from '../../../contexts/AuthContext'
 import CommentInfo from './commentInfo'
 import Gist from './gist'
@@ -8,7 +8,6 @@ import profile_pic from '../../../assets/profile_pics/pic1.png'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 import axios from 'axios'
 import { IoIosSend } from 'react-icons/io'
-import ResizeObserver from 'resize-observer-polyfill'
 import _ from 'lodash';
 
 
@@ -33,21 +32,6 @@ const Comment =({post , setSelectedPost })=>{
         setInputHeight(`${newHeight}px`) //Update the height based on newHeight
     }
 
-    const containerRef = useRef(null);
-
-    useEffect(() => {
-        const observer = new ResizeObserver((entries) => {
-            const newContainerHeight = entries[0].contentRect.height + 'px'
-            containerRef.current.style.height = newContainerHeight
-        })
-
-        observer.observe(containerRef.current)
-
-        return () => {
-            observer.disconnect()
-        }
-    }, [])
-
     useEffect(()=>{
         if(inputValue === ''){
             setInputHeight('35px')
@@ -66,7 +50,7 @@ const Comment =({post , setSelectedPost })=>{
     const throttledApiRequest = _.throttle(handleSendComment, 2000);
 
     return(
-        <div className='z-50 h-screen pt-4 px-3'>
+        <div className='z-50 max-h-screen pt-4 px-3'>
             <div className='flex align-center'>
                 <FaArrowLeftLong size={25} onClick={()=>setSelectedPost(null)} className='cursor-pointer'/>
                 <h1 className='text-3xl ml-6 text-center font-bold from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br bg-clip-text text-transparent'>Comment</h1>

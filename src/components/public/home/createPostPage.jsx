@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 import { LiaTimesSolid , LiaCheckSolid } from 'react-icons/lia'
 import axios from 'axios'
-import { useContext, useState, useRef, useEffect} from 'react'
+import { useContext, useState } from 'react'
 import { AuthContext } from '../../../contexts/AuthContext'
-import ResizeObserver from 'resize-observer-polyfill'
 import _ from 'lodash'
 
 const CreatePostPage = ({setCreatePost })=>{
@@ -22,21 +21,6 @@ const CreatePostPage = ({setCreatePost })=>{
     const handleBtnClick = (option)=>{
         setSelectedOption(option)
     }
-
-    const containerRef = useRef(null);
-
-    useEffect(() => {
-        const observer = new ResizeObserver((entries) => {
-            const newContainerHeight = entries[0].contentRect.height + 'px'
-            containerRef.current.style.height = newContainerHeight
-        })
-
-        observer.observe(containerRef.current)
-
-        return () => {
-            observer.disconnect()
-        }
-    }, [])
 
     const handlePost= async()=>{
         try {
