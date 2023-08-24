@@ -3,6 +3,7 @@ import { LiaTimesSolid , LiaCheckSolid } from 'react-icons/lia'
 import axios from 'axios'
 import { useContext, useState } from 'react'
 import { AuthContext } from '../../../contexts/AuthContext'
+import _ from 'lodash'
 
 const CreatePostPage = ({setCreatePost })=>{
     const [content , setContent] = useState()
@@ -20,6 +21,7 @@ const CreatePostPage = ({setCreatePost })=>{
     const handleBtnClick = (option)=>{
         setSelectedOption(option)
     }
+
     const handlePost= async()=>{
         try {
             const data = { content , post_type }
@@ -30,13 +32,14 @@ const CreatePostPage = ({setCreatePost })=>{
             console.log(error)
         }
     }
+    const throttledApiRequest = _.throttle(handlePost, 3500);
 
     return(
         <div className='fixed top-0 z-50 h-screen w-full bg-[#321616]'>
             <div className='flex justify-between px-5 pt-12 pb-2 border-b align-center'>
                 <LiaTimesSolid size='25' color='white' cursor='pointer' onClick={()=>{setCreatePost(false)}}/>
                 <p className='font-bold'>Create an anonymous post</p>
-                <LiaCheckSolid size='25'color='white' cursor='pointer' onClick={handlePost}/>
+                <LiaCheckSolid size='25'color='white' cursor='pointer' onClick={throttledApiRequest}/>
             </div>
             <button className={`${post_type} rounded-full px-2 mx-3 mt-3 mb-1`}>{post_type}</button>
 

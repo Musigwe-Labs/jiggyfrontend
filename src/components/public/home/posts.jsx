@@ -7,7 +7,6 @@ const Posts=({posts , onPostClick})=>{
     return(
         <div className='pb-[29px]'>
         {posts.map((post) => {
-          
           return (
             <div key={post.id} className='text-base mt-2'>
               <div className='mx-4 md:mx-16 p-3 border-b border-y-[#4B5563]'>

@@ -8,6 +8,8 @@ import profile_pic from '../../../assets/profile_pics/pic1.png'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 import axios from 'axios'
 import { IoIosSend } from 'react-icons/io'
+import _ from 'lodash';
+
 
 const Comment =({post , setSelectedPost })=>{
     const [inputValue, setInputValue] = useState('')
@@ -39,16 +41,16 @@ const Comment =({post , setSelectedPost })=>{
     const handleSendComment = async()=>{
         try {
             const data = {post:post.id , content : inputValue }
-            console.log("headers is ",headers)
             await axios.post('https://cruise.pythonanywhere.com/annon/posts/comment/' , data , {headers})
             setInputValue('')
         } catch (error) {
             console.log(error)
         }
     }
+    const throttledApiRequest = _.throttle(handleSendComment, 2000);
 
     return(
-        <div className='z-50 h-screen pt-4 px-3'>
+        <div className='z-50 max-h-screen pt-4 px-3'>
             <div className='flex align-center'>
                 <FaArrowLeftLong size={25} onClick={()=>setSelectedPost(null)} className='cursor-pointer'/>
                 <h1 className='text-3xl ml-6 text-center font-bold from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br bg-clip-text text-transparent'>Comment</h1>
@@ -82,7 +84,7 @@ const Comment =({post , setSelectedPost })=>{
                 value={inputValue}
                 onChange={handleInputChange}
                 />
-                <button className='ml-3 rounded-xl font-bold text-sm' onClick={handleSendComment}><IoIosSend size={21}/></button>
+                <button className='ml-3 rounded-xl font-bold text-sm' onClick={throttledApiRequest}><IoIosSend size={21}/></button>
             </div>
         </div>
     )

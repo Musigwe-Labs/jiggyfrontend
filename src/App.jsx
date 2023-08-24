@@ -10,15 +10,12 @@ import Messages from './components/private/dashboard/Messages'
 import Chat from './components/private/dashboard/Chat'
 import "./App.css";
 import { Wrapper } from './components/private/common/Wrapper'
-import { PostsProvider } from './contexts/postContext'
-import Trending from './components/public/home/trending/Trending'
-const App = () => {  
+const App = () => {
 
   return (
     <div className='bg-black text-white min-h-screen'>
 
       <AuthContextProvider>
-        <PostsProvider>
           <Router>
             <Header />
             <Routes>
@@ -33,7 +30,6 @@ const App = () => {
               <Route exact path='/chat/:friend_name' element={Wrapper(Chat)} />
             </Routes>
           </Router>
-        </PostsProvider>
       </AuthContextProvider>
     </div>
     

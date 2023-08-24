@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import Banner from '../common/Banner'
+import GoogleButton from './GoogleButton'
+import MSoftButton from './MSoftButton'
 import { Link, useNavigate } from 'react-router-dom'
 // import AuthIcons from '../common/AuthIcons'
 import TermsOfService from '../common/TermsOfService'
@@ -122,7 +124,11 @@ const Register = () => {
                     <div>Or sign up with</div>
                     <div className='grow border border-gray-500 h-0'></div>
                 </div>
-                {/* <AuthIcons /> */}
+                <div className="alternate-sign-in  flex justify-center gap-x-8 my-6">
+                  <GoogleButton />
+                  <MSoftButton />
+                </div>
+                        {/* <AuthIcons /> */}
                 <div className='flex justify-center text-gray-400 space-x-1 my-10'>
                     <span>Have an Account?</span> <Link to='/login' className='text-[#007aff]'>Sign in</Link>
                 </div>
