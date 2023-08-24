@@ -4,20 +4,19 @@ import Home from './components/public/home/Home'
 import Login from './components/public/Login'
 import Register from './components/public/Register'
 import AuthContextProvider from './contexts/AuthContext'
-// import PrivateRoute from './components/private/PrivateRoute'
 import Dashboard from './components/private/dashboard/Dashboard'
 import { Privacy } from './components/private/dashboard/Privacy'
 import Messages from './components/private/dashboard/Messages'
 import Chat from './components/private/dashboard/Chat'
 import "./App.css";
 import { Wrapper } from './components/private/common/Wrapper'
-
 const App = () => {
 
   return (
     <div className='bg-black text-white min-h-screen'>
+
       <AuthContextProvider>
-        <Router>
+          <Router>
             <Header />
             <Routes>
               <Route exact path="/" element={<Login />} />
@@ -29,7 +28,7 @@ const App = () => {
               <Route exact path='/messages' element={Wrapper(Messages)} />
               <Route exact path='/chat/:friend_name' element={Wrapper(Chat)} />
             </Routes>
-        </Router>
+          </Router>
       </AuthContextProvider>
     </div>
     

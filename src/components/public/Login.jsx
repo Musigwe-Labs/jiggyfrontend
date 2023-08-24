@@ -19,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate()
 
   /**const [email, setEmail] = useState();*/
-  const [username, setUsername] = useState()
+  const [email, setEmail] = useState()
   const [password, setPassword] = useState()
   const [signing, setSigning] = useState(false)
   const [success, setSuccess] = useState(null)
@@ -40,7 +40,7 @@ const Login = () => {
       localStorage.setItem( 'login',JSON.stringify({ key: success.key}))
 
       setError('')
-      setUsername('')
+      setEmail('')
       setPassword('')
       navigate('/home')
       window.location.reload()
@@ -54,7 +54,7 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault()
-    const data = { username , password }
+    const data = { email , password }
     loginUser(data, setSuccess, setError, setSigning);
   }
  
@@ -78,13 +78,13 @@ const Login = () => {
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <div className="relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max">
-                Username
+                Email
               </div>
               <input
                 type="text"
                 className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your Email"
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>

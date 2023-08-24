@@ -9,7 +9,7 @@ const CommentInfo = (props) => {
               <img className='w-6 rounded-3xl mr-2' src={profile_pic} alt='profile-img' />
               <h4 className='text-white mr-1 text-base font-bold'>{props.name}</h4>
               <p className='px-1 text-sm text-gray-400'>{ (props.school) === null ? 'ballers' : props.school.school_acronym }</p>
-
+              <span className='text-sm text-gray-400 ml-1'>{'17h'}</span>
             </div>
             <BsThreeDots className='cursor-pointer'/>
         </div>
