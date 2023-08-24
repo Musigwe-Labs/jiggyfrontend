@@ -102,15 +102,9 @@ const Login = () => {
           <div>Or signin with</div>
           <div className="grow border border-gray-500 h-0"></div>
         </div>
-<<<<<<< HEAD
-        {/* <GoogleOAuthProvider  clientId="524267745289-99tcul9q2eos9crnc5krameenh2p59gb.apps.googleusercontent.com"> */}
-          <AuthIcons />
-        {/* </GoogleOAuthProvider> */}
-=======
         {/* <GoogleOAuthProvider clientId="524267745289-99tcul9q2eos9crnc5krameenh2p59gb.apps.googleusercontent.com">
           <AuthIcons />
         </GoogleOAuthProvider> */}
->>>>>>> ea02dca3415694b769e78ef833dd6b37d978cfc2
 
         <div className="flex justify-center text-gray-400 space-x-1 my-10">
           <span>{"Don't have an Account?"}</span>{" "}
