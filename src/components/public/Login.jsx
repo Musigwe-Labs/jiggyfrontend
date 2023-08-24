@@ -4,8 +4,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import TermsOfService from '../common/TermsOfService'
 import Banner from '../common/Banner'
 //import { useLoginUserMutation } from '../../services/authApi'
-import { loginUser } from '../../apis/authenticationApis'
-// import { GoogleOAuthProvider } from '@react-oauth/google'
+import GoogleButton from './GoogleButton'
+import MSoftButton from './MSoftButton'
+import {useLocation, redirect} from 'react-router-dom'
+
+  const getToken= (search)=>{
+    const query= new URLSearchParams(search) // parse params to object format
+    const token=query.get('token')? query.get('token') : null
+    return token
+  }
+
 
 const Login = () => {
   const navigate = useNavigate()
@@ -17,8 +25,17 @@ const Login = () => {
   const [success, setSuccess] = useState(null)
   const [error, setError] = useState(null)
 
+  const {search}= useLocation()
   //const [loginUser, {data, isError, error}] = useLoginUserMutation();
   useEffect(() => {
+    if(success==null){
+      //handle google sign in
+ // obtain search query from the url
+      if(search){ //if it's not empty
+        const token=getToken(search)
+        token? setSuccess({key:token}): alert('error occurred')
+      }
+    }
     if (success !== null) {
       localStorage.setItem( 'login',JSON.stringify({ key: success.key}))
 
@@ -40,7 +57,7 @@ const Login = () => {
     const data = { email , password }
     loginUser(data, setSuccess, setError, setSigning);
   }
-
+ 
   useEffect(() => {
     if (localStorage.getItem("login") !== null) {
       navigate("/dashboard");
@@ -102,9 +119,11 @@ const Login = () => {
           <div>Or signin with</div>
           <div className="grow border border-gray-500 h-0"></div>
         </div>
-        {/* <GoogleOAuthProvider clientId="524267745289-99tcul9q2eos9crnc5krameenh2p59gb.apps.googleusercontent.com">
-          <AuthIcons />
-        </GoogleOAuthProvider> */}
+       
+        <div className="alternate-sign-in  flex justify-center gap-x-8 my-6">
+          <GoogleButton />
+          <MSoftButton />
+        </div>
 
         <div className="flex justify-center text-gray-400 space-x-1 my-10">
           <span>{"Don't have an Account?"}</span>{" "}
