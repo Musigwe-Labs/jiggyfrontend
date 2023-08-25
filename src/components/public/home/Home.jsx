@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState,useEffect } from 'react'
+import { useState,useEffect,useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HomeHeader from './homeHeader'
 import HomeTabs from './homeTabs'
@@ -23,11 +23,13 @@ const Home = () => {
   const [posts , setPosts] = useState([])
 
   const navigate = useNavigate()
+  const socketRef = useRef(null);
+
   const handlePostClick = (post) => {
     setSelectedPost(post);
   }
 
-  useEffect(() => {
+  // useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get('https://cruise.pythonanywhere.com/annon/posts/');
@@ -36,13 +38,42 @@ const Home = () => {
         console.error('Error fetching posts:', error)
       }
     }
-    fetchPosts()
-  }, [])
-  // }, [posts])
+  // }, [posts,createPost])
+
+  let socket;
+  useEffect(() => {
+    socket = new WebSocket('ws://16.171.34.50:8080/ws/eventstream/')
+    socket.onopen = () => {
+      console.log("WebSocket connection opened")
+      fetchPosts()
+    }
+
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data)
+      console.log("Received message:", message)
+    }
+
+    socket.addEventListener("error", (event) => {
+      console.error("WebSocket error:", event)
+    })
+    socket.addEventListener("message", (event) => {
+      console.log("message:", event)
+    })
+    socket.onclose = () => {
+      console.log("WebSocket closed")
+    }
+    // Store the socket in the ref
+    socketRef.current = socket
+
+    // Clean up the WebSocket connection when the component unmount
+    return ()=>{
+      socketRef.current.close()
+    }
+  }, []) // The empty dependency array ensures this effect runs only once on mount
 
   if(createPost){
     return(
-      <CreatePostPage setCreatePost={setCreatePost}/>
+      <CreatePostPage socketRef={socketRef}  setCreatePost={setCreatePost}/>
     )
   }
 
@@ -79,7 +110,7 @@ const Home = () => {
         </div>
       </div>
       <Posts posts={posts} onPostClick={handlePostClick}/>
-      <CreatePostBtn setCreatePost={setCreatePost}/>
+      <CreatePostBtn setCreatePost={setCreatePost} />
       <HomeFooter />
     </div>
   )

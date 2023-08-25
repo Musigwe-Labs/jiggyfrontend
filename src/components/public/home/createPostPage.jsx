@@ -5,8 +5,8 @@ import { useContext, useState } from 'react'
 import { AuthContext } from '../../../contexts/AuthContext'
 import _ from 'lodash'
 
-const CreatePostPage = ({setCreatePost })=>{
-    const [content , setContent] = useState()
+const CreatePostPage = ({setCreatePost, socketRef})=>{
+    const [content , setContent] = useState('')
     const [post_type , setSelectedOption] = useState('Others')
 
     const { key } = useContext(AuthContext)
@@ -25,9 +25,10 @@ const CreatePostPage = ({setCreatePost })=>{
     const handlePost= async()=>{
         try {
             const data = { content , post_type }
-            await axios.post("https://cruise.pythonanywhere.com/annon/posts/create/" , data , {headers})
-            // window.location.reload()
+            await axios.post("16.171.34.50:8080/annon/posts/create/" , data , {headers})
+            socketRef.current.send(content)
             setCreatePost(false)
+
         } catch (error) {
             console.log(error)
         }
