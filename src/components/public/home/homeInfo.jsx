@@ -1,5 +1,6 @@
 import { AiOutlineMore } from "react-icons/ai";
 import profile_pic from '../../../assets/profile_pics/pic1.png'
+import timeGap from "../../../services/dateCheck";
 
 const HomeInfo = (props) => {
   return (
@@ -10,7 +11,7 @@ const HomeInfo = (props) => {
               <span className='border border-gray-400'></span>
               <p className='px-1 text-sm text-gray-400'>{ (props.school) === null ? 'ballers' : props.school.school_acronym }</p>
               <span className='border border-gray-400'></span>
-              <span className='text-sm text-gray-400 ml-2'>{'17h'}</span>
+              <span className='text-sm text-gray-400 ml-2'>{timeGap(props.created_at)}</span>
             </div>
             <AiOutlineMore className='cursor-pointer'/>
         </div>

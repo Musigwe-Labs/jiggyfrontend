@@ -1,29 +1,29 @@
 import { useState } from "react";
 import "./home.css";
 
-const HomeTabs = () => {
-  const [isAll, setIsAll] = useState(true);
-  const [isTrending, setIsTrending] = useState(false);
+const HomeTabs = ({ setSelectedTab, selectedTab }) => {
+  // const [isAll, setIsAll] = useState(true);
+  // const [isTrending, setIsTrending] = useState(false);
   return (
     <div className="text-white border-b border-y-[#4B5563] flex justify-between px-20 mt-2">
       <h2
         onClick={() => {
-          setIsAll(true);
-          setIsTrending(false);
+          setSelectedTab("all");
         }}
         className={
-          isAll ? "hometab border-y-[#43fff6]" : "hometab border-transparent"
+          selectedTab === "all"
+            ? "hometab border-y-[#43fff6]"
+            : "hometab border-transparent"
         }
       >
         All
       </h2>
       <h2
         onClick={() => {
-          setIsTrending(true);
-          setIsAll(false);
+          setSelectedTab("trending");
         }}
         className={
-          isTrending
+          selectedTab === "trending"
             ? "hometab border-y-[#43fff6]"
             : "hometab border-transparent"
         }

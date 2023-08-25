@@ -7,19 +7,23 @@ import {
   HiShare,
   HiUser,
 } from "react-icons/hi";
+import { PostType } from "../postType";
+import GistLinks from "../gistLinks";
+import Gist from "../gist";
+import timeGap from "../../../../services/dateCheck";
 
 const Spotlight = ({ posts }) => {
   return (
-    <div>
-      <h2>Spotlight</h2>
-      <div>
-        {posts.map(({ id, content, likes, comments, views, user, shared, post_type }) => {
+    <div className="my-4 mx-4">
+      <h2 className="font-bold text-2xl my-2">Spotlight</h2>
+      <div className="grid grid-cols-[repeat(10,_85%)] gap-4 w-full overflow-auto">
+        {posts.map((post) => {
+          let { id, content, user, shared, post_type, created_at } = post;
           let { generated_username, picture, school } = user;
-          let date = Date.now();
           return (
             <div
               key={id}
-              className="px-6 py-4 shadow-[0px_4px_4px_0px_#00000040] w-5/6 bg-[#3A1A1A] rounded-xl "
+              className="px-6 py-4 shadow-[0px_4px_4px_0px_#00000040] flex flex-col bg-[#3A1A1A] rounded-xl "
             >
               <div className="flex gap-2 items-center">
               {picture ? <img src="" alt="dp" /> : <HiUser />}
@@ -27,28 +31,12 @@ const Spotlight = ({ posts }) => {
                 <span className="w-1 h-1 bg-white opacity-50 rounded-full" />
                 <span className="opacity-50">{school.school_acronym}</span>
                 <span className="w-1 h-1 bg-white opacity-50 rounded-full" />
-                <span className="opacity-50">17h</span>
+                <span className="opacity-50">{timeGap(created_at)}</span>
               </div>
-              <p>{post_type}</p>
-              <p className="py-4">{content}</p>
-              <div className="flex  justify-around items-center">
-                <div className="flex gap-2 items-center">
-                  <HiChat />
-                  <span>{comments.length}</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <HiFire />
-                  <span>{likes.length}</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <HiEye />
-                  <span>{views}</span>
-                </div>
-                <div>
-                  <HiShare />
-                  <span>{shared.length}</span>
-                </div>
-              </div>
+              <PostType post_type={post_type} />
+
+              <Gist content={content} />
+             <GistLinks post={post}/>
             </div>
           );
         })}
