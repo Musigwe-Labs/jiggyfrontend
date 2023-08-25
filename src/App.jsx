@@ -23,6 +23,7 @@ const App = () => {
               <Route exact path="/login" element={<Login />} />
               <Route exact path='/register' element={<Register />} />
               <Route exact path="/home" element={Wrapper(Home)} />
+              <Route exact path='/home/trending' element={Wrapper(Home)} />
               <Route exact path='/dashboard' element={Wrapper(Dashboard)} />
               <Route exact path='/privacy' element={Wrapper(Privacy)} />
               <Route exact path='/messages' element={Wrapper(Messages)} />

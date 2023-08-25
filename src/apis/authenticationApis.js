@@ -31,6 +31,22 @@ export const loginUser = async ( data, setSuccess, setError, setSigning) => {
     }
     setSigning(false);
 }
+// for google sign in
+export const loginUserWithGoogle= async (data, setSuccess, setError, setSigning)=>{
+    setSigning('true')
+    try{
+        const response=await axios.post('account/rest-auth/google-sign-in', data)
+        setSuccess(response)
+    }
+    catch(err){
+        if (!err?.response) {
+            setError('No Response from Server')
+        } else {
+            setError(err.response.data)
+        }
+    }
+    setSigning(false);
+}
 
 export const userInfo = async ( key, setUserinfo) => {
     try{

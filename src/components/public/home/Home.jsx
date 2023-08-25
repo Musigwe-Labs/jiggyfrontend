@@ -7,6 +7,7 @@ import CreatePostBtn from './createPostBtn'
 import CreatePostPage from './createPostPage'
 import { Profile } from '../../private/dashboard/Profile'
 import HomeFooter from './homeFooter'
+import Trending from './trending/trending'
 import Comment from './comments'
 import Posts from './posts'
 import axios from 'axios'
@@ -16,26 +17,29 @@ import { GiDualityMask } from 'react-icons/gi'
 import { BsCheckCircleFill } from 'react-icons/bs'
 
 const Home = () => {
-  const [createPost,setCreatePost] = useState(false)
-  const [profilePage,setProfilePage] = useState(false)
-  const [selectedPost, setSelectedPost] = useState(null)
-  const [isAll , setIsAll] = useState(false)
-  const [posts , setPosts] = useState([])
+  const [createPost, setCreatePost] = useState(false);
+  const [profilePage, setProfilePage] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [isAll, setIsAll] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("all");
 
   const navigate = useNavigate()
   const socketRef = useRef(null);
 
   const handlePostClick = (post) => {
     setSelectedPost(post);
-  }
+  };
 
   // useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('https://cruise.pythonanywhere.com/annon/posts/');
-        setPosts(response.data)
+        const response = await axios.get(
+          "https://cruise.pythonanywhere.com/annon/posts/"
+        );
+        setPosts(response.data);
       } catch (error) {
-        console.error('Error fetching posts:', error)
+        console.error("Error fetching posts:", error);
       }
     }
   // }, [posts,createPost])
@@ -77,43 +81,79 @@ const Home = () => {
     )
   }
 
-  if(selectedPost !== null){
-    return(
-    <div className='overflow-hidden'>
-      <Comment post={selectedPost} setSelectedPost={setSelectedPost}/>
-    </div>
-    )
+  if (selectedPost !== null) {
+    return (
+      <div className="overflow-hidden">
+        <Comment post={selectedPost} setSelectedPost={setSelectedPost} />
+      </div>
+    );
   }
   return (
     <div>
-    {profilePage ? <Profile setProfilePage={setProfilePage}/> :''}
-      <div className='sticky top-0 bg-black'> 
-        <HomeHeader setProfilePage={setProfilePage}/>
-        <HomeTabs />
-        <div className='mt-1 ml-4 flex'>
-          <span className='flex items-center border-b-2 px-1 border-y-[#00CCCC]' onClick={()=>setIsAll(!isAll)}>
-            <p className='text-[#00CCCC] font-bold mr-1'>All</p>
-            {isAll ? <FaAngleUp color='gray' size={17} /> : <FaAngleDown color='gray' size={17} />}
+      {profilePage ? <Profile setProfilePage={setProfilePage} /> : ""}
+      <div className="sticky top-0 bg-black">
+        <HomeHeader setProfilePage={setProfilePage} />
+        <HomeTabs setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
+        <div className="my-2 ml-4 flex relative">
+          <span
+            className="flex items-center border-b-2 px-1 border-y-[#00CCCC]"
+            onClick={() => setIsAll(!isAll)}
+          >
+            <p className="text-[#00CCCC] font-bold mr-1">All</p>
+            {isAll ? (
+              <FaAngleUp color="gray" size={17} />
+            ) : (
+              <FaAngleDown color="gray" size={17} />
+            )}
           </span>
-          <div className={isAll ? 'p-2 border border-[#490A0A] w-32' : 'hidden'}>
-            <span className='flex justify-between cursor-pointer items-center mb-2'>
-              <GiDualityMask size={20}/>
-              <p>FUTO</p>
-              <BsCheckCircleFill />
-            </span>
-            <span className='flex justify-between cursor-pointer items-center' onClick={()=>navigate('/dashboard')}>
-              <FiPhone size={20}/>
-              <p>Jiggy</p>
-              <BsCheckCircleFill />
-            </span>
+          <div
+            className={`border h-0 rounded-3xl rounded-tl-none absolute top-full transition-[all_.3s_ease] bg-[linear-gradient(0deg,_#000000d3,_#000000d3),linear-gradient(0deg,_#490A0Ad3,_#490A0Ad3)] border-[#490A0A] w-32 overflow-hidden ${
+              !isAll ? "h-0" : "h-24"
+            }`}
+          >
+            <div className="flex justify-between p-2 cursor-pointer items-center mb-2">
+              <GiDualityMask size={20} fill="#752626" />
+              <p
+                className="opacity-70"
+                style={{ textShadow: "0 0 2px #490A0A" }}
+              >
+                FUTO
+              </p>
+              <BsCheckCircleFill
+                fill="#BA3131"
+                className="border-[1px] border-solid border-[#490A0A] rounded-full"
+              />
+            </div>
+            <div
+              className="flex justify-between p-2 cursor-pointer items-center"
+              onClick={() => navigate("/dashboard")}
+            >
+              <FiPhone size={20} color="#752626" />
+              <p
+                className="opacity-70"
+                style={{ textShadow: "0 0 2px #490A0A" }}
+              >
+                Jiggy
+              </p>
+              <BsCheckCircleFill
+                fill="#8D6666"
+                className="border-[1px] border-solid border-[#490A0A] rounded-full"
+              />
+            </div>
           </div>
         </div>
       </div>
-      <Posts posts={posts} onPostClick={handlePostClick}/>
+      {selectedTab === "all" ? (
+        <Posts posts={posts} onPostClick={handlePostClick} />
+      ) : (
+        // <div>Trending</div>
+        <Trending posts={posts} />
+      )}
+
       <CreatePostBtn setCreatePost={setCreatePost} />
       <HomeFooter />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
