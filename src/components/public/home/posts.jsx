@@ -5,20 +5,27 @@ import GistLinks from "./gistLinks";
 import HomeInfo from "./homeInfo";
 import { PostType } from "./postType";
 
-const Posts = ({ posts, onPostClick }) => {
+const Posts = ({ posts, onPostClick, filterBy }) => {
   const [sortedPostsByTime, setSortedPostsByTime] = useState([]);
   useEffect(() => {
-    let sortPosts = async () => {
-      let sortedPosts = await posts.sort((post1, post2) => {
-        let post1date = new Date(post1.created_at);
-        let post2date = new Date(post2.created_at);
-
-        return post1date > post2date ? -1 : post1date < post2date ? 1 : 0;
-      });
-      setSortedPostsByTime(sortedPosts);
-    };
     sortPosts();
-  }, [posts]);
+  }, [posts, filterBy]);
+  const sortPosts = async () => {
+    let postsToBeSorted = posts;
+    if (filterBy !== "all") {
+      postsToBeSorted = postsToBeSorted.filter(
+        (post) => post.user.school !== null && post.user.school.school_acronym.toLowerCase() === filterBy.toLowerCase()
+      );
+    }
+    // console.log(postsToBeSorted);
+    const sortedPosts = await postsToBeSorted.sort((post1, post2) => {
+      let post1date = new Date(post1.created_at);
+      let post2date = new Date(post2.created_at);
+
+      return post1date > post2date ? -1 : post1date < post2date ? 1 : 0;
+    });
+    setSortedPostsByTime(sortedPosts);
+  };
   return (
     <div className="pb-[29px]">
       {sortedPostsByTime.map((post) => {

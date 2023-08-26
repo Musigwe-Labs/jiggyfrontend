@@ -12,7 +12,7 @@ import Posts from "./posts";
 import axios from "axios";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { FiPhone } from "react-icons/fi";
-import { GiDualityMask } from "react-icons/gi";
+import { GiDualityMask, GiWorld } from "react-icons/gi";
 import { BsCheckCircleFill } from "react-icons/bs";
 import Trending from "./trending/Trending";
 
@@ -20,7 +20,8 @@ const Home = () => {
   const [createPost, setCreatePost] = useState(false);
   const [profilePage, setProfilePage] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
-  const [isAll, setIsAll] = useState(false);
+  const [openFilterDropdown, setOpenFilterDropdown] = useState(false);
+  const [filterBy, setFilterBy] = useState("all");
   const [posts, setPosts] = useState([]);
   const [selectedTab, setSelectedTab] = useState("all");
 
@@ -56,6 +57,10 @@ const Home = () => {
       </div>
     );
   }
+  const handleFiltering = (val) => {
+    setFilterBy(val);
+    setOpenFilterDropdown(false);
+  }
   return (
     <div>
       {profilePage ? <Profile setProfilePage={setProfilePage} /> : ""}
@@ -66,10 +71,10 @@ const Home = () => {
           <div className="my-2 ml-4 flex relative">
             <span
               className="flex items-center border-b-2 px-1 border-y-[#00CCCC]"
-              onClick={() => setIsAll(!isAll)}
+              onClick={() => setOpenFilterDropdown(!openFilterDropdown)}
             >
-              <p className="text-[#00CCCC] font-bold mr-1">All</p>
-              {isAll ? (
+              <p className="text-[#00CCCC] font-bold mr-1">{filterBy.toUpperCase()}</p>
+              {openFilterDropdown ? (
                 <FaAngleUp color="gray" size={17} />
               ) : (
                 <FaAngleDown color="gray" size={17} />
@@ -77,16 +82,29 @@ const Home = () => {
             </span>
             <div
               className={`border h-0 rounded-3xl rounded-tl-none absolute top-full transition-[all_.3s_ease] bg-[linear-gradient(0deg,_#000000d3,_#000000d3),linear-gradient(0deg,_#490A0Ad3,_#490A0Ad3)] border-[#490A0A] w-32 overflow-hidden ${
-                !isAll ? "h-0" : "h-24"
+                !openFilterDropdown ? "h-0" : "h-32"
               }`}
             >
-              <div className="flex justify-between p-2 cursor-pointer items-center mb-2">
-                <GiDualityMask size={20} fill="#752626" />
+              <div className="flex justify-between p-2 cursor-pointer items-center mb-2" onClick={() => handleFiltering("all")}>
+                <GiWorld size={20} fill="#752626" />
                 <p
-                  className="opacity-70"
+                  className="opacity-70 uppercase"
                   style={{ textShadow: "0 0 2px #490A0A" }}
                 >
-                  FUTO
+                  all
+                </p>
+                <BsCheckCircleFill
+                  fill="#BA3131"
+                  className="border-[1px] border-solid border-[#490A0A] rounded-full"
+                />
+              </div>
+              <div className="flex justify-between p-2 cursor-pointer items-center mb-2" onClick={() => handleFiltering("futo")}>
+                <GiDualityMask size={20} fill="#752626" />
+                <p
+                  className="opacity-70 uppercase"
+                  style={{ textShadow: "0 0 2px #490A0A" }}
+                >
+                  futo
                 </p>
                 <BsCheckCircleFill
                   fill="#BA3131"
@@ -114,7 +132,7 @@ const Home = () => {
         )}
       </div>
       {selectedTab === "all" ? (
-        <Posts posts={posts} onPostClick={handlePostClick} />
+        <Posts posts={posts} onPostClick={handlePostClick} filterBy={filterBy} />
       ) : (
         // <div>Trending</div>
         <Trending posts={posts} onPostClick={handlePostClick} />
