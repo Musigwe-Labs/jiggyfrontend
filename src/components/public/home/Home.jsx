@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState,useEffect,useRef } from 'react'
+import { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HomeHeader from './homeHeader'
 import HomeTabs from './homeTabs'
@@ -10,74 +10,46 @@ import HomeFooter from './homeFooter'
 import Trending from './trending/trending'
 import Comment from './comments'
 import Posts from './posts'
-import axios from 'axios'
+import axios from '../../../services/axios'
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa'
 import { FiPhone } from 'react-icons/fi'
 import { GiDualityMask } from 'react-icons/gi'
 import { BsCheckCircleFill } from 'react-icons/bs'
+import { useWebSocket } from '../../../contexts/webSocketContext'
 
 const Home = () => {
-  const [createPost, setCreatePost] = useState(false);
-  const [profilePage, setProfilePage] = useState(false);
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [isAll, setIsAll] = useState(false);
-  const [posts, setPosts] = useState([]);
-  const [selectedTab, setSelectedTab] = useState("all");
-
+  const [createPost, setCreatePost] = useState(false)
+  const [profilePage, setProfilePage] = useState(false)
+  const [selectedPost, setSelectedPost] = useState(null)
+  const [isAll, setIsAll] = useState(false)
+  const [posts, setPosts] = useState([])
+  const [selectedTab, setSelectedTab] = useState("all")
+  const {socket, isRecievedData, setIsRecievedData} = useWebSocket()
+  
   const navigate = useNavigate()
-  const socketRef = useRef(null);
-
+  
   const handlePostClick = (post) => {
-    setSelectedPost(post);
-  };
-
-  // useEffect(() => {
+    setSelectedPost(post)
+  }
+  
+  console.log(isRecievedData)
+  console.log('socket at home is ',socket.readyState)
+  useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(
-          "https://cruise.pythonanywhere.com/annon/posts/"
-        );
-        setPosts(response.data);
+        const response = await axios.get("annon/posts/")
+        setPosts(response.data)
+        setIsRecievedData(false)
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        console.error("Error fetching posts:", error)
       }
     }
-  // }, [posts,createPost])
-
-  let socket;
-  useEffect(() => {
-    socket = new WebSocket('ws://16.171.34.50:8080/ws/eventstream/')
-    socket.onopen = () => {
-      console.log("WebSocket connection opened")
-      fetchPosts()
-    }
-
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data)
-      console.log("Received message:", message)
-    }
-
-    socket.addEventListener("error", (event) => {
-      console.error("WebSocket error:", event)
-    })
-    socket.addEventListener("message", (event) => {
-      console.log("message:", event)
-    })
-    socket.onclose = () => {
-      console.log("WebSocket closed")
-    }
-    // Store the socket in the ref
-    socketRef.current = socket
-
-    // Clean up the WebSocket connection when the component unmount
-    return ()=>{
-      socketRef.current.close()
-    }
-  }, []) // The empty dependency array ensures this effect runs only once on mount
+    fetchPosts()
+  }, [isRecievedData])
 
   if(createPost){
     return(
-      <CreatePostPage socketRef={socketRef}  setCreatePost={setCreatePost}/>
+      <CreatePostPage setCreatePost={setCreatePost}/>
     )
   }
 
@@ -86,7 +58,7 @@ const Home = () => {
       <div className="overflow-hidden">
         <Comment post={selectedPost} setSelectedPost={setSelectedPost} />
       </div>
-    );
+    )
   }
   return (
     <div>
@@ -95,10 +67,7 @@ const Home = () => {
         <HomeHeader setProfilePage={setProfilePage} />
         <HomeTabs setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
         <div className="my-2 ml-4 flex relative">
-          <span
-            className="flex items-center border-b-2 px-1 border-y-[#00CCCC]"
-            onClick={() => setIsAll(!isAll)}
-          >
+          <span className="flex items-center border-b-2 px-1 border-y-[#00CCCC]" onClick={() => setIsAll(!isAll)} >
             <p className="text-[#00CCCC] font-bold mr-1">All</p>
             {isAll ? (
               <FaAngleUp color="gray" size={17} />
@@ -153,7 +122,7 @@ const Home = () => {
       <CreatePostBtn setCreatePost={setCreatePost} />
       <HomeFooter />
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

@@ -6,7 +6,7 @@ import Gist from './gist'
 import GistLinks from './gistLinks'
 import profile_pic from '../../../assets/profile_pics/pic1.png'
 import { FaArrowLeftLong } from 'react-icons/fa6'
-import axios from 'axios'
+import axios from '../../../services/axios'
 import { IoIosSend } from 'react-icons/io'
 import _ from 'lodash';
 
@@ -41,7 +41,7 @@ const Comment =({post , setSelectedPost })=>{
     const handleSendComment = async()=>{
         try {
             const data = {post:post.id , content : inputValue }
-            await axios.post('https://cruise.pythonanywhere.com/annon/posts/comment/' , data , {headers})
+            await axios.post('annon/posts/comment/' , data , {headers})
             setInputValue('')
         } catch (error) {
             console.log(error)
@@ -63,17 +63,19 @@ const Comment =({post , setSelectedPost })=>{
                 <p className='px-3 my-3 text-gray-400'>{post.comments.length} comments</p>
             <div className='mx-2 max-h-screen overflow-auto border-l border-gray-500'>
                 {
-                    post.comments.map((comment) =>{
-                        return (
-                        <div key={comment.created_at} className='text-base bg-[#1717171a] mt-2 px-3 rounded-xl'>
-                            <div className='flex items-center mb-1'>
-                                <img className='w-6 rounded-3xl mr-2' src={profile_pic} alt='profile-img' />
-                                <h4 className='text-white mr-1 text-base font-bold'>{comment.user.generated_username}</h4>
-                            </div>
-                            <p className='text-base'><span className='text-[14.5px] text-blue-500 mr-2 font-light'>@{post.user.generated_username}</span>{comment.content}</p>
+                    // useEffect(()=>{
+                        post.comments.map((comment) =>{
+                            return (
+                            <div key={comment.created_at} className='text-base bg-[#1717171a] mt-2 px-3 rounded-xl'>
+                                <div className='flex items-center mb-1'>
+                                    <img className='w-6 rounded-3xl mr-2' src={profile_pic} alt='profile-img' />
+                                    <h4 className='text-white mr-1 text-base font-bold'>{comment.user.generated_username}</h4>
+                                </div>
+                                <p className='text-base'><span className='text-[14.5px] text-blue-500 mr-2 font-light'>@{post.user.generated_username}</span>{comment.content}</p>
                         </div>
-                        )
-                    })
+                            )
+                        })
+                    // },[post])
                 }
             </div>
             <div className='absolute w-[100%] border-t border-gray-500 left-0 bottom-0 py-2 px-2'>

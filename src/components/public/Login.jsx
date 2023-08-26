@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 // import AuthIcons from '../common/AuthIcons'
 import TermsOfService from '../common/TermsOfService'
 import Banner from '../common/Banner'
-//import { useLoginUserMutation } from '../../services/authApi'
+// import { useLoginUserMutation } from '../../services/authApi'
 import GoogleButton from './GoogleButton'
 import MSoftButton from './MSoftButton'
-import {useLocation, redirect} from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
+import { loginUser } from '../../apis/authenticationApis'
 
   const getToken= (search)=>{
     const query= new URLSearchParams(search) // parse params to object format
@@ -26,7 +27,7 @@ const Login = () => {
   const [error, setError] = useState(null)
 
   const {search}= useLocation()
-  //const [loginUser, {data, isError, error}] = useLoginUserMutation();
+  // const [loginUser, {data, isError, error}] = useLoginUserMutation()
   useEffect(() => {
     if(success==null){
       //handle google sign in
