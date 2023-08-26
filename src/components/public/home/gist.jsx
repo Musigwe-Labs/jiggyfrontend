@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-const Gist = ({ content }) => {
+const Gist = ({ content, showFullGist }) => {
   return (
-    <p className='cursor-pointer text-white mt-3'>
+    <p className={`cursor-pointer ${!showFullGist && 'text-ellipsis overflow-hidden whitespace-nowrap'} text-white mt-3`}>
       {content}
     </p>
   )
