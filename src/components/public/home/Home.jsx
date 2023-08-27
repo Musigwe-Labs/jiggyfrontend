@@ -24,7 +24,7 @@ const Home = () => {
   const [isAll, setIsAll] = useState(false)
   const [posts, setPosts] = useState([])
   const [selectedTab, setSelectedTab] = useState("all")
-  const {socket, isRecievedData, setIsRecievedData} = useWebSocket()
+  const {isRecievedData, setIsRecievedData} = useWebSocket()
   
   const navigate = useNavigate()
   
@@ -32,8 +32,6 @@ const Home = () => {
     setSelectedPost(post)
   }
   
-  console.log(isRecievedData)
-  console.log('socket at home is ',socket.readyState)
   useEffect(() => {
     const fetchPosts = async () => {
       try {
