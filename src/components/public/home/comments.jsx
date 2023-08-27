@@ -11,36 +11,29 @@ import { IoIosSend } from 'react-icons/io'
 import _ from 'lodash';
 
 const Comment = ({ post, setSelectedPost }) => {
-  const [inputValue, setInputValue] = useState("");
-  const [inputHeight, setInputHeight] = useState("35px");
+  const [inputValue, setInputValue] = useState("")
+  const [inputHeight, setInputHeight] = useState("35px")
   const maxInputHeight = 220; // Adjust this value as needed
 
-  const { key } = useContext(AuthContext);
+  const { key } = useContext(AuthContext)
 
   const headers = {
     Authorization: `Token ${key}`,
   };
   const handleInputChange = (event) => {
-    const { value, scrollHeight } = event.target;
-    setInputValue(value);
+    const { value, scrollHeight } = event.target
+    setInputValue(value)
 
     // Calculate the new height within the maximum limit
-    const newHeight = Math.min(scrollHeight, maxInputHeight);
+    const newHeight = Math.min(scrollHeight, maxInputHeight)
 
     setInputHeight(`${newHeight}px`); //Update the height based on newHeight
-  };
-
+  }
   useEffect(() => {
     if (inputValue === "") {
-      setInputHeight("35px");
+      setInputHeight("35px")
     }
-  }, [inputValue]);
-
-    useEffect(()=>{
-        if(inputValue === ''){
-            setInputHeight('35px')
-        }    
-    },[inputValue])
+  }, [inputValue])
 
     const handleSendComment = async()=>{
         try {
@@ -51,7 +44,7 @@ const Comment = ({ post, setSelectedPost }) => {
             console.log(error)
         }
     }
-    const throttledApiRequest = _.throttle(handleSendComment, 2000);
+    const throttledApiRequest = _.throttle(handleSendComment, 2000)
 
     return(
         <div className='z-50 max-h-screen pt-4 px-3'>
@@ -67,19 +60,19 @@ const Comment = ({ post, setSelectedPost }) => {
                 <p className='px-3 my-3 text-gray-400'>{post.comments.length} comments</p>
             <div className='mx-2 max-h-screen overflow-auto border-l border-gray-500'>
                 {
-                    // useEffect(()=>{
-                        post.comments.map((comment) =>{
-                            return (
-                            <div key={comment.created_at} className='text-base bg-[#1717171a] mt-2 px-3 rounded-xl'>
-                                <div className='flex items-center mb-1'>
-                                    <img className='w-6 rounded-3xl mr-2' src={profile_pic} alt='profile-img' />
-                                    <h4 className='text-white mr-1 text-base font-bold'>{comment.user.generated_username}</h4>
-                                </div>
-                                <p className='text-base'><span className='text-[14.5px] text-blue-500 mr-2 font-light'>@{post.user.generated_username}</span>{comment.content}</p>
+                    post.comments.map((comment) =>{
+                        return(
+                        <div key={comment.created_at} className='text-base bg-[#1717171a] mt-2 px-3 rounded-xl'>
+                            <div className='flex items-center mb-1'>
+                                <img className='w-6 rounded-3xl mr-2' src={profile_pic} alt='profile-img' />
+                                <h4 className='text-white mr-1 text-base font-bold'>{comment.user.generated_username}</h4>
+                            </div>
+                            <p className='text-base'>
+                                <span className='text-[14.5px] text-blue-500 mr-2 font-light'>@{post.user.generated_username}</span>{comment.content}
+                            </p>
                         </div>
-                            )
-                        })
-                    // },[post])
+                        )
+                    })
                 }
             </div>
             <div className="mt-auto w-[100%] border-t border-gray-500 left-0 bottom-0 py-2 px-2">
