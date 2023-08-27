@@ -21,38 +21,38 @@
 }
 .liked{
   color: #f33f5e;
-  font-size: 28px;
+  /* font-size: 28px; */
 }
 .Confession{
-  border: 1px solid #A31A3E;
+  border: 2px solid #A31A3E;
   color: #A31A3E;
 }
 .Question{
-border: 1px solid #A85387;
+border: 2px solid #A85387;
   color: #A85387;
 }
 .Crush{
-  border: 1px solid #F78EA7;
+  border: 2px solid #F78EA7;
   color: #F78EA7;
 }
 .DM{
-  border: 1px solid #299EF3;
+  border: 2px solid #299EF3;
   color: #299EF3;
 }
 .Advice{
-  border: 1px solid #7CB45B;
+  border: 2px solid #7CB45B;
   color: #7CB45B;
 }
 .Cruise{
-  border: 1px solid #FF6B6B;
+  border: 2px solid #FF6B6B;
   color: #FF6B6B;
 }
 .Talk{
-  border: 1px solid #FFC200;
+  border: 2px solid #FFC200;
   color: #FFC200;
 }
 .Others{
-  border: 1px solid #4D3580;
+  border: 2px solid #4D3580;
   color: #4D3580;
 }
 

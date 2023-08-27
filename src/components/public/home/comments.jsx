@@ -10,27 +10,31 @@ import axios from '../../../services/axios'
 import { IoIosSend } from 'react-icons/io'
 import _ from 'lodash';
 
+const Comment = ({ post, setSelectedPost }) => {
+  const [inputValue, setInputValue] = useState("");
+  const [inputHeight, setInputHeight] = useState("35px");
+  const maxInputHeight = 220; // Adjust this value as needed
 
-const Comment =({post , setSelectedPost })=>{
-    const [inputValue, setInputValue] = useState('')
-    const [inputHeight, setInputHeight] = useState('35px')
-    const maxInputHeight = 220 // Adjust this value as needed
+  const { key } = useContext(AuthContext);
 
-  
-    const { key } = useContext(AuthContext)
-    
-    const headers = {
-        "Authorization" : `Token ${key}`
+  const headers = {
+    Authorization: `Token ${key}`,
+  };
+  const handleInputChange = (event) => {
+    const { value, scrollHeight } = event.target;
+    setInputValue(value);
+
+    // Calculate the new height within the maximum limit
+    const newHeight = Math.min(scrollHeight, maxInputHeight);
+
+    setInputHeight(`${newHeight}px`); //Update the height based on newHeight
+  };
+
+  useEffect(() => {
+    if (inputValue === "") {
+      setInputHeight("35px");
     }
-    const handleInputChange = (event) => {
-        const { value, scrollHeight } = event.target
-        setInputValue(value)
-        
-        // Calculate the new height within the maximum limit
-        const newHeight = Math.min(scrollHeight, maxInputHeight)
-        
-        setInputHeight(`${newHeight}px`) //Update the height based on newHeight
-    }
+  }, [inputValue]);
 
     useEffect(()=>{
         if(inputValue === ''){
@@ -78,18 +82,19 @@ const Comment =({post , setSelectedPost })=>{
                     // },[post])
                 }
             </div>
-            <div className='absolute w-[100%] border-t border-gray-500 left-0 bottom-0 py-2 px-2'>
+            <div className="mt-auto w-[100%] border-t border-gray-500 left-0 bottom-0 py-2 px-2">
                 <textarea
                 style={{ height: inputHeight }}
-                className='resize-none bg-transparent p-2 border-b border-gray-600 w-[85%] rounded-md text-white focus:outline-none focus:border-gray-600 focus:border'
-                placeholder='Comment your thought'
+                className="resize-none bg-transparent p-2 border-b border-gray-600 w-[85%] rounded-md text-white focus:outline-none focus:border-gray-600 focus:border"
+                placeholder="Comment your thought"
                 value={inputValue}
                 onChange={handleInputChange}
                 />
-                <button className='ml-3 rounded-xl font-bold text-sm' onClick={throttledApiRequest}><IoIosSend size={21}/></button>
+                <button className="ml-3 rounded-xl font-bold text-sm" onClick={throttledApiRequest}>
+                    <IoIosSend size={21} />
+                </button>
             </div>
         </div>
     )
 }
-
 export default Comment
