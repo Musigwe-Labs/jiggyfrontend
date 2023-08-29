@@ -85,7 +85,7 @@ const Home = () => {
                 !openFilterDropdown ? "h-0" : "h-32"
               }`}
             >
-              <div className="flex justify-between p-2 cursor-pointer items-center mb-2" onClick={() => handleFiltering("all")}>
+              <div className={`flex justify-between p-2 cursor-pointer items-center mb-2 ${filterBy === ""}`} onClick={() => handleFiltering("all")}>
                 <GiWorld size={20} fill="#752626" />
                 <p
                   className="opacity-70 uppercase"
