@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const authApi =  createApi({
     reducerPath: "authApi",
-    baseQuery: fetchBaseQuery({ baseUrl: "https://cruise.pythonanywhere.com"}),
+    baseQuery: fetchBaseQuery({ baseUrl: "http://16.171.34.50:8080"}),
     endpoints: (builder) => ({
         loginUser: builder.mutation({
             query: (body) => {
@@ -16,4 +16,4 @@ export const authApi =  createApi({
     }),
 });
 
-export const { useLoginUserMutation } = authApi;
+export const { useLoginUserMutation } = authApi

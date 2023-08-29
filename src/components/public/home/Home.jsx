@@ -1,53 +1,54 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import HomeHeader from "./homeHeader";
-import HomeTabs from "./homeTabs";
-import CreatePostBtn from "./createPostBtn";
-import CreatePostPage from "./createPostPage";
-import { Profile } from "../../private/dashboard/Profile";
-import HomeFooter from "./homeFooter";
-import Comment from "./comments";
-import Posts from "./posts";
-import axios from "axios";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa";
-import { FiPhone } from "react-icons/fi";
-import { GiDualityMask, GiWorld } from "react-icons/gi";
-import { BsCheckCircleFill } from "react-icons/bs";
-import Trending from "./trending/Trending";
+import { useState,useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import HomeHeader from './homeHeader'
+import HomeTabs from './homeTabs'
+import CreatePostBtn from './createPostBtn'
+import CreatePostPage from './createPostPage'
+import { Profile } from '../../private/dashboard/Profile'
+import HomeFooter from './homeFooter'
+import Trending from './trending/Trending'
+import Comment from './comments'
+import Posts from './posts'
+import axios from '../../../services/axios'
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa'
+import { FiPhone } from 'react-icons/fi'
+import { GiDualityMask } from 'react-icons/gi'
+import { BsCheckCircleFill } from 'react-icons/bs'
+import { useWebSocket } from '../../../contexts/webSocketContext'
 
 const Home = () => {
-  const [createPost, setCreatePost] = useState(false);
-  const [profilePage, setProfilePage] = useState(false);
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [openFilterDropdown, setOpenFilterDropdown] = useState(false);
-  const [filterBy, setFilterBy] = useState("all");
-  const [posts, setPosts] = useState([]);
-  const [selectedTab, setSelectedTab] = useState("all");
-
-  const navigate = useNavigate();
+  const [createPost, setCreatePost] = useState(false)
+  const [profilePage, setProfilePage] = useState(false)
+  const [selectedPost, setSelectedPost] = useState(null)
+  const [isAll, setIsAll] = useState(false)
+  const [posts, setPosts] = useState([])
+  const [selectedTab, setSelectedTab] = useState("all")
+  const {isRecievedData, setIsRecievedData} = useWebSocket()
+  
+  const navigate = useNavigate()
+  
   const handlePostClick = (post) => {
-    setSelectedPost(post);
-  };
-
+    setSelectedPost(post)
+  }
+  
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(
-          "https://cruise.pythonanywhere.com/annon/posts/"
-        );
-        setPosts(response.data);
+        const response = await axios.get("annon/posts/")
+        setPosts(response.data)
+        setIsRecievedData(false)
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        console.error("Error fetching posts:", error)
       }
-    };
-    fetchPosts();
-    window.location.pathname.includes('trending') && setSelectedTab("trending");
+    }
+    fetchPosts()
+  }, [isRecievedData])
 
-  }, []);
-
-  if (createPost) {
-    return <CreatePostPage setCreatePost={setCreatePost} />;
+  if(createPost){
+    return(
+      <CreatePostPage setCreatePost={setCreatePost}/>
+    )
   }
 
   if (selectedPost !== null) {
@@ -55,93 +56,71 @@ const Home = () => {
       <div className="overflow-hidden">
         <Comment post={selectedPost} setSelectedPost={setSelectedPost} />
       </div>
-    );
-  }
-  const handleFiltering = (val) => {
-    setFilterBy(val);
-    setOpenFilterDropdown(false);
+    )
   }
   return (
     <div>
       {profilePage ? <Profile setProfilePage={setProfilePage} /> : ""}
-      <div className="sticky top-0 bg-black z-10">
+      <div className="sticky top-0 bg-black">
         <HomeHeader setProfilePage={setProfilePage} />
         <HomeTabs setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
-        {selectedTab === "all" && (
-          <div className="my-2 ml-4 flex relative">
-            <span
-              className="flex items-center border-b-2 px-1 border-y-[#00CCCC]"
-              onClick={() => setOpenFilterDropdown(!openFilterDropdown)}
-            >
-              <p className="text-[#00CCCC] font-bold mr-1">{filterBy.toUpperCase()}</p>
-              {openFilterDropdown ? (
-                <FaAngleUp color="gray" size={17} />
-              ) : (
-                <FaAngleDown color="gray" size={17} />
-              )}
-            </span>
-            <div
-              className={`border h-0 rounded-3xl rounded-tl-none absolute top-full transition-[all_.3s_ease] bg-[linear-gradient(0deg,_#000000d3,_#000000d3),linear-gradient(0deg,_#490A0Ad3,_#490A0Ad3)] border-[#490A0A] w-32 overflow-hidden ${
-                !openFilterDropdown ? "h-0" : "h-32"
-              }`}
-            >
-              <div className={`flex justify-between p-2 cursor-pointer items-center mb-2 ${filterBy === ""}`} onClick={() => handleFiltering("all")}>
-                <GiWorld size={20} fill="#752626" />
-                <p
-                  className="opacity-70 uppercase"
-                  style={{ textShadow: "0 0 2px #490A0A" }}
-                >
-                  all
-                </p>
-                <BsCheckCircleFill
-                  fill="#BA3131"
-                  className="border-[1px] border-solid border-[#490A0A] rounded-full"
-                />
-              </div>
-              <div className="flex justify-between p-2 cursor-pointer items-center mb-2" onClick={() => handleFiltering("futo")}>
-                <GiDualityMask size={20} fill="#752626" />
-                <p
-                  className="opacity-70 uppercase"
-                  style={{ textShadow: "0 0 2px #490A0A" }}
-                >
-                  futo
-                </p>
-                <BsCheckCircleFill
-                  fill="#BA3131"
-                  className="border-[1px] border-solid border-[#490A0A] rounded-full"
-                />
-              </div>
-              <div
-                className="flex justify-between p-2 cursor-pointer items-center"
-                onClick={() => navigate("/dashboard")}
+        <div className="my-2 ml-4 flex relative">
+          <span className="flex items-center border-b-2 px-1 border-y-[#00CCCC]" onClick={() => setIsAll(!isAll)} >
+            <p className="text-[#00CCCC] font-bold mr-1">All</p>
+            {isAll ? (
+              <FaAngleUp color="gray" size={17} />
+            ) : (
+              <FaAngleDown color="gray" size={17} />
+            )}
+          </span>
+          <div
+            className={`border h-0 rounded-3xl rounded-tl-none absolute top-full transition-[all_.3s_ease] bg-[linear-gradient(0deg,_#000000d3,_#000000d3),linear-gradient(0deg,_#490A0Ad3,_#490A0Ad3)] border-[#490A0A] w-32 overflow-hidden ${
+              !isAll ? "h-0" : "h-24"
+            }`}
+          >
+            <div className="flex justify-between p-2 cursor-pointer items-center mb-2">
+              <GiDualityMask size={20} fill="#752626" />
+              <p
+                className="opacity-70"
+                style={{ textShadow: "0 0 2px #490A0A" }}
               >
-                <FiPhone size={20} color="#752626" />
-                <p
-                  className="opacity-70"
-                  style={{ textShadow: "0 0 2px #490A0A" }}
-                >
-                  Jiggy
-                </p>
-                <BsCheckCircleFill
-                  fill="#8D6666"
-                  className="border-[1px] border-solid border-[#490A0A] rounded-full"
-                />
-              </div>
+                FUTO
+              </p>
+              <BsCheckCircleFill
+                fill="#BA3131"
+                className="border-[1px] border-solid border-[#490A0A] rounded-full"
+              />
+            </div>
+            <div
+              className="flex justify-between p-2 cursor-pointer items-center"
+              onClick={() => navigate("/dashboard")}
+            >
+              <FiPhone size={20} color="#752626" />
+              <p
+                className="opacity-70"
+                style={{ textShadow: "0 0 2px #490A0A" }}
+              >
+                Jiggy
+              </p>
+              <BsCheckCircleFill
+                fill="#8D6666"
+                className="border-[1px] border-solid border-[#490A0A] rounded-full"
+              />
             </div>
           </div>
-        )}
+        </div>
       </div>
       {selectedTab === "all" ? (
-        <Posts posts={posts} onPostClick={handlePostClick} filterBy={filterBy} />
+        <Posts posts={posts} onPostClick={handlePostClick} />
       ) : (
         // <div>Trending</div>
-        <Trending posts={posts} onPostClick={handlePostClick} />
+        <Trending posts={posts} />
       )}
 
       <CreatePostBtn setCreatePost={setCreatePost} />
       <HomeFooter />
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

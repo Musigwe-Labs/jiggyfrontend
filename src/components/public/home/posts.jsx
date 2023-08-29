@@ -12,11 +12,6 @@ const Posts = ({ posts, onPostClick, filterBy }) => {
   }, [posts, filterBy]);
   const sortPosts = async () => {
     let postsToBeSorted = posts;
-    if (filterBy !== "all") {
-      postsToBeSorted = postsToBeSorted.filter(
-        (post) => post.user.school !== null && post.user.school.school_acronym.toLowerCase() === filterBy.toLowerCase()
-      );
-    }
     // console.log(postsToBeSorted);
     const sortedPosts = await postsToBeSorted.sort((post1, post2) => {
       let post1date = new Date(post1.created_at);

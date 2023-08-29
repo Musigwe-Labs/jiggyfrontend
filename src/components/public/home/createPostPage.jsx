@@ -1,18 +1,13 @@
 /* eslint-disable react/prop-types */
 import { LiaTimesSolid , LiaCheckSolid } from 'react-icons/lia'
 import axios from 'axios'
-import { useContext, useState } from 'react'
+import { useState, useContext } from 'react'
 import { AuthContext } from '../../../contexts/AuthContext'
 import _ from 'lodash'
 
-const CreatePostPage = ({setCreatePost })=>{
-    const [content , setContent] = useState()
+const CreatePostPage = ({setCreatePost})=>{
+    const [content , setContent] = useState('')
     const [post_type , setSelectedOption] = useState('Others')
-
-    const { key } = useContext(AuthContext)
-    const headers = {
-        "Authorization" : `Token ${key}`
-    }
 
     const handleTextareaChange = (e)=>{
         setContent(e.target.value)
@@ -22,16 +17,30 @@ const CreatePostPage = ({setCreatePost })=>{
         setSelectedOption(option)
     }
 
+    const { key } = useContext(AuthContext)
+    const headers = {
+      "Authorization" : `Token ${key}`
+    }
+
     const handlePost= async()=>{
         try {
             const data = { content , post_type }
-            await axios.post("https://cruise.pythonanywhere.com/annon/posts/create/" , data , {headers})
-            // window.location.reload()
+            await axios.post("http://16.171.34.50:8080/annon/posts/create/" , data, {headers})
             setCreatePost(false)
+
         } catch (error) {
             console.log(error)
         }
     }
+    // const handlePost= ()=>{
+    //     const data = { content , post_type }
+    //     if (socket && socket.readyState === WebSocket.OPEN) {
+    //         socket.send(data)
+    //         // .then((response)=>console.log(response))
+    //         // .catch((err)=>console.log(err))
+    //         setCreatePost(false)
+    //     }
+    // }
     const throttledApiRequest = _.throttle(handlePost, 3500);
 
     return(

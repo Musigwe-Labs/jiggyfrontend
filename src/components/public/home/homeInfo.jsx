@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { AiOutlineMore } from "react-icons/ai";
 import profile_pic from '../../../assets/profile_pics/pic1.png'
 import timeGap from "../../../services/dateCheck";

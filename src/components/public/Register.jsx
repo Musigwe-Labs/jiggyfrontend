@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import TermsOfService from '../common/TermsOfService'
 import { registerUser } from '../../apis/authenticationApis'
 import Select from 'react-select'
-import axios from 'axios'
+import axios from '../../services/axios'
 
 const Register = () => {
     const navigate = useNavigate()
@@ -29,7 +29,6 @@ const Register = () => {
             registerUser(data, setSuccess, setError, setRegister);
         }
     }
-
     const handleSelectChange = (selected)=>{
         setSelectedOption(selected)
     }
@@ -45,8 +44,9 @@ const Register = () => {
     }, [navigate, success])
 
     useEffect(()=>{
-        axios.get('https://cruise.pythonanywhere.com/account/registration/annoyuser/')
+        axios.get('account/registration/annoyuser/')
         .then((response)=>{
+            console.log('response is ',response)
             const fetchedOptions = response.data.map(school=>({value:school , label: school.name }))
             setOptions(fetchedOptions)
         })
