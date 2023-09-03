@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export default axios.create({
-    baseURL: 'http://jiggybackend.com.ng/'
+    baseURL: 'https://jiggybackend.com.ng/'
 })
