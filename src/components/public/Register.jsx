@@ -46,7 +46,7 @@ const Register = () => {
     useEffect(()=>{
         axios.get('account/registration/annoyuser/')
         .then((response)=>{
-            console.log('response is ',response)
+            console.log('response is',response)
             const fetchedOptions = response.data.map(school=>({value:school , label: school.name }))
             setOptions(fetchedOptions)
         })

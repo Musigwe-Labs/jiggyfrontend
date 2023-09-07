@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { LiaTimesSolid , LiaCheckSolid } from 'react-icons/lia'
-import axios from 'axios'
+import axios from '../../../services/axios'
 import { useState, useContext } from 'react'
 import { AuthContext } from '../../../contexts/AuthContext'
 import _ from 'lodash'
@@ -25,7 +25,7 @@ const CreatePostPage = ({setCreatePost})=>{
     const handlePost= async()=>{
         try {
             const data = { content , post_type }
-            await axios.post("http://16.171.34.50:8080/annon/posts/create/" , data, {headers})
+            await axios.post("annon/posts/create/" , data, {headers})
             setCreatePost(false)
 
         } catch (error) {
