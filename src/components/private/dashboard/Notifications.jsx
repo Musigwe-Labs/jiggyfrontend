@@ -152,8 +152,8 @@ return(
 						<h6 className='day pl-12 py-4 text-[.75rem] font-bold capitalize'>{el.day}</h6>
 						{el.note.map(notification=>(
 							<div className=" note-wrapper flex  mb-4" key={notification.id}>
-								<div className="note-hero bg-gradient-to-b from-[red,33%] via-[blue, 66%] to-[#fff]  w-16 h-16 border-2  leading-[2.5rem] text-center"> </div>
-								<div className="note-msg pl-4 w-60 h-12 text-[12px] flex flex-col"> 
+								<div className="note-hero bg-gradient-to-b from-[red,33%] via-[blue, 66%] to-[#fff]  w-6 h-6 border-2  leading-[2.5rem] text-center"> </div>
+								<div className="note-msg pl-4 w-60 h-8 text-[10px] flex flex-col"> 
 									<p className=" grow">{notification.text.at(-1)}</p>
 									<p className="note-time text-gray-400">{notification.time}</p>
 									</div>
