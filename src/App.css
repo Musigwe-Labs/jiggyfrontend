@@ -1,7 +1,7 @@
-/* #root {
+#root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 2rem 0 */
   text-align: center;
 } */
 *{
@@ -9,6 +9,10 @@
   font-weight: 400;
   font-size: 14px;
   box-sizing: border-box;
+}
+
+.note-hero{
+  border-radius: 100%;
 }
 /* .logo {
   height: 6em;
@@ -61,3 +65,4 @@
   border-color: #00CCCC;
   display: block;
 }
+

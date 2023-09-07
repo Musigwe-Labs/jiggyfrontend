@@ -59,7 +59,8 @@ const Home = () => {
     )
   }
   return (
-    <div>
+    <>
+    <div className="grow">
       {profilePage ? <Profile setProfilePage={setProfilePage} /> : ""}
       <div className="sticky top-0 bg-black">
         <HomeHeader setProfilePage={setProfilePage} />
@@ -118,8 +119,9 @@ const Home = () => {
       )}
 
       <CreatePostBtn setCreatePost={setCreatePost} />
-      <HomeFooter />
     </div>
+      <HomeFooter />
+      </>
   )
 }
 

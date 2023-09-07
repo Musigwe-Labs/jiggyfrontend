@@ -1,47 +1,102 @@
-import { Link } from 'react-router-dom'
-import { AiFillHome } from "react-icons/ai";
-// import { RxEnvelopeClosed } from "react-icons/rx";
-import { HiOutlineBell } from "react-icons/hi";
-import {  useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
+
+import { AiFillHome as HomeIcon }                 from "react-icons/ai";
+import {FaRegBell as BellIcon}   from  'react-icons/fa'
+import {BsEnvelope as MessageIcon}               from 'react-icons/bs'
+
 
 const HomeFooter = ()=>{
     const location = useLocation();
     const urlpath = location.pathname;
+    const [clickedIcon, setCliCkedIcon]= useState(null)
 
+     
     const navlinks = [
         {
             id: 0,
             url: "/home",
-            icon: <AiFillHome size={30} />,
+            icon: <HomeIcon size={25} />,
         },
-        // {
-        //     id: 1,
-        //     url: "/messages",
-        //     icon: <RxEnvelopeClosed size={30} />,
-        // },
+        {
+            id: 1,
+            url: "/messages",
+            icon: <MessageIcon size={25} />,
+        },
         {
             id: 2,
             url: "/notifications",
-            icon: <HiOutlineBell size={30} />,
+            icon: <BellIcon size={25} />,
         }
     ]
 
+    //my styles
+    // // ]
+    //     const navlinks = [
+    //     {
+    //         id: 0,
+    //         url: "/home",
+    //         icon: HomeIcon
+    //     },
+    //     {
+    //         id: 1,
+    //         url: "/messages",
+    //         icon: Envelope
+    //     },
+    //     {
+    //         id: 2,
+    //         url: "/notifications",
+    //         icon: BellIcon
+    //     }
+    // ]
+
+    function handleClick(){
+        // setIcon
+    }
+
     return (
-        <div className='w-full flex z-10 justify-evenly fixed bottom-0 border-t border-y-[#4B5563] bg-black py-3 '>
-            {
-                navlinks.map(nav => {
+            <div className='w-full flex z-10 items-center  justify-between  bottom-0 border-t border-y-[#4B5563] bg-black py-3 px-2 fixed h-20'>
+                {
+                 navlinks.map(nav => {
                     return(
-                        <Link 
-                            to={nav.url} 
-                            key={nav.id} 
-                            className={`cursor-pointer ${urlpath === nav.url ? 'text-[#f33f5e]' : 'text-gray-400'} hover:text-[#f33f5e]`}
+                            <NavLink
+                                to={nav.url} 
+                                key={nav.id} 
+                                className={({isActive})=>isActive? (` cursor-pointer ${urlpath === nav.url ? 'text-[#f33f5e]' : 'text-gray-400'} hover:text-[#f33f5e]  w-16 h-12 flex justify-center items-center border-b-[2px]`) : (`cursor-pointer ${urlpath === nav.url ? 'text-[#f33f5e]' : 'text-gray-400'} hover:text-[#f33f5e]  w-16 h-12 flex justify-center items-center border-b-[2px] border-black`) 
+                                }
+                                onClick={handleClick}
+                            
                         >
                             {nav.icon}
-                        </Link>
-                    )
-                })
-            }
-        </div>
+                         </NavLink>
+                     )
+                 })
+                }
+                {/*<Bell />*/}
+            </div> 
+
+        // <div className='w-full flex z-10 justify-evenly fixed bottom-0 border-t border-y-[#4B5563] bg-black py-3 '>
+        //     {
+        //         navlinks.map(nav => {
+        //             return(
+        //                 <Link 
+        //                     to={nav.url} 
+        //                     key={nav.id} 
+        //                     className={`cursor-pointer ${urlpath === nav.url ? 'text-[#f33f5e]' : 'text-gray-400'} hover:text-[#f33f5e]`}
+        //                 >
+        //                     {nav.icon}
+        //                 </Link>
+        //             )
+        //         })
+        //     }
+
+
+        // // </div>
+        // <div>
+        //     <img  src={HomeIcon} />
+
+
+        // </div>
     )
 
 }
