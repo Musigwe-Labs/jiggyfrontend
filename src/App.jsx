@@ -7,6 +7,7 @@ import AuthContextProvider from './contexts/AuthContext'
 import Dashboard from './components/private/dashboard/Dashboard'
 import { Privacy } from './components/private/dashboard/Privacy'
 import Messages from './components/private/dashboard/Messages'
+import Notifications from './components/private/dashboard/Notifications'
 import Chat from './components/private/dashboard/Chat'
 import "./App.css";
 import { Wrapper } from './components/private/common/Wrapper'
@@ -27,6 +28,7 @@ const App = () => {
               <Route exact path='/dashboard' element={Wrapper(Dashboard)} />
               <Route exact path='/privacy' element={Wrapper(Privacy)} />
               <Route exact path='/messages' element={Wrapper(Messages)} />
+               <Route exact path='/notifications' element={Wrapper(Notifications)} />
               <Route exact path='/chat/:friend_name' element={Wrapper(Chat)} />
             </Routes>
           </Router>
