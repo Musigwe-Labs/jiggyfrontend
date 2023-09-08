@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+  /* eslint-disable react/prop-types */
 import { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HomeHeader from './homeHeader'

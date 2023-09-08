@@ -9,8 +9,10 @@ import { Privacy } from './components/private/dashboard/Privacy'
 import Messages from './components/private/dashboard/Messages'
 import Notifications from './components/private/dashboard/Notifications'
 import Chat from './components/private/dashboard/Chat'
-import "./App.css";
+import "./App.css"
 import { Wrapper } from './components/private/common/Wrapper'
+
+
 const App = () => {
 
   return (
