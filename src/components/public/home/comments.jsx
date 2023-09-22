@@ -47,18 +47,18 @@ const Comment = ({ post, setSelectedPost }) => {
     const throttledApiRequest = _.throttle(handleSendComment, 2000)
 
     return(
-        <div className='z-50 max-h-screen pt-4 px-3'>
+        <div className='z-50 h-screen pt-4 px-3 flex flex-col'>
             <div className='flex align-center'>
                 <FaArrowLeftLong size={25} onClick={()=>setSelectedPost(null)} className='cursor-pointer'/>
                 <h1 className='text-3xl ml-6 text-center font-bold from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br bg-clip-text text-transparent'>Comment</h1>
             </div>
             <div className='z-10 md:mx-10 p-3'>
               <CommentInfo school={post.user.school} name={post.user.generated_username} />
-              <Gist post={post} />
-              <GistLinks post={post}/>
+              <Gist content={post.content}/>
+              <GistLinks post={post} />
             </div>
                 <p className='px-3 my-3 text-gray-400'>{post.comments.length} comments</p>
-            <div className='mx-2 max-h-screen overflow-auto border-l border-gray-500'>
+            <div className='mx-2 flex-1 overflow-auto border-l border-gray-500'>
                 {
                     post.comments.map((comment) =>{
                         return(
@@ -75,10 +75,10 @@ const Comment = ({ post, setSelectedPost }) => {
                     })
                 }
             </div>
-            <div className="mt-auto w-[100%] border-t border-gray-500 left-0 bottom-0 py-2 px-2">
+            <div className="mt-auto w-[100%] border-t border-gray-500 left-0 bottom-0 py-2">
                 <textarea
                 style={{ height: inputHeight }}
-                className="resize-none bg-transparent p-2 border-b border-gray-600 w-[85%] rounded-md text-white focus:outline-none focus:border-gray-600 focus:border"
+                className="resize-none bg-transparent p-2 border-b border-gray-600 w-[88.5%] rounded-md text-white focus:outline-none focus:border-gray-600 focus:border"
                 placeholder="Comment your thought"
                 value={inputValue}
                 onChange={handleInputChange}

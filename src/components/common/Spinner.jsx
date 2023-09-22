@@ -1,4 +1,4 @@
-import React from 'react'
+
 import spin from '../../assets/spinner2.png'
 
 const Spinner = () => {
