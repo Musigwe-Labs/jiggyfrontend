@@ -65,3 +65,22 @@
   display: block;
 }
 
+
+.custom-slider:hover {
+  opacity: 1;
+}
+
+.custom-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 30px;
+  height: 30px;
+  background: #4caf50;
+  cursor: pointer;
+}
+.custom-slider::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  background: #4caf50;
+  cursor: pointer;
+}
