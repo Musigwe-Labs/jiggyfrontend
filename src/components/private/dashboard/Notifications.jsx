@@ -10,7 +10,7 @@ const notifications=[
 			day:'today',
 			note:[
 				{
-					id:'123456',
+					id:'123456h',
 					text: [
 						"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, ea est, atque ."
 					],
@@ -22,7 +22,7 @@ const notifications=[
 					}
 				},
 				{
-					id:'123456',
+					id:'1234g56',
 					text: [
 						"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, ea est, atque ."
 					],
@@ -52,7 +52,7 @@ const notifications=[
 					}
 				},
 				{
-					id:'123456',
+					id:'123r456',
 					text: [
 						"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, ea est, atque ."
 					],
@@ -67,10 +67,10 @@ const notifications=[
 			]	
 		},
 		{
-			day:'today',
+			day:'Friday',
 			note:[
 				{
-					id:'123456',
+					id:'123457',
 					text: [
 						"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, ea est, atque ."
 					],
@@ -82,7 +82,7 @@ const notifications=[
 					}
 				},
 				{
-					id:'123456',
+					id:'123456a',
 					text: [
 						"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, ea est, atque ."
 					],
@@ -97,10 +97,10 @@ const notifications=[
 			]	
 		},
 		{
-			day:'yesterday',
+			day:'Thursday',
 			note:[
 				{
-					id:'123456',
+					id:'1234h5b',
 					text: [
 						"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, ea est, atque ."
 					],
@@ -112,7 +112,7 @@ const notifications=[
 					}
 				},
 				{
-					id:'123456',
+					id:'123ee456',
 					text: [
 						"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, ea est, atque ."
 					],
@@ -152,12 +152,12 @@ return(
 						<h6 className='day pl-12 py-4 text-[.75rem] font-bold capitalize'>{el.day}</h6>
 						{el.note.map(notification=>(
 							<div className=" note-wrapper flex  mb-4" key={notification.id}>
-								<div className="note-hero bg-gradient-to-b from-[red,33%] via-[blue, 66%] to-[#fff]  w-6 h-6 border-2  leading-[2.5rem] text-center"> </div>
-								<div className="note-msg pl-4 w-60 h-8 text-[10px] flex flex-col"> 
-									<p className=" grow">{notification.text.at(-1)}</p>
+								<div className="note-hero bg-gradient-to-b from-[red,33%] via-[blue, 66%] to-[#fff]  w-10 h-10 border-2  leading-[2.5rem] text-center"> </div>
+								<div className="note-msg pl-4  text-[10px] flex flex-col "> 
+									<p className="w-60 h-6 overflow-hidden text-ellipsis whitespace-nowrap">{notification.text.at(-1)}</p>
 									<p className="note-time text-gray-400">{notification.time}</p>
 									</div>
-								<p className={`note-count ${notification.read?'bg-black': "bg-[#F84135] "} rounded-full min-h-[1.5rem] min-w-[1.5rem] text-[10px] text-center self-center ml-4 leading-[22px] `}>{notification.notificationCount()}</p>
+								<p className={`note-count ${notification.read?'bg-black': "bg-[#F84135] "} rounded-full min-h-[1.5rem] min-w-[1.5rem] text-[10px] text-center self-start ml-4 leading-[22px] `}>{notification.notificationCount()}</p>
 							</div>
 
 							))}
