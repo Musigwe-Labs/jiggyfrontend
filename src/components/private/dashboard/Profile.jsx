@@ -18,8 +18,8 @@ export const Profile = ({ setProfilePage }) => {
   const { logout } = useContext(AuthContext);
 
   return (
-    <div className="fixed top-0 z-50 flex w-[100%]">
-      <div className="flex flex-col justify-between h-[100vh] pt-6 pb-6 w-3/4 bg-black">
+    <div className="fixed top-0 z-50 flex w-[100%] bg-[rgba(20,20,20,.3)] ">
+      <div className="shadow-[0_0_5px_0px] shadow-[rgba(150,150,105,.4)] flex flex-col justify-between h-[100vh] pt-6 pb-6 w-3/4 bg-black">
         <div>
           <header className="flex flex-col  font-bold items-center">
             <h2 className="text-3xl font-['Playfair_Display',_serif] ml-6 font-bold from-[#f33f5e] via-[#ff008a9e] to-[#b416fe66] bg-gradient-to-r bg-clip-text text-transparent">

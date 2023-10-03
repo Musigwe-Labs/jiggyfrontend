@@ -4,8 +4,9 @@ import Gist from "./gist";
 import GistLinks from "./gistLinks";
 import HomeInfo from "./homeInfo";
 import { PostType } from "./postType";
+import Spinner from "../../common/Spinner";
 
-const Posts = ({ posts, onPostClick, filterBy }) => {
+const Posts = ({ posts, onPostClick, filterBy, isLoading }) => {
   const [sortedPostsByTime, setSortedPostsByTime] = useState([]);
   useEffect(() => {
     sortPosts();
@@ -13,6 +14,7 @@ const Posts = ({ posts, onPostClick, filterBy }) => {
   const sortPosts = async () => {
     let postsToBeSorted = posts;
     // console.log(postsToBeSorted);
+
     const sortedPosts = await postsToBeSorted.sort((post1, post2) => {
       let post1date = new Date(post1.created_at);
       let post2date = new Date(post2.created_at);
@@ -21,6 +23,7 @@ const Posts = ({ posts, onPostClick, filterBy }) => {
     });
     setSortedPostsByTime(sortedPosts);
   };
+  if (isLoading) return <Spinner />;
   return (
     <div className="pb-[29px]">
       {sortedPostsByTime.map((post) => {

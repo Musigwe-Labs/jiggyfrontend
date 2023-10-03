@@ -49,6 +49,7 @@ function Feedback() {
           {emojis.map(({ emoji, value }, index) => (
             <div
               className="flex flex-col items-center my-4"
+              key={index}
               style={{
                 opacity: rangeValue == index ? "1" : ".2",
                 transition: "all .3s ease",

@@ -6,9 +6,9 @@ import Gist from "../gist";
 import GistLinks from "../gistLinks";
 import { PostType } from "../postType";
 import timeGap from "../../../../services/dateCheck";
-import { useNavigate } from "react-router-dom";
+import Spinner from "../../../common/Spinner";
 
-const Trending = ({ posts, onPostClick }) => {
+const Trending = ({ posts, onPostClick, isLoading={isLoading} }) => {
   const [trendingPostsByComments, setTrendingPostsByComments] = useState([]);
   // const [trendingPostsByViews, setTrendingPostsByViews] = useState([]);
   const [trendingPostsByLikes, setTrendingPostsByLikes] = useState([]);
@@ -33,12 +33,12 @@ const Trending = ({ posts, onPostClick }) => {
         : 0
     );
 
-    // let viewsSortedPosts = await posts.sort((post1, post2) =>
-    //   post1.views > post2.views ? -1 : post1.views < post2.views ? 1 : 0
-    // );
+ 
     setTrendingPostsByLikes(likeSortedPosts);
     setTrendingPostsByComments(commentSortedPosts.slice(0, 10));
   };
+  if (isLoading) return <Spinner />;
+
   return (
     <div>
       <Spotlight posts={trendingPostsByComments} onPostClick={onPostClick} />
