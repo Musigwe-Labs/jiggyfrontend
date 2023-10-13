@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import HomeHeader from "./homeHeader";
 import HomeTabs from "./homeTabs";
@@ -17,6 +17,7 @@ import { GiDualityMask } from "react-icons/gi";
 import { BsCheckCircleFill, BsFileWordFill } from "react-icons/bs";
 import { useWebSocket } from "../../../contexts/webSocketContext";
 import SharePost from "./sharePost";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 export const PostSharing = createContext();
 const Home = () => {
@@ -25,14 +26,16 @@ const Home = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isAll, setIsAll] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [initialPosts, setInitialPosts] = useState([]);
   const [selectedTab, setSelectedTab] = useState("all");
   const { isRecievedData, setIsRecievedData } = useWebSocket();
   const [sharePost, setSharePost] = useState({ post: {}, view: false });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [userDetails, setUserDetails] = useState();
 
   const navigate = useNavigate();
-
+  // const { key } = useContext(AuthContext);
   const handlePostClick = (post) => {
     setSelectedPost(post);
   };
@@ -41,16 +44,41 @@ const Home = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get("annon/posts/");
+        setInitialPosts(response.data);
         setPosts(response.data);
         setIsRecievedData(false);
-        setIsLoading(false)
+        setIsLoading(false);
       } catch (err) {
-        setError(err.message)
+        setError(err.message);
       }
     };
+    // const headers = {
+    //   Authorization: `Token ${key}`,
+    // };
+    // const fetchUser = async () => {
+    //   try {
+    //     const user_response = await axios.get("account/annonyuser/", {
+    //       headers,
+    //     });
+    //     setUserDetails(user_response.data);
+    //     console.log(user_response.data);
+    // console.log(userDetails.user);
+
+    //   } catch (error) {}
+    // };
+    // fetchUser();
     fetchPosts();
   }, [isRecievedData]);
-
+  // let handleSchoolFilter = (school) => {
+  //   console.log(initialPosts);
+  //   if (school !== "all" && initialPosts.length > 0) {
+  //     let schoolPosts = initialPosts.filter(
+  //       (post) => post.user.school.school_acronym.toLowerCase() === school.toLowerCase()
+  //     );
+  //     console.log(schoolPosts);
+  //     setPosts(schoolPosts);
+  //   } else setPosts(initialPosts);
+  // };
   if (createPost) {
     return <CreatePostPage setCreatePost={setCreatePost} />;
   }
@@ -67,7 +95,6 @@ const Home = () => {
           <SharePost sharePost={sharePost} setSharePost={setSharePost} />
         )}
       </PostSharing.Provider>
-      
     );
   }
   return (
@@ -96,7 +123,8 @@ const Home = () => {
             >
               <div
                 className="flex justify-between p-2 cursor-pointer items-center"
-                onClick={() => navigate("/dashboard")}
+                // onClick={() => handleSchoolFilter("all")}
+
               >
                 <FiGlobe size={20} color="#752626" />
                 <p
@@ -110,20 +138,22 @@ const Home = () => {
                   className="border-[1px] border-solid border-[#490A0A] rounded-full"
                 />
               </div>
-              <div className="flex justify-between p-2 cursor-pointer items-center mb-2">
+              <div
+                // onClick={() => handleSchoolFilter(userDetails.user.school.school_acronym)}
+                className="flex justify-between p-2 cursor-pointer items-center mb-2"
+              >
                 <FiBookOpen size={20} fill="#752626" />
                 <p
                   className="opacity-70"
                   style={{ textShadow: "0 0 2px #490A0A" }}
                 >
-                  FUTO
+                  {/* {userDetails && userDetails.user.school.school_acronym} */}
                 </p>
                 <BsCheckCircleFill
                   fill="#BA3131"
                   className="border-[1px] border-solid border-[#490A0A] rounded-full"
                 />
               </div>
-              
             </div>
           </div>
         </div>
@@ -134,7 +164,12 @@ const Home = () => {
           value={{ sharePost: sharePost, setSharePost: setSharePost }}
         >
           {selectedTab === "all" ? (
-            <Posts posts={posts} error={error} isLoading={isLoading} onPostClick={handlePostClick} />
+            <Posts
+              posts={posts}
+              error={error}
+              isLoading={isLoading}
+              onPostClick={handlePostClick}
+            />
           ) : (
             // <div>Trending</div>
             <Trending posts={posts} isLoading={isLoading} />

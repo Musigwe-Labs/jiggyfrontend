@@ -9,7 +9,9 @@ const Gist = ({ content, showFullGist, images }) => {
       >
         {content}
       </p>
-      <img src={images} className="w-3/5 mx-auto" alt="post_image" srcset={images} />
+      {images && (
+        <img src={images} className="w-3/5 mx-auto" alt="post_image" />
+      )}
     </div>
   );
 };

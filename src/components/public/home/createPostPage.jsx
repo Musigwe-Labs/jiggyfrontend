@@ -47,8 +47,9 @@ const CreatePostPage = ({ setCreatePost }) => {
     formData.append("images", imageSrc[0]);
    
     try {
-      await axios.post("annon/posts/create/", formData, { headers });
+      let post = await axios.post("annon/posts/create/", formData, { headers });
       setCreatePost(false);
+console.log(post.data);
     } catch (error) {
       console.log(error);
     }
@@ -98,6 +99,8 @@ const CreatePostPage = ({ setCreatePost }) => {
       onSubmit={throttledApiRequest}
       className="fixed top-0 z-50 flex py-8 flex-col h-screen w-full bg-[#000]"
     >
+      <div>
+
       <div className="flex justify-between px-5  pb-2 border-b align-center">
         <LiaTimesCircleSolid
           size="25"
@@ -177,14 +180,15 @@ const CreatePostPage = ({ setCreatePost }) => {
           </div>
         </div>
       </div>
+      </div>
       <textarea
         name="content"
         value={content}
         onChange={handleTextareaChange}
         placeholder="Secret crush ? Confession ? Share ? what's on your mind...."
-        className="focus:outline-none text-[20px] post-placeholder"
+        className="focus:outline-none text-[20px] max-h-3/5 post-placeholder"
       ></textarea>
-      <footer className="mt-auto">
+      <footer className="mt-auto h-auto">
         <div className="px-5">
           <output className="flex gap-2">
             {previewImgSrcs.map((imgSrc, index) => (
