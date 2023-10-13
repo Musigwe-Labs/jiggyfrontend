@@ -11,7 +11,7 @@ import {
   LiaTimesCircleSolid,
 } from "react-icons/lia";
 import axios from "../../../services/axios";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
 import _, { forIn } from "lodash";
 import { BsCaretDown, BsCaretDownFill, BsImages } from "react-icons/bs";
@@ -22,7 +22,9 @@ const CreatePostPage = ({ setCreatePost }) => {
   const [targeted_school, setTargetedSchool] = useState("All");
   const [openDropdown, setOpenDropdown] = useState(false);
   const [previewImgSrcs, setPreviewImgSrcs] = useState([]);
-  const [imgSrcs, setImgSrcs] = useState([]);
+  const [imageSrc, setImageSrc] = useState([]);
+  const postBtn = useRef();
+  const form = useRef();
   const handleTextareaChange = (e) => {
     setContent(e.target.value);
   };
@@ -34,12 +36,18 @@ const CreatePostPage = ({ setCreatePost }) => {
   const { key } = useContext(AuthContext);
   const headers = {
     Authorization: `Token ${key}`,
+    "Content-Type": "multipart/form-data",
   };
 
-  const handlePost = async () => {
+  const handlePost = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form.current, postBtn.current);
+    formData.append("content", content);
+    formData.append("post_type", post_type);
+    formData.append("images", imageSrc[0]);
+   
     try {
-      const data = { content, post_type, targeted_school };
-      await axios.post("annon/posts/create/", data, { headers });
+      await axios.post("annon/posts/create/", formData, { headers });
       setCreatePost(false);
     } catch (error) {
       console.log(error);
@@ -54,7 +62,8 @@ const CreatePostPage = ({ setCreatePost }) => {
   });
   const handlePreviewImg = (e) => {
     const files = e.target.files;
-    console.log(files);
+    setImageSrc([e.target.files[0]]);
+
     for (const file in files) {
       if (Object.hasOwnProperty.call(files, file)) {
         if (files[file]) {
@@ -62,7 +71,6 @@ const CreatePostPage = ({ setCreatePost }) => {
             ...previewImgSrcs,
             URL.createObjectURL(files[file]),
           ]);
-          setImgSrcs([...imgSrcs, files[file]]);
         }
       }
     }
@@ -71,7 +79,7 @@ const CreatePostPage = ({ setCreatePost }) => {
     setPreviewImgSrcs(
       previewImgSrcs.filter((imgSrcs, imgIndex) => imgIndex !== index)
     );
-    setImgSrcs(imgSrcs.filter((imgSrcs, imgIndex) => imgIndex !== index));
+    setImageSrc(imageSrc.filter((imgSrcs, imgIndex) => imgIndex !== index));
   };
   // const handlePost= ()=>{
   //     const data = { content , post_type }
@@ -85,7 +93,11 @@ const CreatePostPage = ({ setCreatePost }) => {
   const throttledApiRequest = _.throttle(handlePost, 3500);
 
   return (
-    <div className="fixed top-0 z-50 flex py-8 flex-col h-screen w-full bg-[#000]">
+    <form
+    ref={form}
+      onSubmit={throttledApiRequest}
+      className="fixed top-0 z-50 flex py-8 flex-col h-screen w-full bg-[#000]"
+    >
       <div className="flex justify-between px-5  pb-2 border-b align-center">
         <LiaTimesCircleSolid
           size="25"
@@ -98,13 +110,18 @@ const CreatePostPage = ({ setCreatePost }) => {
         <p className="font-bold">Create an anonymous post</p>
         <button
           className="text-[#F33F5E] text-lg"
-          onClick={throttledApiRequest}
+          onSubmit={throttledApiRequest}
+          type="submit"
+          ref={postBtn}
         >
           Post
         </button>
       </div>
       <div>
-        <button className={`${post_type} rounded-full px-2 mx-3 mt-3 mb-1`}>
+        <button
+          name="post_type"
+          className={`${post_type} rounded-full px-2 mx-3 mt-3 mb-1`}
+        >
           {post_type}
         </button>
         <div className="inline-block">
@@ -161,97 +178,99 @@ const CreatePostPage = ({ setCreatePost }) => {
         </div>
       </div>
       <textarea
+        name="content"
         value={content}
         onChange={handleTextareaChange}
         placeholder="Secret crush ? Confession ? Share ? what's on your mind...."
         className="focus:outline-none text-[20px] post-placeholder"
       ></textarea>
       <footer className="mt-auto">
-      <div className="px-5">
-        <output className="flex gap-2">
-          {previewImgSrcs.map((imgSrc, index) => (
-            <figure
-              key={index}
-              style={{ backgroundImage: `url(${imgSrc})` }}
-              className={` transition-all duration-300 ease-linear aspect-[9/16] bg-cover bg-center rounded-lg w-[5rem] h-[7rem] relative`}
-            >
-              <LiaTimesCircleSolid
-                onClick={() => handleRemoveImage(index)}
-                className="absolute cursor-pointer hover:text-lg transition-all duration-300 ease-linear bg-[#321616] rounded-full top-1 right-1"
-              />
-            </figure>
-          ))}
-        </output>
-      </div>
+        <div className="px-5">
+          <output className="flex gap-2">
+            {previewImgSrcs.map((imgSrc, index) => (
+              <figure
+                key={index}
+                style={{ backgroundImage: `url(${imgSrc})` }}
+                className={` transition-all duration-300 ease-linear aspect-[9/16] bg-cover bg-center rounded-lg w-[5rem] h-[7rem] relative`}
+              >
+                <LiaTimesCircleSolid
+                  onClick={() => handleRemoveImage(index)}
+                  className="absolute cursor-pointer hover:text-lg transition-all duration-300 ease-linear bg-[#321616] rounded-full top-1 right-1"
+                />
+              </figure>
+            ))}
+          </output>
+        </div>
 
-      <div className="px-3">
-        <button
-          className="Confession rounded-full px-2 m-2"
-          onClick={() => handleBtnClick("Confession")}
-        >
-          Confession
-        </button>
-        <button
-          className="Question rounded-full px-2 m-2"
-          onClick={() => handleBtnClick("Question")}
-        >
-          Question
-        </button>
-        <button
-          className="Crush rounded-full px-2 m-2"
-          onClick={() => handleBtnClick("Crush")}
-        >
-          Crush
-        </button>
-        <button
-          className="DM rounded-full px-2 m-2"
-          onClick={() => handleBtnClick("DM")}
-        >
-          DM
-        </button>
-        <button
-          className="Advice rounded-full px-2 m-2"
-          onClick={() => handleBtnClick("Advice")}
-        >
-          Advice
-        </button>
-        <button
-          className="Cruise rounded-full px-2 m-2"
-          onClick={() => handleBtnClick("Cruise")}
-        >
-          Cruise
-        </button>
-        <button
-          className="Talk rounded-full px-2 m-2"
-          onClick={() => handleBtnClick("Talk")}
-        >
-          Talk
-        </button>
-        <button
-          className="Others rounded-full px-2 m-2"
-          onClick={() => handleBtnClick("Others")}
-        >
-          Others
-        </button>
-      </div>
-      <div className="px-5 mt-2">
-        <label
-          className="cursor-pointer  transition-all duration-300 ease-linear"
-          htmlFor="imageUpload"
-        >
-          <BsImages color="#F33F5E" size={"2rem"} />
-        </label>
-        <input
-          type="file"
-          accept="image/*"
-          className="hidden"
-          id="imageUpload"
-          multiple={true}
-          onChange={(e) => handlePreviewImg(e)}
-        />
-      </div>
+        <div className="px-3">
+          <button
+            className="Confession rounded-full px-2 m-2"
+            onClick={() => handleBtnClick("Confession")}
+          >
+            Confession
+          </button>
+          <button
+            className="Question rounded-full px-2 m-2"
+            onClick={() => handleBtnClick("Question")}
+          >
+            Question
+          </button>
+          <button
+            className="Crush rounded-full px-2 m-2"
+            onClick={() => handleBtnClick("Crush")}
+          >
+            Crush
+          </button>
+          <button
+            className="DM rounded-full px-2 m-2"
+            onClick={() => handleBtnClick("DM")}
+          >
+            DM
+          </button>
+          <button
+            className="Advice rounded-full px-2 m-2"
+            onClick={() => handleBtnClick("Advice")}
+          >
+            Advice
+          </button>
+          <button
+            className="Cruise rounded-full px-2 m-2"
+            onClick={() => handleBtnClick("Cruise")}
+          >
+            Cruise
+          </button>
+          <button
+            className="Talk rounded-full px-2 m-2"
+            onClick={() => handleBtnClick("Talk")}
+          >
+            Talk
+          </button>
+          <button
+            className="Others rounded-full px-2 m-2"
+            onClick={() => handleBtnClick("Others")}
+          >
+            Others
+          </button>
+        </div>
+        <div className="px-5 mt-2">
+          <label
+            className="cursor-pointer  transition-all duration-300 ease-linear"
+            htmlFor="imageUpload"
+          >
+            <BsImages color="#F33F5E" size={"2rem"} />
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            id="imageUpload"
+            name="image"
+            multiple={true}
+            onChange={(e) => handlePreviewImg(e)}
+          />
+        </div>
       </footer>
-    </div>
+    </form>
   );
 };
 

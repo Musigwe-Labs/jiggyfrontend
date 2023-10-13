@@ -12,9 +12,9 @@ import Comment from "./comments";
 import Posts from "./posts";
 import axios from "../../../services/axios";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
-import { FiPhone } from "react-icons/fi";
+import { FiBookOpen, FiGlobe, FiPhone } from "react-icons/fi";
 import { GiDualityMask } from "react-icons/gi";
-import { BsCheckCircleFill } from "react-icons/bs";
+import { BsCheckCircleFill, BsFileWordFill } from "react-icons/bs";
 import { useWebSocket } from "../../../contexts/webSocketContext";
 import SharePost from "./sharePost";
 
@@ -29,7 +29,7 @@ const Home = () => {
   const { isRecievedData, setIsRecievedData } = useWebSocket();
   const [sharePost, setSharePost] = useState({ post: {}, view: false });
   const [isLoading, setIsLoading] = useState(true);
-
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -44,8 +44,8 @@ const Home = () => {
         setPosts(response.data);
         setIsRecievedData(false);
         setIsLoading(false)
-      } catch (error) {
-        console.error("Error fetching posts:", error);
+      } catch (err) {
+        setError(err.message)
       }
     };
     fetchPosts();
@@ -94,8 +94,24 @@ const Home = () => {
                 !isAll ? "h-0" : "h-24"
               }`}
             >
+              <div
+                className="flex justify-between p-2 cursor-pointer items-center"
+                onClick={() => navigate("/dashboard")}
+              >
+                <FiGlobe size={20} color="#752626" />
+                <p
+                  className="opacity-70"
+                  style={{ textShadow: "0 0 2px #490A0A" }}
+                >
+                  All
+                </p>
+                <BsCheckCircleFill
+                  fill="#8D6666"
+                  className="border-[1px] border-solid border-[#490A0A] rounded-full"
+                />
+              </div>
               <div className="flex justify-between p-2 cursor-pointer items-center mb-2">
-                <GiDualityMask size={20} fill="#752626" />
+                <FiBookOpen size={20} fill="#752626" />
                 <p
                   className="opacity-70"
                   style={{ textShadow: "0 0 2px #490A0A" }}
@@ -107,22 +123,7 @@ const Home = () => {
                   className="border-[1px] border-solid border-[#490A0A] rounded-full"
                 />
               </div>
-              <div
-                className="flex justify-between p-2 cursor-pointer items-center"
-                onClick={() => navigate("/dashboard")}
-              >
-                <FiPhone size={20} color="#752626" />
-                <p
-                  className="opacity-70"
-                  style={{ textShadow: "0 0 2px #490A0A" }}
-                >
-                  Jiggy
-                </p>
-                <BsCheckCircleFill
-                  fill="#8D6666"
-                  className="border-[1px] border-solid border-[#490A0A] rounded-full"
-                />
-              </div>
+              
             </div>
           </div>
         </div>
@@ -133,7 +134,7 @@ const Home = () => {
           value={{ sharePost: sharePost, setSharePost: setSharePost }}
         >
           {selectedTab === "all" ? (
-            <Posts posts={posts} isLoading={isLoading} onPostClick={handlePostClick} />
+            <Posts posts={posts} error={error} isLoading={isLoading} onPostClick={handlePostClick} />
           ) : (
             // <div>Trending</div>
             <Trending posts={posts} isLoading={isLoading} />
