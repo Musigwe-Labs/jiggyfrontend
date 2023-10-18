@@ -117,13 +117,12 @@ const Login = () => {
 
         <div className="flex justify-between text-gray-300 space-x-4 items-center">
           <div className="grow border border-gray-500 h-0"></div>
-          <div>Or signin with</div>
+          <div>Or sign in with</div>
           <div className="grow border border-gray-500 h-0"></div>
         </div>
        
-        <div className="alternate-sign-in  flex justify-center gap-x-8 my-6">
+        <div className="alternate-sign-in  flex justify-center my-6">
           <GoogleButton />
-          <MSoftButton />
         </div>
 
         <div className="flex justify-center text-gray-400 space-x-1 my-10">

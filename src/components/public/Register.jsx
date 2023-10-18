@@ -126,7 +126,6 @@ const Register = () => {
                 </div>
                 <div className="alternate-sign-in  flex justify-center gap-x-8 my-6">
                   <GoogleButton />
-                  <MSoftButton />
                 </div>
                         {/* <AuthIcons /> */}
                 <div className='flex justify-center text-gray-400 space-x-1 my-10'>
