@@ -9,6 +9,7 @@ import { registerUser } from "../../apis/authenticationApis";
 import Select from "react-select";
 import axios from "../../services/axios";
 import Spinner from "../common/Spinner";
+import PasswordInput from "../common/PasswordInput";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -94,29 +95,7 @@ if(isLoading) return <Spinner />
             </div>
 
             <div>
-              <div className="relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max">
-                Password
-              </div>
-              <input
-                type="password"
-                className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
-                placeholder="Enter password"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-
-            <div>
-              <div className="relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max">
-                Confirm Password
-              </div>
-              <input
-                type="password"
-                className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
-                placeholder="Retype your password"
-                onChange={(e) => setConfirm_password(e.target.value)}
-                required
-              />
+              <PasswordInput />
             </div>
 
             <div>
@@ -147,7 +126,6 @@ if(isLoading) return <Spinner />
         </div>
         <div className="alternate-sign-in  flex justify-center gap-x-8 my-6">
           <GoogleButton />
-          <MSoftButton />
         </div>
         {/* <AuthIcons /> */}
         <div className="flex justify-center text-gray-400 space-x-1 my-10">
