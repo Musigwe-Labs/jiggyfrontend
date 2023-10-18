@@ -2,15 +2,17 @@
 import { FaRegComments } from 'react-icons/fa'
 import { AiOutlineEye , AiOutlineShareAlt } from 'react-icons/ai'
 import { IoMdFlame } from 'react-icons/io'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import './home.css'
 import axios from "../../../services/axios";
+import { PostSharing } from './Home'
 
 // import axios from 'axios'
 
 const GistLinks = ({ post , setComment}) => {
     let {likes, comments, views, shared} = post;
-   
+    const {setSharePost} = useContext(PostSharing);
+    
     const [isLiked , setIsLiked] = useState(false)  //currently using a state but we will have to get this info from the backend
     // const [isSeen , setIsSeen] = useState(false)  //currently using a state but we will have to get this info from the backend
     // const [likes, setLikes] = useState()
@@ -21,7 +23,9 @@ const GistLinks = ({ post , setComment}) => {
             console.error('Error sending like',error)
         }
     }
-
+    let handlePostSharing = (post) => {
+        setSharePost({post: post, view: true})
+      }
     return (
     <div className='flex justify-between px-5 mt-4 text-white'>
         <div className='flex items-center cursor-pointer' onClick={()=>{setComment(true)}}>
@@ -38,7 +42,7 @@ const GistLinks = ({ post , setComment}) => {
             <AiOutlineEye className='cursor-pointer text-2xl'/>
             <p className='ml-3'>{views}</p>
         </div>
-        <AiOutlineShareAlt  className='cursor-pointer text-2xl'/>
+        <AiOutlineShareAlt  className='cursor-pointer text-2xl' onClick={() => handlePostSharing(post)}/>
     </div>
 )
   }

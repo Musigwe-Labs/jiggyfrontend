@@ -12,7 +12,7 @@
   background : transparent; 
   padding: 1rem;
   resize:none; 
-  height:60%; 
+  /* height:60%;  */
 }
 .post-placeholder::placeholder{
   color:rgb(139, 139, 139);

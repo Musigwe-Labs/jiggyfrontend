@@ -54,7 +54,7 @@ const Comment = ({ post, setSelectedPost }) => {
             </div>
             <div className='z-10 md:mx-10 p-3'>
               <CommentInfo school={post.user.school} name={post.user.generated_username} />
-              <Gist content={post.content}/>
+              <Gist content={post.content} images={post.images}/>
               <GistLinks post={post} />
             </div>
                 <p className='px-3 my-3 text-gray-400'>{post.comments.length} comments</p>

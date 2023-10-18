@@ -1,15 +1,15 @@
 
-import spin from '../../assets/spinner2.png'
+import spin from "../../assets/jiggy.png"
 
 const Spinner = () => {
 
     return (
-        <div className="w-full">
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <img 
                 src={spin}
                 alt="Loading..."
-                className='animate-spin'
-                style={{ width: '135px', margin: '0px auto', display: 'block' }}
+                className='animate_popping'
+                style={{ width: '4rem', margin: '0px auto', display: 'block' }}
             />
         </div>
     )
