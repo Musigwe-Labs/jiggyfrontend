@@ -63,18 +63,19 @@ const Home = () => {
         });
         setUserDetails(user_response.data);
         console.log(user_response.data);
-    console.log(userDetails.user);
-
+        console.log(userDetails.user);
       } catch (error) {}
     };
     fetchUser();
     fetchPosts();
   }, [isRecievedData]);
   let handleSchoolFilter = (school) => {
-    setSelectedSchool(school.toUpperCase())
+    setSelectedSchool(school.toUpperCase());
     if (school !== "all" && initialPosts.length > 0) {
       let schoolPosts = initialPosts.filter(
-        (post) => post.user.school && post.user.school.school_acronym.toLowerCase() === school.toLowerCase()
+        (post) =>
+          post.user.school &&
+          post.user.school.school_acronym.toLowerCase() === school.toLowerCase()
       );
       setPosts(schoolPosts);
     } else setPosts(initialPosts);
@@ -102,60 +103,68 @@ const Home = () => {
       <div className="grow">
         {profilePage ? <Profile setProfilePage={setProfilePage} /> : ""}
         <div className="sticky top-0 bg-black">
-          <HomeHeader setProfilePage={setProfilePage} />
+          <HomeHeader
+            setProfilePage={setProfilePage}
+            userDetails={userDetails}
+          />
           <HomeTabs setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
-          <div className="my-2 ml-4 flex relative">
-            <span
-              className="flex items-center border-b-2 px-1 border-y-[#00CCCC]"
-              onClick={() => setIsAll(!isAll)}
-            >
-              <p className="text-[#00CCCC] font-bold mr-1">{selectedSchool}</p>
-              {isAll ? (
-                <FaAngleUp color="gray" size={17} />
-              ) : (
-                <FaAngleDown color="gray" size={17} />
-              )}
-            </span>
-            <div
-              className={`border h-0 rounded-3xl rounded-tl-none absolute top-full transition-[all_.3s_ease] bg-[linear-gradient(0deg,_#000000d3,_#000000d3),linear-gradient(0deg,_#490A0Ad3,_#490A0Ad3)] border-[#490A0A] w-32 overflow-hidden ${
-                !isAll ? "h-0" : "h-24"
-              }`}
-            >
-              <div
-                className="flex justify-between p-2 cursor-pointer items-center"
-                onClick={() => handleSchoolFilter("all")}
-
+          {userDetails && (
+            <div className="my-2 ml-4 flex relative">
+              <span
+                className="flex items-center border-b-2 px-1 border-y-[#00CCCC]"
+                onClick={() => setIsAll(!isAll)}
               >
-                <FiGlobe size={20} color="#752626" />
-                <p
-                  className="opacity-70"
-                  style={{ textShadow: "0 0 2px #490A0A" }}
-                >
-                  ALL
+                <p className="text-[#00CCCC] font-bold mr-1">
+                  {selectedSchool}
                 </p>
-                <BsCheckCircleFill
-                  fill="#8D6666"
-                  className="border-[1px] border-solid border-[#490A0A] rounded-full"
-                />
-              </div>
+                {isAll ? (
+                  <FaAngleUp color="gray" size={17} />
+                ) : (
+                  <FaAngleDown color="gray" size={17} />
+                )}
+              </span>
               <div
-                onClick={() => handleSchoolFilter(userDetails.user.school.school_acronym)}
-                className="flex justify-between p-2 cursor-pointer items-center mb-2"
+                className={`border h-0 rounded-3xl rounded-tl-none absolute top-full transition-[all_.3s_ease] bg-[linear-gradient(0deg,_#000000d3,_#000000d3),linear-gradient(0deg,_#490A0Ad3,_#490A0Ad3)] border-[#490A0A] w-32 overflow-hidden ${
+                  !isAll ? "h-0" : "h-24"
+                }`}
               >
-                <FiBookOpen size={20} fill="#752626" />
-                <p
-                  className="opacity-70"
-                  style={{ textShadow: "0 0 2px #490A0A" }}
+                <div
+                  className="flex justify-between p-2 cursor-pointer items-center"
+                  onClick={() => handleSchoolFilter("all")}
                 >
-                  {userDetails && userDetails.user.school.school_acronym}
-                </p>
-                <BsCheckCircleFill
-                  fill="#BA3131"
-                  className="border-[1px] border-solid border-[#490A0A] rounded-full"
-                />
+                  <FiGlobe size={20} color="#752626" />
+                  <p
+                    className="opacity-70"
+                    style={{ textShadow: "0 0 2px #490A0A" }}
+                  >
+                    ALL
+                  </p>
+                  <BsCheckCircleFill
+                    fill="#8D6666"
+                    className="border-[1px] border-solid border-[#490A0A] rounded-full"
+                  />
+                </div>
+                <div
+                  onClick={() =>
+                    handleSchoolFilter(userDetails.user.school.school_acronym)
+                  }
+                  className="flex justify-between p-2 cursor-pointer items-center mb-2"
+                >
+                  <FiBookOpen size={20} fill="#752626" />
+                  <p
+                    className="opacity-70"
+                    style={{ textShadow: "0 0 2px #490A0A" }}
+                  >
+                    {userDetails && userDetails.user.school.school_acronym}
+                  </p>
+                  <BsCheckCircleFill
+                    fill="#BA3131"
+                    className="border-[1px] border-solid border-[#490A0A] rounded-full"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
         {sharePost.view && (
           <SharePost sharePost={sharePost} setSharePost={setSharePost} />
@@ -177,7 +186,7 @@ const Home = () => {
           )}
         </PostSharing.Provider>
 
-        <CreatePostBtn setCreatePost={setCreatePost} />
+        {userDetails && <CreatePostBtn setCreatePost={setCreatePost} />}
       </div>
       <HomeFooter />
     </>
