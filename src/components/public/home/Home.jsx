@@ -58,12 +58,13 @@ const Home = () => {
     };
     const fetchUser = async () => {
       try {
-        const user_response = await axios.get("account/annonyuser/", {
-          headers,
-        });
-        setUserDetails(user_response.data);
-        console.log(user_response.data);
-        console.log(userDetails.user);
+        if (localStorage.getItem("login") !== null) {
+          const user_response = await axios.get("account/annonyuser/", {
+            headers,
+          });
+          setUserDetails(user_response.data);
+          console.log(userDetails.user);
+        }
       } catch (error) {}
     };
     fetchUser();

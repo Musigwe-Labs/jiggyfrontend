@@ -10,7 +10,12 @@ const Gist = ({ content, showFullGist, images }) => {
         {content}
       </p>
       {images && (
-        <img src={images} className="w-3/5 md:w-2/5 mx-auto" alt="post_image" />
+        <img
+          src={images}
+          loading="lazy"
+          className="w-3/5 md:w-2/5 mx-auto"
+          alt="post_image"
+        />
       )}
     </div>
   );
