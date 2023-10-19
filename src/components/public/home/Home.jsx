@@ -169,6 +169,7 @@ const Home = () => {
               error={error}
               isLoading={isLoading}
               onPostClick={handlePostClick}
+              selectedSchool={selectedSchool}
             />
           ) : (
             // <div>Trending</div>

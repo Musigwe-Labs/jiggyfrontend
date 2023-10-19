@@ -7,7 +7,14 @@ import { PostType } from "./postType";
 import Spinner from "../../common/Spinner";
 import { HiRefresh } from "react-icons/hi";
 
-const Posts = ({ posts, error, onPostClick, filterBy, isLoading }) => {
+const Posts = ({
+  posts,
+  error,
+  onPostClick,
+  filterBy,
+  isLoading,
+  selectedSchool,
+}) => {
   const [sortedPostsByTime, setSortedPostsByTime] = useState([]);
   useEffect(() => {
     sortPosts();
@@ -22,6 +29,7 @@ const Posts = ({ posts, error, onPostClick, filterBy, isLoading }) => {
     });
     setSortedPostsByTime(sortedPosts);
   };
+  console.log(selectedSchool);
   if (isLoading) return <Spinner />;
   if (error)
     return (
@@ -38,7 +46,11 @@ const Posts = ({ posts, error, onPostClick, filterBy, isLoading }) => {
         let { id, post_type, user, content, created_at, images } = post;
         return (
           <div key={id} className="text-base mt-2">
-            <div className="mx-4 md:mx-16 p-3 border-b border-y-[#4B5563]">
+            <div
+              className={`mx-4 md:mx-16 p-3 transition-all duration-300 ease-linear  ${
+                selectedSchool.toLowerCase() != "all" ? "bg-[#3A1A1A] rounded-lg" : "border-b border-y-[#4B5563]"
+              }`}
+            >
               <HomeInfo
                 school={user.school}
                 name={user.generated_username}
