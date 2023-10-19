@@ -63,7 +63,6 @@ const Home = () => {
             headers,
           });
           setUserDetails(user_response.data);
-          console.log(userDetails.user);
         }
       } catch (error) {}
     };

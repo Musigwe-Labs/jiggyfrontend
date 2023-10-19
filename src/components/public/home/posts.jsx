@@ -29,7 +29,6 @@ const Posts = ({
     });
     setSortedPostsByTime(sortedPosts);
   };
-  console.log(selectedSchool);
   if (isLoading) return <Spinner />;
   if (error)
     return (

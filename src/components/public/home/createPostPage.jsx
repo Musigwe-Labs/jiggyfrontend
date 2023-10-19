@@ -46,7 +46,7 @@ const CreatePostPage = ({ setCreatePost }) => {
     formData.append("content", content);
     formData.append("post_type", post_type);
     formData.append("images", imageSrc[0]);
-   
+
     try {
       let post = await axios.post("annon/posts/create/", formData, { headers });
       setCreatePost(false);
@@ -64,13 +64,11 @@ const CreatePostPage = ({ setCreatePost }) => {
   const handlePreviewImg = (e) => {
     const files = e.target.files;
     setImageSrc([e.target.files[0]]);
-    setPreviewImgSrcs(URL.createObjectURL(files[0]))
+    setPreviewImgSrcs(URL.createObjectURL(files[0]));
   };
-  const handleRemoveImage = (index) => {
-    setPreviewImgSrcs(
-      previewImgSrcs.filter((imgSrcs, imgIndex) => imgIndex !== index)
-    );
-    setImageSrc(imageSrc.filter((imgSrcs, imgIndex) => imgIndex !== index));
+  const handleRemoveImage = () => {
+    setPreviewImgSrcs("");
+    setImageSrc("");
   };
   // const handlePost= ()=>{
   //     const data = { content , post_type }
@@ -85,91 +83,90 @@ const CreatePostPage = ({ setCreatePost }) => {
 
   return (
     <form
-    ref={form}
+      ref={form}
       onSubmit={throttledApiRequest}
       className="fixed top-0 z-50 flex py-8 flex-col h-screen w-full bg-[#000]"
     >
       <div>
-
-      <div className="flex justify-between px-5  pb-2 border-b align-center">
-        <LiaTimesCircleSolid
-          size="25"
-          color="#F33F5E"
-          cursor="pointer"
-          onClick={() => {
-            setCreatePost(false);
-          }}
-        />
-        <p className="font-bold">Create an anonymous post</p>
-        <button
-          className="text-[#F33F5E] text-lg"
-          onSubmit={throttledApiRequest}
-          type="submit"
-          ref={postBtn}
-        >
-          Post
-        </button>
-      </div>
-      <div>
-        <button
-          name="post_type"
-          className={`${post_type} rounded-full px-2 mx-3 mt-3 mb-1`}
-        >
-          {post_type}
-        </button>
-        <div className="inline-block">
-          <div className="relative">
-            <button
-              onClick={() => setOpenDropdown(!openDropdown)}
-              className="flex school_btn items-center gap-4 rounded-2xl border-[2px] px-2 "
-            >
-              <span className="font-semibold text-lg school_btn">
-                {targeted_school}
-              </span>
-              <span className="school_btn">
-                <BsCaretDownFill className="school_btn" />
-              </span>
-            </button>
-            <div
-              className={`shadow-[0_0_3px_0px_#fff] rounded-lg mt-2 absolute w-[13rem] z-10 bg-[#321616] ${
-                openDropdown ? "block" : "hidden"
-              }`}
-            >
-              <h5 className="font-bold text-lg mb-2 px-4 pt-4">
-                Choose audience
-              </h5>
+        <div className="flex justify-between px-5  pb-2 border-b align-center">
+          <LiaTimesCircleSolid
+            size="25"
+            color="#F33F5E"
+            cursor="pointer"
+            onClick={() => {
+              setCreatePost(false);
+            }}
+          />
+          <p className="font-bold">Create an anonymous post</p>
+          <button
+            className="text-[#F33F5E] text-lg"
+            onSubmit={throttledApiRequest}
+            type="submit"
+            ref={postBtn}
+          >
+            Post
+          </button>
+        </div>
+        <div>
+          <button
+            name="post_type"
+            className={`${post_type} rounded-full px-2 mx-3 mt-3 mb-1`}
+          >
+            {post_type}
+          </button>
+          <div className="inline-block">
+            <div className="relative">
               <button
-                onClick={() => setTargetedSchool("All")}
-                className="flex w-full text-lg py-2 px-4 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
+                onClick={() => setOpenDropdown(!openDropdown)}
+                className="flex school_btn items-center gap-4 rounded-2xl border-[2px] px-2 "
               >
-                <span>
-                  <LiaGlobeSolid />
+                <span className="font-semibold text-lg school_btn">
+                  {targeted_school}
                 </span>
-                <span className="font-semibold">All</span>
-                {targeted_school === "All" && (
-                  <span className="ml-auto font-semibold">
-                    <LiaCheckSolid />
-                  </span>
-                )}
+                <span className="school_btn">
+                  <BsCaretDownFill className="school_btn" />
+                </span>
               </button>
-              <button
-                onClick={() => setTargetedSchool("FUTO")}
-                className="flex w-full text-lg py-2 px-4 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
+              <div
+                className={`shadow-[0_0_3px_0px_#fff] rounded-lg mt-2 absolute w-[13rem] z-10 bg-[#321616] ${
+                  openDropdown ? "block" : "hidden"
+                }`}
               >
-                <span>
-                  <LiaSchoolSolid />
-                </span>
-                <span className="font-semibold">FUTO</span>
-                {targeted_school === "FUTO" && (
-                  <span className="ml-auto font-semibold">
-                    <LiaCheckSolid />
+                <h5 className="font-bold text-lg mb-2 px-4 pt-4">
+                  Choose audience
+                </h5>
+                <button
+                  onClick={() => setTargetedSchool("All")}
+                  className="flex w-full text-lg py-2 px-4 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
+                >
+                  <span>
+                    <LiaGlobeSolid />
                   </span>
-                )}
-              </button>
+                  <span className="font-semibold">All</span>
+                  {targeted_school === "All" && (
+                    <span className="ml-auto font-semibold">
+                      <LiaCheckSolid />
+                    </span>
+                  )}
+                </button>
+                <button
+                  onClick={() => setTargetedSchool("FUTO")}
+                  className="flex w-full text-lg py-2 px-4 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
+                >
+                  <span>
+                    <LiaSchoolSolid />
+                  </span>
+                  <span className="font-semibold">FUTO</span>
+                  {targeted_school === "FUTO" && (
+                    <span className="ml-auto font-semibold">
+                      <LiaCheckSolid />
+                    </span>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
       <textarea
         name="content"
@@ -181,18 +178,15 @@ const CreatePostPage = ({ setCreatePost }) => {
       <footer className="mt-auto h-auto">
         <div className="px-5">
           <output className="flex gap-2">
-            {previewImgSrcs.map((imgSrc, index) => (
-              <figure
-                key={index}
-                style={{ backgroundImage: `url(${imgSrc})` }}
-                className={` transition-all duration-300 ease-linear aspect-[9/16] bg-cover bg-center rounded-lg w-[5rem] h-[7rem] relative`}
-              >
-                <LiaTimesCircleSolid
-                  onClick={() => handleRemoveImage(index)}
-                  className="absolute cursor-pointer hover:text-lg transition-all duration-300 ease-linear bg-[#321616] rounded-full top-1 right-1"
-                />
-              </figure>
-            ))}
+            {previewImgSrcs && (<figure
+              style={{ backgroundImage: `url(${previewImgSrcs})` }}
+              className={` transition-all duration-300 ease-linear aspect-[9/16] bg-cover bg-center rounded-lg w-[5rem] h-[7rem] relative`}
+            >
+              <LiaTimesCircleSolid
+                onClick={() => handleRemoveImage()}
+                className="absolute cursor-pointer hover:text-lg transition-all duration-300 ease-linear bg-[#321616] rounded-full top-1 right-1"
+              />
+            </figure>)}
           </output>
         </div>
 
