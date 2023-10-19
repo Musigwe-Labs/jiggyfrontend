@@ -33,6 +33,7 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [userDetails, setUserDetails] = useState();
+  const [selectedSchool, setSelectedSchool] = useState("ALL");
 
   const navigate = useNavigate();
   const { key } = useContext(AuthContext);
@@ -70,12 +71,11 @@ const Home = () => {
     fetchPosts();
   }, [isRecievedData]);
   let handleSchoolFilter = (school) => {
-    console.log(initialPosts);
+    setSelectedSchool(school.toUpperCase())
     if (school !== "all" && initialPosts.length > 0) {
       let schoolPosts = initialPosts.filter(
-        (post) => post.user.school.school_acronym.toLowerCase() === school.toLowerCase()
+        (post) => post.user.school && post.user.school.school_acronym.toLowerCase() === school.toLowerCase()
       );
-      console.log(schoolPosts);
       setPosts(schoolPosts);
     } else setPosts(initialPosts);
   };
@@ -109,7 +109,7 @@ const Home = () => {
               className="flex items-center border-b-2 px-1 border-y-[#00CCCC]"
               onClick={() => setIsAll(!isAll)}
             >
-              <p className="text-[#00CCCC] font-bold mr-1">All</p>
+              <p className="text-[#00CCCC] font-bold mr-1">{selectedSchool}</p>
               {isAll ? (
                 <FaAngleUp color="gray" size={17} />
               ) : (
@@ -131,7 +131,7 @@ const Home = () => {
                   className="opacity-70"
                   style={{ textShadow: "0 0 2px #490A0A" }}
                 >
-                  All
+                  ALL
                 </p>
                 <BsCheckCircleFill
                   fill="#8D6666"

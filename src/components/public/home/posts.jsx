@@ -33,7 +33,7 @@ const Posts = ({ posts, error, onPostClick, filterBy, isLoading }) => {
       </div>
     );
   return (
-    <div className="pb-[29px]">
+    <div className="pb-[29px] transition duration-300 ease-linear">
       {sortedPostsByTime.map((post) => {
         let { id, post_type, user, content, created_at, images } = post;
         return (
