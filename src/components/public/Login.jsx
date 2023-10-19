@@ -59,11 +59,11 @@ const Login = () => {
     loginUser(data, setSuccess, setError, setSigning);
   }
  
-  useEffect(() => {
-    if (localStorage.getItem("login") !== null) {
-      navigate("/dashboard");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   if (localStorage.getItem("login") !== null) {
+  //     navigate("/dashboard");
+  //   }
+  // }, [navigate]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 px-6 lg:px-24 mt-4">
