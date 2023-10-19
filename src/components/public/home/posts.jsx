@@ -14,7 +14,6 @@ const Posts = ({ posts, error, onPostClick, filterBy, isLoading }) => {
   }, [posts, filterBy]);
   const sortPosts = async () => {
     let postsToBeSorted = posts;
-console.log(postsToBeSorted);
     const sortedPosts = await postsToBeSorted.sort((post1, post2) => {
       let post1date = new Date(post1.created_at);
       let post2date = new Date(post2.created_at);

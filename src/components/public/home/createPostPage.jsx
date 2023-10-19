@@ -21,7 +21,7 @@ const CreatePostPage = ({ setCreatePost }) => {
   const [post_type, setSelectedOption] = useState("Others");
   const [targeted_school, setTargetedSchool] = useState("All");
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [previewImgSrcs, setPreviewImgSrcs] = useState([]);
+  const [previewImgSrcs, setPreviewImgSrcs] = useState();
   const [imageSrc, setImageSrc] = useState([]);
   const postBtn = useRef();
   const form = useRef();
@@ -40,6 +40,7 @@ const CreatePostPage = ({ setCreatePost }) => {
   };
 
   const handlePost = async (e) => {
+    console.log("posting...");
     e.preventDefault();
     const formData = new FormData(form.current, postBtn.current);
     formData.append("content", content);
@@ -49,7 +50,6 @@ const CreatePostPage = ({ setCreatePost }) => {
     try {
       let post = await axios.post("annon/posts/create/", formData, { headers });
       setCreatePost(false);
-console.log(post.data);
     } catch (error) {
       console.log(error);
     }
@@ -64,17 +64,7 @@ console.log(post.data);
   const handlePreviewImg = (e) => {
     const files = e.target.files;
     setImageSrc([e.target.files[0]]);
-
-    for (const file in files) {
-      if (Object.hasOwnProperty.call(files, file)) {
-        if (files[file]) {
-          setPreviewImgSrcs([
-            ...previewImgSrcs,
-            URL.createObjectURL(files[file]),
-          ]);
-        }
-      }
-    }
+    setPreviewImgSrcs(URL.createObjectURL(files[0]))
   };
   const handleRemoveImage = (index) => {
     setPreviewImgSrcs(

@@ -35,7 +35,7 @@ const Home = () => {
   const [userDetails, setUserDetails] = useState();
 
   const navigate = useNavigate();
-  // const { key } = useContext(AuthContext);
+  const { key } = useContext(AuthContext);
   const handlePostClick = (post) => {
     setSelectedPost(post);
   };
@@ -52,33 +52,33 @@ const Home = () => {
         setError(err.message);
       }
     };
-    // const headers = {
-    //   Authorization: `Token ${key}`,
-    // };
-    // const fetchUser = async () => {
-    //   try {
-    //     const user_response = await axios.get("account/annonyuser/", {
-    //       headers,
-    //     });
-    //     setUserDetails(user_response.data);
-    //     console.log(user_response.data);
-    // console.log(userDetails.user);
+    const headers = {
+      Authorization: `Token ${key}`,
+    };
+    const fetchUser = async () => {
+      try {
+        const user_response = await axios.get("account/annonyuser/", {
+          headers,
+        });
+        setUserDetails(user_response.data);
+        console.log(user_response.data);
+    console.log(userDetails.user);
 
-    //   } catch (error) {}
-    // };
-    // fetchUser();
+      } catch (error) {}
+    };
+    fetchUser();
     fetchPosts();
   }, [isRecievedData]);
-  // let handleSchoolFilter = (school) => {
-  //   console.log(initialPosts);
-  //   if (school !== "all" && initialPosts.length > 0) {
-  //     let schoolPosts = initialPosts.filter(
-  //       (post) => post.user.school.school_acronym.toLowerCase() === school.toLowerCase()
-  //     );
-  //     console.log(schoolPosts);
-  //     setPosts(schoolPosts);
-  //   } else setPosts(initialPosts);
-  // };
+  let handleSchoolFilter = (school) => {
+    console.log(initialPosts);
+    if (school !== "all" && initialPosts.length > 0) {
+      let schoolPosts = initialPosts.filter(
+        (post) => post.user.school.school_acronym.toLowerCase() === school.toLowerCase()
+      );
+      console.log(schoolPosts);
+      setPosts(schoolPosts);
+    } else setPosts(initialPosts);
+  };
   if (createPost) {
     return <CreatePostPage setCreatePost={setCreatePost} />;
   }
@@ -123,7 +123,7 @@ const Home = () => {
             >
               <div
                 className="flex justify-between p-2 cursor-pointer items-center"
-                // onClick={() => handleSchoolFilter("all")}
+                onClick={() => handleSchoolFilter("all")}
 
               >
                 <FiGlobe size={20} color="#752626" />
@@ -139,7 +139,7 @@ const Home = () => {
                 />
               </div>
               <div
-                // onClick={() => handleSchoolFilter(userDetails.user.school.school_acronym)}
+                onClick={() => handleSchoolFilter(userDetails.user.school.school_acronym)}
                 className="flex justify-between p-2 cursor-pointer items-center mb-2"
               >
                 <FiBookOpen size={20} fill="#752626" />
@@ -147,7 +147,7 @@ const Home = () => {
                   className="opacity-70"
                   style={{ textShadow: "0 0 2px #490A0A" }}
                 >
-                  {/* {userDetails && userDetails.user.school.school_acronym} */}
+                  {userDetails && userDetails.user.school.school_acronym}
                 </p>
                 <BsCheckCircleFill
                   fill="#BA3131"
