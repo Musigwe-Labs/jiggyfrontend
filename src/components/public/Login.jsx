@@ -5,9 +5,11 @@ import TermsOfService from '../common/TermsOfService'
 import Banner from '../common/Banner'
 // import { useLoginUserMutation } from '../../services/authApi'
 import GoogleButton from './GoogleButton'
-import MSoftButton from './MSoftButton'
 import {useLocation} from 'react-router-dom'
 import { loginUser } from '../../apis/authenticationApis'
+import EyeOpenIcon from '../../assets/blue-eye.png';
+import EyeClosedIcon from '../../assets/closed-eye.png';
+
 
   const getToken= (search)=>{
     const query= new URLSearchParams(search) // parse params to object format
@@ -20,6 +22,7 @@ const Login = () => {
   const navigate = useNavigate()
 
   /**const [email, setEmail] = useState();*/
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
   const [signing, setSigning] = useState(false)
@@ -94,13 +97,25 @@ const Login = () => {
               <div className="relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max">
                 Password
               </div>
-              <input
-                type="password"
-                className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
-                placeholder="Enter password"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
+                  placeholder="Enter password"
+                  value={password}
+                  required
+                />
+                <button
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer"
+                >
+                  {showPassword ? (
+                    <img src={EyeOpenIcon} alt="Hide Password" className='w-10'/>
+                  ) : (
+                    <img src={EyeClosedIcon} alt="Show Password" className='w-12'/>
+                  )}
+                </button>
+          </div>
             </div>
 
             <div>
