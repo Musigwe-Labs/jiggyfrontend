@@ -107,7 +107,7 @@ const Comment = ({ post, setSelectedPost }) => {
       >
         <textarea
           //   style={{ height: inputHeight }}
-          className="resize-none bg-#fff p-2 pr-14 block w-full border-b  rounded-md text-black focus:outline-none "
+          className="resize-none p-2 pr-14 block w-full border-b bg-transparent rounded-md  focus:outline-none "
           placeholder="Comment your thought"
           rows={{ inputHeight }}
           value={inputValue}
