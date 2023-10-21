@@ -60,7 +60,7 @@ const Posts = ({
                 <Gist content={content} images={images} />
               </div>
 
-              <GistLinks post={post} />
+              <GistLinks post={post} onPostClick={onPostClick} />
             </div>
           </div>
         );

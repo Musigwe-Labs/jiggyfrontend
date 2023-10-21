@@ -45,7 +45,7 @@ const CreatePostPage = ({ setCreatePost }) => {
     const formData = new FormData(form.current, postBtn.current);
     formData.append("content", content);
     formData.append("post_type", post_type);
-    formData.append("images", imageSrc[0]);
+    imageSrc[0] && formData.append("images", imageSrc[0]);
 
     try {
       let post = await axios.post("annon/posts/create/", formData, { headers });
@@ -63,8 +63,14 @@ const CreatePostPage = ({ setCreatePost }) => {
   });
   const handlePreviewImg = (e) => {
     const files = e.target.files;
-    setImageSrc([e.target.files[0]]);
-    setPreviewImgSrcs(URL.createObjectURL(files[0]));
+    let maxAllowedSize = 5 * 1024 * 1024;
+    if (files.size <= maxAllowedSize){
+
+      setImageSrc([files[0]]);
+      setPreviewImgSrcs(URL.createObjectURL(files[0]));
+    }else{
+      alert("image is too large")
+    }
   };
   const handleRemoveImage = () => {
     setPreviewImgSrcs("");
