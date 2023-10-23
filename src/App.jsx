@@ -11,6 +11,9 @@ import Notifications from './components/private/dashboard/Notifications'
 import Chat from './components/private/dashboard/Chat'
 import "./App.css"
 import { Wrapper } from './components/private/common/Wrapper'
+import Feedback from './components/private/dashboard/Feedback'
+import Help from './components/private/dashboard/Help'
+import WhatsNew from './components/private/dashboard/WhatsNew'
 
 
 const App = () => {
@@ -32,6 +35,9 @@ const App = () => {
               <Route exact path='/messages' element={Wrapper(Messages)} />
                <Route exact path='/notifications' element={Wrapper(Notifications)} />
               <Route exact path='/chat/:friend_name' element={Wrapper(Chat)} />
+              <Route exact path='/feedback' element={<Feedback />} />
+              <Route exact path='/help' element={<Help />} />
+              <Route exact path='/whatsnew' element={<WhatsNew />} />
             </Routes>
           </Router>
       </AuthContextProvider>

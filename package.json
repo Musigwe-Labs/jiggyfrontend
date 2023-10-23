@@ -23,7 +23,8 @@
     "react-select": "^5.7.4",
     "reconnecting-websocket": "^4.4.0",
     "redux": "^4.2.1",
-    "resize-observer-polyfill": "^1.5.1"
+    "resize-observer-polyfill": "^1.5.1",
+    "typed.js": "^2.0.16"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",
