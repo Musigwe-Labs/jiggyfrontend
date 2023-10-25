@@ -32,13 +32,21 @@ const Login = () => {
   const {search}= useLocation()
   // const [loginUser, {data, isError, error}] = useLoginUserMutation()
   useEffect(() => {
-    if(success==null){
+    if(success === null){
       //handle google sign in
  // obtain search query from the url
-      if(search){ //if it's not empty
-        const token=getToken(search)
-        token? setSuccess({key:token}): alert('error occurred')
-      }
+ if (search) { // If it's not empty
+  try {
+    const token = getToken(search);
+    if (token) {
+      setSuccess({ key: token });
+    } else {
+      alert('Error occurred: Token not found');
+    }
+  } catch (e) {
+    console.error('Error while handling token:', e);
+  }
+}
     }
     if (success !== null) {
       localStorage.setItem( 'login',JSON.stringify({ key: success.key}))
@@ -49,12 +57,29 @@ const Login = () => {
       navigate('/home')
       window.location.reload()
     }
-    if (error !== null) {
-      alert(error.non_field_errors[0])
-      setSigning(false)
-      setError(null)
+    if (error) { // Check if error is not null or undefined
+      if (error.response) {
+        const errorData = error.response.data;
+        if (errorData && errorData.non_field_errors && errorData.non_field_errors.length > 0) {
+          // Handle non-field-specific errors
+          alert(errorData.non_field_errors[0]);
+        } else if (errorData && errorData.password && errorData.password.length > 0) {
+          // Handle password-related errors
+          alert(errorData.password[0]);
+        } else {
+          // Handle other types of errors
+          alert('Wrong emal or password');
+        }
+      } else {
+        // Handle other types of errors, e.g., network issues
+        alert('An error occurred.');
+      }
+      setSigning(false);
+      setError(null);
     }
+    
   }, [success, error])
+  
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -65,6 +90,7 @@ const Login = () => {
   useEffect(() => {
     if (localStorage.getItem("login") !== null) {
       navigate("/dashboard");
+      
     }
   }, [navigate]);
 
@@ -103,6 +129,7 @@ const Login = () => {
                   className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
                   placeholder="Enter password"
                   value={password}
+                  onChange={(e) => setPassword(e.target.value)} // Add this onChange handler
                   required
                 />
                 <button
@@ -115,7 +142,7 @@ const Login = () => {
                     <img src={EyeClosedIcon} alt="Show Password" className='w-12'/>
                   )}
                 </button>
-          </div>
+              </div>
             </div>
 
             <div>

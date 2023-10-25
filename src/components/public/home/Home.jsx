@@ -134,10 +134,10 @@ const Home = () => {
           value={{ sharePost: sharePost, setSharePost: setSharePost }}
         >
           {selectedTab === "all" ? (
-            <Posts posts={posts} error={error} isLoading={isLoading} onPostClick={handlePostClick} />
+            <Posts posts={posts} error={error} onPostClick={handlePostClick} />
           ) : (
             // <div>Trending</div>
-            <Trending posts={posts} isLoading={isLoading} />
+            <Trending posts={posts} />
           )}
         </PostSharing.Provider>
 

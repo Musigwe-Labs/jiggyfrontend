@@ -15,14 +15,23 @@ const Register = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [confirm_password, setConfirm_password] = useState();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [register, setRegister] = useState(false);
   const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+    const handlePasswordChange = (newPassword) => {
+      setPassword(newPassword);
+    };
+
+    const handleConfirmPasswordChange = (newConfirmPassword) => {
+      setConfirmPassword(newConfirmPassword);
+    };
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -31,11 +40,7 @@ const Register = () => {
       password,
       school: selectedOption.value.school_acronym,
     };
-    if (password !== confirm_password) {
-      alert("Password mismatch");
-    } else {
       registerUser(data, setSuccess, setError, setRegister);
-    }
   };
   const handleSelectChange = (selected) => {
     setSelectedOption(selected);
@@ -95,7 +100,12 @@ if(isLoading) return <Spinner />
             </div>
 
             <div>
-              <PasswordInput />
+            <PasswordInput
+              onPasswordChange={handlePasswordChange}
+              onConfirmPasswordChange={handleConfirmPasswordChange}
+              password={password}
+              confirmPassword={confirmPassword}
+              />
             </div>
 
             <div>

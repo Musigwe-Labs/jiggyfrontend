@@ -191,7 +191,7 @@ const CreatePostPage = ({ setCreatePost }) => {
               <figure
                 key={index}
                 style={{ backgroundImage: `url(${imgSrc})` }}
-                className={` transition-all duration-300 ease-linear aspect-[9/16] bg-cover bg-center rounded-lg w-[5rem] h-[7rem] relative`}
+                className={` transition-all duration-300 ease-linear aspect-[12/16] bg-cover bg-center rounded-lg w-[5rem] h-[7rem] relative`}
               >
                 <LiaTimesCircleSolid
                   onClick={() => handleRemoveImage(index)}
