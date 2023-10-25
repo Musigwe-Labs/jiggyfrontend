@@ -14,9 +14,9 @@ import PrivacyHeader from "../common/PrivacyHeader";
 import { BsChat, BsChatFill, BsMessenger } from "react-icons/bs";
 
 //add two div side by side the secondone transparent on key press,chande profile state
-export const Profile = ({ setProfilePage }) => {
+export const Profile = ({ setProfilePage, userDetails }) => {
   const { logout } = useContext(AuthContext);
-
+console.log(userDetails);
   return (
     <div className="fixed top-0 z-50 flex w-[100%] bg-[rgba(20,20,20,.3)] ">
       <div className="shadow-[0_0_5px_0px] shadow-[rgba(150,150,105,.4)] flex flex-col justify-between h-[100vh] pt-6 pb-6 w-3/4 bg-black">
@@ -28,7 +28,7 @@ export const Profile = ({ setProfilePage }) => {
               </span>
               iggy
             </h2>
-            <PrivacyHeader />
+            <PrivacyHeader generated_username={userDetails.user.generated_username} />
           </header>
           <section className="flex gap-3 flex-col px-4">
             <Link
@@ -52,13 +52,13 @@ export const Profile = ({ setProfilePage }) => {
               </div>
             </Link>
 
-            <Link
+            {/* <Link
               to="/help"
               className="text-[#907378] flex gap-2 items-center border-b py-2 px-3"
             >
               <p>Help</p>
               <span className="text-[1rem]">❔</span>
-            </Link>
+            </Link> */}
           </section>
         </div>
         <div className="w-full grid place-items-center">

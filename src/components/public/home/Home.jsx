@@ -101,7 +101,11 @@ const Home = () => {
   return (
     <>
       <div className="grow">
-        {profilePage ? <Profile setProfilePage={setProfilePage} /> : ""}
+        {profilePage ? (
+          <Profile setProfilePage={setProfilePage} userDetails={userDetails} />
+        ) : (
+          ""
+        )}
         <div className="sticky top-0 bg-black">
           <HomeHeader
             setProfilePage={setProfilePage}
