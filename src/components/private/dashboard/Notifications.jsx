@@ -144,6 +144,9 @@ return(
 					</div>
 				</div>
 		</header>
+		<div className="text-white px-8 pb-6">
+          Coming soon...
+        </div>
 		<main className="grow mb-20  flex flex-col items-center w-full">
 		  
 			{

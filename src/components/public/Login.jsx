@@ -68,7 +68,7 @@ const Login = () => {
           alert(errorData.password[0]);
         } else {
           // Handle other types of errors
-          alert('Wrong emal or password');
+          alert('Wrong email or password');
         }
       } else {
         // Handle other types of errors, e.g., network issues
