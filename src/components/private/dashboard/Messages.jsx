@@ -15,6 +15,9 @@ export default function Messages() {
             <FaSearch className="text-[1.5rem]" />
           </button>
         </div>
+        <div className="text-white px-8 pb-6">
+          Coming soon...
+        </div>
         <div className="grid grid-cols-[repeat(2,_1fr)] place-items-center text-center overflow-hidden tabs ">
           <p
             className={`${
@@ -37,6 +40,7 @@ export default function Messages() {
           {selectedTab === "friends" ? <Friends /> : <Jiggy />}
         </div>
     </div>
+
     <HomeFooter />
 
     </>

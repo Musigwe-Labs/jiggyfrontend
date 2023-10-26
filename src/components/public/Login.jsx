@@ -30,13 +30,12 @@ const Login = () => {
   const { search } = useLocation();
   // const [loginUser, {data, isError, error}] = useLoginUserMutation()
   useEffect(() => {
-    if (success == null) {
+    if(success==null){
       //handle google sign in
-      // obtain search query from the url
-      if (search) {
-        //if it's not empty
-        const token = getToken(search);
-        token ? setSuccess({ key: token }) : alert("error occurred");
+ // obtain search query from the url
+      if(search){ //if it's not empty
+        const token=getToken(search)
+        token? setSuccess({key:token}): alert('error occurred')
       }
     }
     if (success !== null) {
@@ -49,18 +48,18 @@ const Login = () => {
       window.location.reload();
     }
     if (error !== null) {
-      alert(error.non_field_errors);
-      setSigning(false);
-      setError(null);
+      alert(error.non_field_errors[0])
+      setSigning(false)
+      setError(null)
     }
-  }, [success, error]);
+  }, [success, error])
 
   const handleLogin = (e) => {
     e.preventDefault();
     const data = { email, password };
     loginUser(data, setSuccess, setError, setSigning);
-  };
-
+  }
+ 
   // useEffect(() => {
   //   if (localStorage.getItem("login") !== null) {
   //     navigate("/dashboard");
@@ -102,6 +101,7 @@ const Login = () => {
                   className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
                   placeholder="Enter password"
                   value={password}
+                  onChange={(e) => setPassword(e.target.value)} // Add this onChange handler
                   required
                 />
                 <button

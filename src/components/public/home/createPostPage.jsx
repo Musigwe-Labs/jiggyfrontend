@@ -184,15 +184,19 @@ const CreatePostPage = ({ setCreatePost }) => {
       <footer className="mt-auto h-auto">
         <div className="px-5">
           <output className="flex gap-2">
-            {previewImgSrcs && (<figure
-              style={{ backgroundImage: `url(${previewImgSrcs})` }}
-              className={` transition-all duration-300 ease-linear aspect-[9/16] bg-cover bg-center rounded-lg w-[5rem] h-[7rem] relative`}
-            >
-              <LiaTimesCircleSolid
-                onClick={() => handleRemoveImage()}
-                className="absolute cursor-pointer hover:text-lg transition-all duration-300 ease-linear bg-[#321616] rounded-full top-1 right-1"
-              />
-            </figure>)}
+          
+            {previewImgSrcs.map((imgSrc, index) => (
+              <figure
+                key={index}
+                style={{ backgroundImage: `url(${imgSrc})` }}
+                className={` transition-all duration-300 ease-linear aspect-[12/16] bg-cover bg-center rounded-lg w-[5rem] h-[7rem] relative`}
+              >
+                <LiaTimesCircleSolid
+                  onClick={() => handleRemoveImage(index)}
+                  className="absolute cursor-pointer hover:text-lg transition-all duration-300 ease-linear bg-[#321616] rounded-full top-1 right-1"
+                />
+              </figure>
+            ))}
           </output>
         </div>
 
