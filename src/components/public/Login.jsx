@@ -86,7 +86,7 @@ const Login = () => {
     const data = { email , password }
     loginUser(data, setSuccess, setError, setSigning);
   }
- 
+  
   useEffect(() => {
     if (localStorage.getItem("login") !== null) {
       navigate("/dashboard");

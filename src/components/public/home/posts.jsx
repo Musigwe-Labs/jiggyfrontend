@@ -7,15 +7,20 @@ import { PostType } from "./postType";
 import Spinner from "../../common/Spinner";
 import { HiRefresh } from "react-icons/hi";
 
-const Posts = ({ posts, error, onPostClick, filterBy, isLoading }) => {
+const Posts = ({
+  posts,
+  error,
+  onPostClick,
+  filterBy,
+  isLoading,
+  selectedSchool,
+}) => {
   const [sortedPostsByTime, setSortedPostsByTime] = useState([]);
   useEffect(() => {
     sortPosts();
   }, [posts, filterBy]);
   const sortPosts = async () => {
     let postsToBeSorted = posts;
-    console.log(postsToBeSorted);
-
     const sortedPosts = await postsToBeSorted.sort((post1, post2) => {
       let post1date = new Date(post1.created_at);
       let post2date = new Date(post2.created_at);
@@ -35,12 +40,16 @@ const Posts = ({ posts, error, onPostClick, filterBy, isLoading }) => {
       </div>
     );
   return (
-    <div className="pb-[29px]">
+    <div className="pb-[29px] transition duration-300 ease-linear">
       {sortedPostsByTime.map((post) => {
         let { id, post_type, user, content, created_at, images } = post;
         return (
           <div key={id} className="text-base mt-2">
-            <div className="mx-4 md:mx-16 p-3 border-b border-y-[#4B5563]">
+            <div
+              className={`mx-4  md:mx-16 p-3 transition-all duration-300 ease-linear  ${
+                selectedSchool.toLowerCase() != "all" ? `b${post_type} rounded-lg` : "border-b border-y-[#4B5563]"
+              }`}
+            >
               <HomeInfo
                 school={user.school}
                 name={user.generated_username}
@@ -51,7 +60,7 @@ const Posts = ({ posts, error, onPostClick, filterBy, isLoading }) => {
                 <Gist content={content} images={images} />
               </div>
 
-              <GistLinks post={post} />
+              <GistLinks post={post} onPostClick={onPostClick} />
             </div>
           </div>
         );
