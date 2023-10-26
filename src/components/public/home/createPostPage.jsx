@@ -63,13 +63,14 @@ const CreatePostPage = ({ setCreatePost }) => {
   });
   const handlePreviewImg = (e) => {
     const files = e.target.files;
-    let maxAllowedSize = 5 * 1024 * 1024;
-    if (files.size <= maxAllowedSize){
-
+    let maxAllowedSize = 3 * 1024 * 1024;
+    console.log(files[0].size);
+    if (files[0].size < maxAllowedSize) {
       setImageSrc([files[0]]);
       setPreviewImgSrcs(URL.createObjectURL(files[0]));
-    }else{
-      alert("image is too large")
+
+    } else {
+      alert("image is too large");
     }
   };
   const handleRemoveImage = () => {
@@ -184,19 +185,17 @@ const CreatePostPage = ({ setCreatePost }) => {
       <footer className="mt-auto h-auto">
         <div className="px-5">
           <output className="flex gap-2">
-          
-            {previewImgSrcs.map((imgSrc, index) => (
+            {previewImgSrcs !== "" && (
               <figure
-                key={index}
-                style={{ backgroundImage: `url(${imgSrc})` }}
+                style={{ backgroundImage: `url(${previewImgSrcs})` }}
                 className={` transition-all duration-300 ease-linear aspect-[12/16] bg-cover bg-center rounded-lg w-[5rem] h-[7rem] relative`}
               >
                 <LiaTimesCircleSolid
-                  onClick={() => handleRemoveImage(index)}
+                  onClick={() => handleRemoveImage()}
                   className="absolute cursor-pointer hover:text-lg transition-all duration-300 ease-linear bg-[#321616] rounded-full top-1 right-1"
                 />
               </figure>
-            ))}
+            )}
           </output>
         </div>
 

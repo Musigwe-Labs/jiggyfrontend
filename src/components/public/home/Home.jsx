@@ -177,7 +177,7 @@ const Home = () => {
           value={{ sharePost: sharePost, setSharePost: setSharePost }}
         >
           {selectedTab === "all" ? (
-            <Posts posts={posts} error={error} onPostClick={handlePostClick} />
+            <Posts posts={posts} error={error} onPostClick={handlePostClick} selectedSchool={selectedSchool} />
           ) : (
             // <div>Trending</div>
             <Trending posts={posts} />
