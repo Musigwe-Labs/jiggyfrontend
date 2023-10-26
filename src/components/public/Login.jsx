@@ -110,9 +110,9 @@ const Login = () => {
                   className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer"
                 >
                   {showPassword ? (
-                    <img src={EyeOpenIcon} alt="Hide Password" className='w-10'/>
+                    <img src={EyeOpenIcon} alt="Hide Password" className='w-6'/>
                   ) : (
-                    <img src={EyeClosedIcon} alt="Show Password" className='w-12'/>
+                    <img src={EyeClosedIcon} alt="Show Password" className='w-6'/>
                   )}
                 </button>
           </div>

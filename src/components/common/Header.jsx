@@ -1,11 +1,11 @@
-import  { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../contexts/AuthContext'
+import  { useEffect, useState } from 'react'
+import { useAuthContext } from '../../contexts/AuthContext'
 import AuthLinks from './headers/AuthLinks'
 import PubLinks from './headers/PubLinks'
 
 const Header = () => {
 
-    const { key, logout } = useContext(AuthContext);
+    const { key, logout } = useAuthContext();
 
     const [authheader, setAuthheader] = useState(false);
 

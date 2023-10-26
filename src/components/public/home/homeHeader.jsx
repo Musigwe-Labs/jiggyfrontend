@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom";
 import profile_pic from "../../../assets/profile_pics/pic1.png";
-import { useContext } from "react";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { useAuthContext } from "../../../contexts/AuthContext";
 
 const HomeHeader = ({ setProfilePage, userDetails }) => {
-  const { key } = useContext(AuthContext);
+  const { key } = useAuthContext();
   const navigate = useNavigate();
   return (
     <div className="flex items-center pt-6 px-3">

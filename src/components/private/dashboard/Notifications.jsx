@@ -1,9 +1,10 @@
 import HomeFooter from "../../public/home/homeFooter";
 import {FaBell as BellIcon}   from  'react-icons/fa'
+ import {useEffect, useState} from 'react'
+
 
 
 export default function Notiifications(){
-
 //when you click register it as opened
 const notifications=[
 		{
@@ -127,8 +128,11 @@ const notifications=[
 			]	
 		}
 
-
 ]
+const [fetchData, setFetch]= useState(false)
+useEffect(()=>{
+	fetch('https://moviebox-hng-chapter-codes.vercel.app/').then(res=>console.log(res)).catch(err=>console.log(err))
+},[fetchData])
 
 // console.log(notifications[0].notificationText[0].notificationCount())
 return(
@@ -144,6 +148,7 @@ return(
 					</div>
 				</div>
 		</header>
+		<button onClick={()=>setFetch(true)}>fetch</button>
 		<main className="grow mb-20  flex flex-col items-center w-full">
 		  
 			{

@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import axios from "../services/axios";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
 const AuthContextProvider = (props) => {
   const loginData = JSON.parse(localStorage.getItem("login"));
@@ -37,4 +37,13 @@ const AuthContextProvider = (props) => {
   );
 };
 
-export default AuthContextProvider;
+const useAuthContext=()=>{
+  const context= useContext(AuthContext)
+  if(!context){
+    return console.error('Authcontext must be used within Authcontext Provider')
+  }
+
+  return context
+}
+
+export {AuthContextProvider, useAuthContext , AuthContext};
