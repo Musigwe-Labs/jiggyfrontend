@@ -83,7 +83,7 @@ const Login = () => {
                 Email
               </div>
               <input
-                type="text"
+                type="email"
                 className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
                 placeholder="Enter your Email"
                 onChange={(e) => setEmail(e.target.value)}

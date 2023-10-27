@@ -64,7 +64,6 @@ const CreatePostPage = ({ setCreatePost }) => {
   const handlePreviewImg = (e) => {
     const files = e.target.files;
     let maxAllowedSize = 3 * 1024 * 1024;
-    console.log(files[0].size);
     if (files[0].size < maxAllowedSize) {
       setImageSrc([files[0]]);
       setPreviewImgSrcs(URL.createObjectURL(files[0]));
@@ -77,6 +76,7 @@ const CreatePostPage = ({ setCreatePost }) => {
     setPreviewImgSrcs("");
     setImageSrc("");
   };
+  
   // const handlePost= ()=>{
   //     const data = { content , post_type }
   //     if (socket && socket.readyState === WebSocket.OPEN) {
@@ -185,7 +185,7 @@ const CreatePostPage = ({ setCreatePost }) => {
       <footer className="mt-auto h-auto">
         <div className="px-5">
           <output className="flex gap-2">
-            {previewImgSrcs !== "" && (
+            {previewImgSrcs && (
               <figure
                 style={{ backgroundImage: `url(${previewImgSrcs})` }}
                 className={` transition-all duration-300 ease-linear aspect-[12/16] bg-cover bg-center rounded-lg w-[5rem] h-[7rem] relative`}

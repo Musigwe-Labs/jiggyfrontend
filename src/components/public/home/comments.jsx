@@ -7,12 +7,18 @@ import GistLinks from "./gistLinks";
 import profile_pic from "../../../assets/profile_pics/pic1.png";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import axios from "../../../services/axios";
-import { IoIosSend } from "react-icons/io";
+import { IoIosCheckmark, IoIosSend } from "react-icons/io";
 import _ from "lodash";
+import { FaSpinner } from "react-icons/fa";
 
 const Comment = ({ post, setSelectedPost }) => {
   const [inputValue, setInputValue] = useState("");
   const [inputHeight, setInputHeight] = useState("35px");
+  const [status, setStatus] = useState({
+    loading: false,
+    succesful: false,
+    error: "",
+  });
   const maxInputHeight = 220; // Adjust this value as needed
 
   const { key } = useContext(AuthContext);
@@ -37,13 +43,16 @@ const Comment = ({ post, setSelectedPost }) => {
 
   const handleSendComment = async () => {
     try {
+      setStatus({ ...status, loading: true });
       const data = { post: post.id, content: inputValue };
       await axios.post("annon/posts/comment/", data, { headers });
       setInputValue("");
+      setStatus({ ...status, loading: false, successful: true });
     } catch (error) {
-      console.log(error);
+      setStatus({ ...status, error: error });
     }
   };
+
   const throttledApiRequest = _.throttle(handleSendComment, 2000);
 
   return (
@@ -101,7 +110,6 @@ const Comment = ({ post, setSelectedPost }) => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          throttledApiRequest;
         }}
         className="mt-auto w-[100%] border-t border-gray-500 left-0 relative bottom-0 py-2"
       >
@@ -115,9 +123,17 @@ const Comment = ({ post, setSelectedPost }) => {
         />
         <button
           type="submit"
-          className="ml-3 rounded-xl  font-bold text-sm absolute top-[38%] right-4"
+          onClick={() => inputValue && throttledApiRequest()}
+          className={`ml-3 rounded-xl  font-bold text-sm absolute top-[38%] right-4`}
+          // disabled={inputValue }
         >
-          <IoIosSend size={21} color="ff0000" />
+          {status.loading && inputValue ? (
+            <FaSpinner className="animate-spin" size={21} color="ff0000" />
+          ) : status.succesful ? (
+            <IoIosCheckmark />
+          ) : (
+            <IoIosSend size={21} color="ff0000" />
+          )}
         </button>
       </form>
     </div>
