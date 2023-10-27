@@ -14,6 +14,7 @@ import { Wrapper } from './components/private/common/Wrapper'
 import Feedback from './components/private/dashboard/Feedback'
 import Help from './components/private/dashboard/Help'
 import WhatsNew from './components/private/dashboard/WhatsNew'
+import Alert from './components/public/Alert'
 
 
 const App = () => {

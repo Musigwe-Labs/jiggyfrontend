@@ -11,7 +11,7 @@ import { IoIosCheckmark, IoIosSend } from "react-icons/io";
 import _ from "lodash";
 import { FaSpinner } from "react-icons/fa";
 
-const Comment = ({ post, setSelectedPost }) => {
+const Comment = ({ post, setSelectedPost, reloadPosts }) => {
   const [inputValue, setInputValue] = useState("");
   const [inputHeight, setInputHeight] = useState("35px");
   const [status, setStatus] = useState({
@@ -46,13 +46,14 @@ const Comment = ({ post, setSelectedPost }) => {
       setStatus({ ...status, loading: true });
       const data = { post: post.id, content: inputValue };
       await axios.post("annon/posts/comment/", data, { headers });
+      await reloadPosts();
       setInputValue("");
       setStatus({ ...status, loading: false, successful: true });
     } catch (error) {
       setStatus({ ...status, error: error });
     }
   };
-
+  
   const throttledApiRequest = _.throttle(handleSendComment, 2000);
 
   return (
@@ -125,7 +126,7 @@ const Comment = ({ post, setSelectedPost }) => {
           type="submit"
           onClick={() => inputValue && throttledApiRequest()}
           className={`ml-3 rounded-xl  font-bold text-sm absolute top-[38%] right-4`}
-          // disabled={inputValue }
+          disabled={status.loading}
         >
           {status.loading && inputValue ? (
             <FaSpinner className="animate-spin" size={21} color="ff0000" />
