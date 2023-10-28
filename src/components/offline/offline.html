@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jiggy</title>
+    <style>
+        @font-face {
+            font-family: 'Inter';
+            src: url("./src/components/offline/Inter-Regular.ttf") format('truetype');
+            font-weight:500
+        }
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:content-box
+        }
+        body{
+            font-family: 'Inter', sans-serif;
+            background:#000001;
+            color:white;
+            display:flex;
+            flex-direction: column;
+            justify-content:center;
+            align-items: center;
+            height:100vh;
+        }
+        .logo-wrapper{
+            height:200px;
+            width: 200px;
+        }
+        img{
+            width: 100%;
+            height:auto;
+        }
+        p{
+            font-weight: 600;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="logo-wrapper">
+        <img src="/src/assets/pwa/logo.png" alt="logo">
+        <!-- <img src="../../assets/pwa/logo.png" alt="logo"> -->
+
+    </div>
+        <p>It seems you're offline</p>
+</body>
+</html>

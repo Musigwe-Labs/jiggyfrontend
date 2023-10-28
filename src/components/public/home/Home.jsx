@@ -155,7 +155,7 @@ const Home = () => {
                     className="opacity-70"
                     style={{ textShadow: "0 0 2px #490A0A" }}
                   >
-                    {userDetails && userDetails.user.school.school_acronym}
+                    {/* {userDetails && userDetails.user.school.school_acronym} */}
                   </p>
                   <BsCheckCircleFill
                     fill="#BA3131"
