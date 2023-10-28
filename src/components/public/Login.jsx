@@ -1,62 +1,53 @@
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 // import AuthIcons from '../common/AuthIcons'
-import TermsOfService from '../common/TermsOfService'
-import Banner from '../common/Banner'
+import TermsOfService from "../common/TermsOfService";
+import Banner from "../common/Banner";
 // import { useLoginUserMutation } from '../../services/authApi'
-import GoogleButton from './GoogleButton'
-import {useLocation} from 'react-router-dom'
-import { loginUser } from '../../apis/authenticationApis'
-import EyeOpenIcon from '../../assets/blue-eye.png';
-import EyeClosedIcon from '../../assets/closed-eye.png';
+import GoogleButton from "./GoogleButton";
+import { useLocation } from "react-router-dom";
+import { loginUser } from "../../apis/authenticationApis";
+import EyeOpenIcon from "../../assets/blue-eye.png";
+import EyeClosedIcon from "../../assets/closed-eye.png";
 
-
-  const getToken= (search)=>{
-    const query= new URLSearchParams(search) // parse params to object format
-    const token=query.get('token')? query.get('token') : null
-    return token
-  }
-
+const getToken = (search) => {
+  const query = new URLSearchParams(search); // parse params to object format
+  const token = query.get("token") ? query.get("token") : null;
+  return token;
+};
 
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   /**const [email, setEmail] = useState();*/
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
-  const [signing, setSigning] = useState(false)
-  const [success, setSuccess] = useState(null)
-  const [error, setError] = useState(null)
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [signing, setSigning] = useState(false);
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
 
-  const {search}= useLocation()
+  const { search } = useLocation();
   // const [loginUser, {data, isError, error}] = useLoginUserMutation()
   useEffect(() => {
-    if(success === null){
+    if(success==null){
       //handle google sign in
  // obtain search query from the url
- if (search) { // If it's not empty
-  try {
-    const token = getToken(search);
-    if (token) {
-      setSuccess({ key: token });
-    } else {
-      alert('Error occurred: Token not found');
-    }
-  } catch (e) {
-    console.error('Error while handling token:', e);
-  }
-}
+      if(search){ //if it's not empty
+        const token=getToken(search)
+        token? setSuccess({key:token}): alert('error occurred')
+      }
     }
     if (success !== null) {
-      localStorage.setItem( 'login',JSON.stringify({ key: success.key}))
+      localStorage.setItem("login", JSON.stringify({ key: success.key }));
 
-      setError('')
-      setEmail('')
-      setPassword('')
-      navigate('/home')
-      window.location.reload()
+      setError("");
+      setEmail("");
+      setPassword("");
+      navigate("/home");
+      window.location.reload();
     }
+<<<<<<< HEAD
     if (error) { // Check if error is not null or undefined
       if (error.response) {
         const errorData = error.response.data;
@@ -77,23 +68,26 @@ const Login = () => {
       }
       setSigning(false);
       setError(null);
+=======
+    if (error !== null) {
+      alert(error.non_field_errors[0])
+      setSigning(false)
+      setError(null)
+>>>>>>> upstream/main
     }
-    
   }, [success, error])
-  
 
   const handleLogin = (e) => {
-    e.preventDefault()
-    const data = { email , password }
+    e.preventDefault();
+    const data = { email, password };
     loginUser(data, setSuccess, setError, setSigning);
   }
-  
-  useEffect(() => {
-    if (localStorage.getItem("login") !== null) {
-      navigate("/dashboard");
-      
-    }
-  }, [navigate]);
+ 
+  // useEffect(() => {
+  //   if (localStorage.getItem("login") !== null) {
+  //     navigate("/dashboard");
+  //   }
+  // }, [navigate]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 px-6 lg:px-24 mt-4">
@@ -128,7 +122,7 @@ const Login = () => {
               </div>
               <div className="relative">
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
                   placeholder="Enter password"
                   value={password}
@@ -141,9 +135,17 @@ const Login = () => {
                   className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer"
                 >
                   {showPassword ? (
-                    <img src={EyeOpenIcon} alt="Hide Password" className='w-6'/>
+                    <img
+                      src={EyeOpenIcon}
+                      alt="Hide Password"
+                      className="w-6"
+                    />
                   ) : (
-                    <img src={EyeClosedIcon} alt="Show Password" className='w-6'/>
+                    <img
+                      src={EyeClosedIcon}
+                      alt="Show Password"
+                      className="w-6"
+                    />
                   )}
                 </p>
               </div>
@@ -166,7 +168,7 @@ const Login = () => {
           <div>Or sign in with</div>
           <div className="grow border border-gray-500 h-0"></div>
         </div>
-       
+
         <div className="alternate-sign-in  flex justify-center my-6">
           <GoogleButton />
         </div>

@@ -8,6 +8,7 @@ const AuthContextProvider = (props) => {
   const loginData = JSON.parse(localStorage.getItem("login"));
   const [key, setKey] = useState(loginData ? loginData.key : "");
   const [userDetails, setUserDetails] = useState({});
+  const [error, setError] = useState("")
 
   const logout = () => {
     setKey("");
@@ -31,7 +32,7 @@ const AuthContextProvider = (props) => {
   }, [loginData]);
 
   return (
-    <AuthContext.Provider value={{ key, logout, userDetails }}>
+    <AuthContext.Provider value={{ key, logout, userDetails, error, setError }}>
       {props.children}
     </AuthContext.Provider>
   );

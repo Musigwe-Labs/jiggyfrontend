@@ -1,12 +1,7 @@
 /* eslint-disable react/prop-types */
 import {
-  LiaTimesSolid,
   LiaCheckSolid,
-  LiaImageSolid,
-  LiaImage,
   LiaGlobeSolid,
-  LiaCaretDownSolid,
-  LiaCaretSquareDown,
   LiaSchoolSolid,
   LiaTimesCircleSolid,
 } from "react-icons/lia";
@@ -14,9 +9,15 @@ import axios from "../../../services/axios";
 import { useState, useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
 import _, { forIn } from "lodash";
-import { BsCaretDown, BsCaretDownFill, BsImages } from "react-icons/bs";
+import { BsCaretDownFill, BsImages, BsThreeDots } from "react-icons/bs";
+import Spinner from "../../common/Spinner";
 
-const CreatePostPage = ({ setCreatePost }) => {
+const CreatePostPage = ({
+  setCreatePost,
+  reloadPosts,
+  isLoading,
+  setIsLoading,
+}) => {
   const [content, setContent] = useState("");
   const [post_type, setSelectedOption] = useState("Others");
   const [targeted_school, setTargetedSchool] = useState("All");
@@ -29,7 +30,8 @@ const CreatePostPage = ({ setCreatePost }) => {
     setContent(e.target.value);
   };
 
-  const handleBtnClick = (option) => {
+  const handleBtnClick = (e,option) => {
+    e.preventDefault()
     setSelectedOption(option);
   };
 
@@ -40,18 +42,23 @@ const CreatePostPage = ({ setCreatePost }) => {
   };
 
   const handlePost = async (e) => {
-    console.log("posting...");
     e.preventDefault();
-    const formData = new FormData(form.current, postBtn.current);
-    formData.append("content", content);
-    formData.append("post_type", post_type);
-    imageSrc[0] && formData.append("images", imageSrc[0]);
-
-    try {
-      let post = await axios.post("annon/posts/create/", formData, { headers });
-      setCreatePost(false);
-    } catch (error) {
-      console.log(error);
+    if (content) {
+      setIsLoading(true);
+      const formData = new FormData(form.current, postBtn.current);
+      formData.append("content", content);
+      formData.append("post_type", post_type);
+      imageSrc[0] && formData.append("images", imageSrc[0]);
+      try {
+        await axios.post("annon/posts/create/", formData, { headers });
+        await reloadPosts();
+        setIsLoading(false);
+        setCreatePost(false);
+      } catch (error) {
+        console.log(error);
+      }
+    } else{
+      
     }
   };
   useEffect(() => {
@@ -63,19 +70,19 @@ const CreatePostPage = ({ setCreatePost }) => {
   });
   const handlePreviewImg = (e) => {
     const files = e.target.files;
-    let maxAllowedSize = 5 * 1024 * 1024;
-    if (files.size <= maxAllowedSize){
-
+    let maxAllowedSize = 3 * 1024 * 1024;
+    if (files[0].size < maxAllowedSize) {
       setImageSrc([files[0]]);
       setPreviewImgSrcs(URL.createObjectURL(files[0]));
-    }else{
-      alert("image is too large")
+    } else {
+      alert("image is too large");
     }
   };
   const handleRemoveImage = () => {
     setPreviewImgSrcs("");
     setImageSrc("");
   };
+
   // const handlePost= ()=>{
   //     const data = { content , post_type }
   //     if (socket && socket.readyState === WebSocket.OPEN) {
@@ -109,8 +116,13 @@ const CreatePostPage = ({ setCreatePost }) => {
             onSubmit={throttledApiRequest}
             type="submit"
             ref={postBtn}
+            disabled={isLoading}
           >
-            Post
+            {isLoading ? (
+              <BsThreeDots size={"2rem"} className="a animate-pulse" />
+            ) : (
+              "Post"
+            )}
           </button>
         </div>
         <div>
@@ -184,68 +196,66 @@ const CreatePostPage = ({ setCreatePost }) => {
       <footer className="mt-auto h-auto">
         <div className="px-5">
           <output className="flex gap-2">
-          
-            {previewImgSrcs.map((imgSrc, index) => (
+            {previewImgSrcs && (
               <figure
-                key={index}
-                style={{ backgroundImage: `url(${imgSrc})` }}
+                style={{ backgroundImage: `url(${previewImgSrcs})` }}
                 className={` transition-all duration-300 ease-linear aspect-[12/16] bg-cover bg-center rounded-lg w-[5rem] h-[7rem] relative`}
               >
                 <LiaTimesCircleSolid
-                  onClick={() => handleRemoveImage(index)}
+                  onClick={() => handleRemoveImage()}
                   className="absolute cursor-pointer hover:text-lg transition-all duration-300 ease-linear bg-[#321616] rounded-full top-1 right-1"
                 />
               </figure>
-            ))}
+            )}
           </output>
         </div>
 
         <div className="px-3">
           <button
             className="Confession rounded-full px-2 m-2"
-            onClick={() => handleBtnClick("Confession")}
+            onClick={(e) => handleBtnClick(e, "Confession")}
           >
             Confession
           </button>
           <button
             className="Question rounded-full px-2 m-2"
-            onClick={() => handleBtnClick("Question")}
+            onClick={(e) => handleBtnClick(e, "Question")}
           >
             Question
           </button>
           <button
             className="Crush rounded-full px-2 m-2"
-            onClick={() => handleBtnClick("Crush")}
+            onClick={(e) => handleBtnClick(e, "Crush")}
           >
             Crush
           </button>
           <button
             className="DM rounded-full px-2 m-2"
-            onClick={() => handleBtnClick("DM")}
+            onClick={(e) => handleBtnClick(e, "DM")}
           >
             DM
           </button>
           <button
             className="Advice rounded-full px-2 m-2"
-            onClick={() => handleBtnClick("Advice")}
+            onClick={(e) => handleBtnClick(e, "Advice")}
           >
             Advice
           </button>
           <button
             className="Cruise rounded-full px-2 m-2"
-            onClick={() => handleBtnClick("Cruise")}
+            onClick={(e) => handleBtnClick(e, "Cruise")}
           >
             Cruise
           </button>
           <button
             className="Talk rounded-full px-2 m-2"
-            onClick={() => handleBtnClick("Talk")}
+            onClick={(e) => handleBtnClick(e, "Talk")}
           >
             Talk
           </button>
           <button
             className="Others rounded-full px-2 m-2"
-            onClick={() => handleBtnClick("Others")}
+            onClick={(e) => handleBtnClick(e, "Others")}
           >
             Others
           </button>

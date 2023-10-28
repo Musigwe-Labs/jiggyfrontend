@@ -17,6 +17,7 @@ import Feedback from './components/private/dashboard/Feedback'
 import Help from './components/private/dashboard/Help'
 import WhatsNew from './components/private/dashboard/WhatsNew'
 import ErrorFallBack from './components/error/ErrorFallBack'
+import Alert from './components/public/Alert'
 
 
 const App = () => {
