@@ -16,8 +16,6 @@ const Register = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState();
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [register, setRegister] = useState(false);
@@ -26,6 +24,17 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(true);
   const {setAppError} = useErrorContext()
 
+
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+    const handlePasswordChange = (newPassword) => {
+      setPassword(newPassword);
+    };
+
+    const handleConfirmPasswordChange = (newConfirmPassword) => {
+      setConfirmPassword(newConfirmPassword);
+    };
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -40,16 +49,16 @@ const Register = () => {
       alert("Password mismatch");
     } else {
       registerUser(data, setSuccess, setError, setRegister);
-    }
-  };
+  }
+};
   const handleSelectChange = (selected) => {
     setSelectedOption(selected);
+    if (error !== null) {
+      alert('error in handleselectchange: '+JSON.stringify(error));
+      // console.log(error)
+      setError(null);
+    }
   };
-  // if (error !== null) {
-  //   alert('error in handleselectchange: '+JSON.stringify(error));
-  //   // console.log(error)
-  //   setError(null);
-  // }
 
   useEffect(() => {
     if (success !== null) {
@@ -76,7 +85,8 @@ const Register = () => {
         setAppError({message})
     });
   }, []);
-if(isLoading) return <Spinner />
+  
+if(isLoading) return <Spinner /> ;
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 px-6 lg:px-24 mt-4">
       <Banner />
@@ -105,7 +115,14 @@ if(isLoading) return <Spinner />
             </div>
 
             <div>
-            <PasswordInput password={password} setPassword={setPassword} confirmPassword={confirmPassword} setConfirmPassword={setConfirmPassword} />
+
+            <PasswordInput
+              onPasswordChange={handlePasswordChange}
+              onConfirmPasswordChange={handleConfirmPasswordChange}
+              password={password}
+              confirmPassword={confirmPassword}
+              />
+
             </div>
 
             <div>

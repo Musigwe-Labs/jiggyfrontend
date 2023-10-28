@@ -42,7 +42,7 @@ const Banner = () => {
   return (
     <div className='md:block md:px-6 lg:px-12 border-r border-gray-900 text-center'>
       <img src={Logo} alt='logo' className='w-[30%] pt-4 border-s-fuchsia-400' />
-      <h1 className='max-sm:text-4xl md:text-5xl lg:text-7xl text-white-400 mt-6 mb-3'>JIGGY APP</h1>
+      <h1 className='max-sm:text-4xl md:text-5xl lg:text-7xl text-white-400 mt-6 mb-3 from-[#f33f5e] via-[#ff008a9e] to-[#b416fe66] bg-gradient-to-r bg-clip-text text-transparent'>JIGGY</h1>
       <div className='space-y-4 text-gray-500'>
         <Typewriter />
         <img src={img} alt="svg" className='w-1/2 mx-auto pb-4' />

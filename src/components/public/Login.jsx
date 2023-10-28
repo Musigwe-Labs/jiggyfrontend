@@ -32,13 +32,21 @@ const Login = () => {
   const {search}= useLocation()
   // const [loginUser, {data, isError, error}] = useLoginUserMutation()
   useEffect(() => {
-    if(success==null){
+    if(success === null){
       //handle google sign in
  // obtain search query from the url
-      if(search){ //if it's not empty
-        const token=getToken(search)
-        token? setSuccess({key:token}): alert('error occurred')
-      }
+ if (search) { // If it's not empty
+  try {
+    const token = getToken(search);
+    if (token) {
+      setSuccess({ key: token });
+    } else {
+      alert('Error occurred: Token not found');
+    }
+  } catch (e) {
+    console.error('Error while handling token:', e);
+  }
+}
     }
     if (success !== null) {
       localStorage.setItem( 'login',JSON.stringify({ key: success.key}))
@@ -49,24 +57,43 @@ const Login = () => {
       navigate('/home')
       window.location.reload()
     }
-    if (error !== null) {
-      alert(error.non_field_errors[0])
-      setSigning(false)
-      setError(null)
+    if (error) { // Check if error is not null or undefined
+      if (error.response) {
+        const errorData = error.response.data;
+        if (errorData && errorData.non_field_errors && errorData.non_field_errors.length > 0) {
+          // Handle non-field-specific errors
+          alert(errorData.non_field_errors[0]);
+        } else if (errorData && errorData.password && errorData.password.length > 0) {
+          // Handle password-related errors
+          alert(errorData.password[0]);
+        } else {
+          // Handle other types of errors
+          alert('Wrong email or password');
+        }
+      } else {
+        // Handle other types of errors, e.g., network issues
+      
+        alert('error: '+ error);
+      }
+      setSigning(false);
+      setError(null);
     }
+    
   }, [success, error])
+  
 
   const handleLogin = (e) => {
     e.preventDefault()
     const data = { email , password }
     loginUser(data, setSuccess, setError, setSigning);
   }
- 
-  // useEffect(() => {
-  //   if (localStorage.getItem("login") !== null) {
-  //     navigate("/dashboard");
-  //   }
-  // }, [navigate]);
+  
+  useEffect(() => {
+    if (localStorage.getItem("login") !== null) {
+      navigate("/dashboard");
+      
+    }
+  }, [navigate]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 px-6 lg:px-24 mt-4">
@@ -79,17 +106,19 @@ const Login = () => {
         </div>
 
         <div className="my-12">
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4" >
             <div>
               <div className="relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max">
                 Email
               </div>
               <input
-                type="text"
+                type="email"
                 className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
                 placeholder="Enter your Email"
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                name='email'
+
               />
             </div>
 
@@ -103,9 +132,11 @@ const Login = () => {
                   className="w-full bg-transparent border border-gray-800 rounded-md p-3 text-gray-500 placeholder-gray-700"
                   placeholder="Enter password"
                   value={password}
+                  onChange={(e) => setPassword(e.target.value)} // Add this onChange handler
                   required
+                  name='password'
                 />
-                <button
+                <p
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer"
                 >
@@ -114,12 +145,12 @@ const Login = () => {
                   ) : (
                     <img src={EyeClosedIcon} alt="Show Password" className='w-6'/>
                   )}
-                </button>
-          </div>
+                </p>
+              </div>
             </div>
 
             <div>
-              <button className="w-full p-3 bg-[#007aff] hover:bg-[#0d4580] rounded-lg text-white mt-6 mb-2">
+              <button type='submit' className="w-full p-3 bg-[#007aff] hover:bg-[#0d4580] rounded-lg text-white mt-6 mb-2">
                 {signing ? "Logging in..." : "Login"}
               </button>
 

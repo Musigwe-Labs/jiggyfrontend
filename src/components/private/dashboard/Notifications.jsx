@@ -1,11 +1,11 @@
 import HomeFooter from "../../public/home/homeFooter";
 import {FaBell as BellIcon}   from  'react-icons/fa'
- import {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
+
 
 
 
 export default function Notiifications(){
-//when you click register it as opened
 const notifications=[
 		{
 			day:'today',
@@ -127,12 +127,8 @@ const notifications=[
 
 			]	
 		}
-
+		
 ]
-const [fetchData, setFetch]= useState(false)
-useEffect(()=>{
-	fetch('https://moviebox-hng-chapter-codes.vercel.app/').then(res=>console.log(res)).catch(err=>console.log(err))
-},[fetchData])
 
 // console.log(notifications[0].notificationText[0].notificationCount())
 return(
@@ -148,13 +144,16 @@ return(
 					</div>
 				</div>
 		</header>
-		<button onClick={()=>setFetch(true)}>fetch</button>
+		<div className="text-white px-8 pb-6">
+          Coming soon...
+        </div>
+
 		<main className="grow mb-20  flex flex-col items-center w-full">
 		  
 			{
 				notifications.map(el=>(
 					<div className="day-wrapper text-left" key={el.day} >
-						<h6 className='day pl-12 py-4 text-[.75rem] font-bold capitalize'>{el.day}</h6>
+						<h6 className='day+ pl-12 py-4 text-[.75rem] font-bold capitalize'>{el.day}</h6>
 						{el.note.map(notification=>(
 							<div className=" note-wrapper flex  mb-4" key={notification.id}>
 								<div className="note-hero bg-gradient-to-b from-[red,33%] via-[blue, 66%] to-[#fff]  w-10 h-10 border-2  leading-[2.5rem] text-center"> </div>

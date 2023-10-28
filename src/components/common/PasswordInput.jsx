@@ -2,24 +2,25 @@ import React, { useState } from 'react';
 import EyeOpenIcon from '../../assets/blue-eye.png';
 import EyeClosedIcon from '../../assets/closed-eye.png';
 
-function PasswordInput({password, setPassword, confirmPassword, setConfirmPassword}) {
-  // const [password, setPassword] = useState('');
-  // const [confirmPassword, setConfirmPassword] = useState('');
+
+function PasswordInput({ onPasswordChange, onConfirmPasswordChange, password, confirmPassword }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
 
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+    const newPassword = e.target.value;
+    onPasswordChange(newPassword); // Call the callback to update the password in Register.jsx
     if (confirmPassword) {
-      setPasswordMatch(e.target.value === confirmPassword);
+      setPasswordMatch(newPassword === confirmPassword);
     }
   };
 
   const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
+    const newConfirmPassword = e.target.value;
+    onConfirmPasswordChange(newConfirmPassword); // Call the callback to update the confirmPassword in Register.jsx
     if (password) {
-      setPasswordMatch(e.target.value === password);
+      setPasswordMatch(password === newConfirmPassword);
     }
   };
 

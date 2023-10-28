@@ -3,7 +3,7 @@
 	"name":" Jiggy social ",
 	"icons":[
 		{
-			"src":"./src/assets/blue-eye.png",
+			"src":"./src/assets/pwa/logo.png",
 			"type":"image/png",
 			"sizes":"1024x1024"
 		}
