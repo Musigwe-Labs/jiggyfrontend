@@ -47,6 +47,7 @@ const Login = () => {
       navigate("/home");
       window.location.reload();
     }
+    /*
 <<<<<<< HEAD
     if (error) { // Check if error is not null or undefined
       if (error.response) {
@@ -54,7 +55,7 @@ const Login = () => {
         if (errorData && errorData.non_field_errors && errorData.non_field_errors.length > 0) {
           // Handle non-field-specific errors
           alert(errorData.non_field_errors[0]);
-        } else if (errorData && errorData.password && errorData.password.length > 0) {
+a        } else if (errorData && errorData.password && errorData.password.length > 0) {
           // Handle password-related errors
           alert(errorData.password[0]);
         } else {
@@ -69,11 +70,12 @@ const Login = () => {
       setSigning(false);
       setError(null);
 =======
+*/
     if (error !== null) {
       alert(error.non_field_errors[0])
       setSigning(false)
       setError(null)
->>>>>>> upstream/main
+/* >>>>>>> upstream/main */
     }
   }, [success, error])
 
