@@ -43,12 +43,15 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
 
   const handleSendComment = async () => {
     try {
-      setStatus({ ...status, loading: true });
-      const data = { post: post.id, content: inputValue };
-      await axios.post("annon/posts/comment/", data, { headers });
-      await reloadPosts();
-      setInputValue("");
-      setStatus({ ...status, loading: false, successful: true });
+      if(inputValue){
+        setStatus({ ...status, loading: true });
+        const data = { content: inputValue, post: post.id, };
+        await axios.post("annon/posts/comment/", data, { headers });
+        await reloadPosts();
+        setInputValue("");
+        console.log(post.comments);
+        setStatus({ ...status, loading: false, successful: true });
+      }
     } catch (error) {
       setStatus({ ...status, error: error });
     }
@@ -124,7 +127,7 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
         />
         <button
           type="submit"
-          onClick={() => inputValue && throttledApiRequest()}
+          onClick={() => throttledApiRequest()}
           className={`ml-3 rounded-xl  font-bold text-sm absolute top-[38%] right-4`}
           disabled={status.loading}
         >

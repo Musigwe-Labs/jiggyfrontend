@@ -11,6 +11,7 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import _, { forIn } from "lodash";
 import { BsCaretDownFill, BsImages, BsThreeDots } from "react-icons/bs";
 import Spinner from "../../common/Spinner";
+import { FaSpinner } from "react-icons/fa6";
 
 const CreatePostPage = ({
   setCreatePost,
@@ -30,8 +31,8 @@ const CreatePostPage = ({
     setContent(e.target.value);
   };
 
-  const handleBtnClick = (e,option) => {
-    e.preventDefault()
+  const handleBtnClick = (e, option) => {
+    e.preventDefault();
     setSelectedOption(option);
   };
 
@@ -55,10 +56,11 @@ const CreatePostPage = ({
         setIsLoading(false);
         setCreatePost(false);
       } catch (error) {
+        setIsLoading(false);
+
         console.log(error);
       }
-    } else{
-      
+    } else {
     }
   };
   useEffect(() => {
@@ -112,14 +114,18 @@ const CreatePostPage = ({
           />
           <p className="font-bold">Create an anonymous post</p>
           <button
-            className="text-[#F33F5E] text-lg"
+            className={`text-[#F33F5E] text-lg ${!isLoading && 'bg-white'} font-bold transition-all duration-300 px-3 rounded-lg ${
+              !content
+                ? "opacity-50"
+                : "opacity-1 hover:bg-[#F33F5E] hover:text-white"
+            }`}
             onSubmit={throttledApiRequest}
             type="submit"
             ref={postBtn}
             disabled={isLoading}
           >
             {isLoading ? (
-              <BsThreeDots size={"2rem"} className="a animate-pulse" />
+              <FaSpinner size={"1.5rem"} className="animate-spin" />
             ) : (
               "Post"
             )}

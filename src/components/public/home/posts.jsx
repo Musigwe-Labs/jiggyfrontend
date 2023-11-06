@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Gist from "./gist";
 import GistLinks from "./gistLinks";
 import HomeInfo from "./homeInfo";
@@ -16,11 +16,14 @@ const Posts = ({
   selectedSchool,
 }) => {
   const [sortedPostsByTime, setSortedPostsByTime] = useState([]);
+  const observer = useRef();
+  const lastPost = useCallback((node) => console.log(node));
   useEffect(() => {
     sortPosts();
   }, [posts, filterBy]);
   const sortPosts = async () => {
     let postsToBeSorted = posts;
+    console.log(posts);
     const sortedPosts = await postsToBeSorted.sort((post1, post2) => {
       let post1date = new Date(post1.created_at);
       let post2date = new Date(post2.created_at);
@@ -41,13 +44,19 @@ const Posts = ({
     );
   return (
     <div className="pb-[29px] transition duration-300 ease-linear">
-      {sortedPostsByTime.map((post) => {
+      {sortedPostsByTime.map((post, index) => {
         let { id, post_type, user, content, created_at, images } = post;
         return (
-          <div key={id} className="text-base mt-2">
+          <div
+            key={id}
+            ref={sortedPostsByTime.length === index + 1 && lastPostRef}
+            className="text-base mt-2"
+          >
             <div
               className={`mx-4  md:mx-16 p-3 transition-all duration-300 ease-linear  ${
-                selectedSchool.toLowerCase() != "all" ? `b${post_type} rounded-lg` : "border-b border-y-[#4B5563]"
+                selectedSchool.toLowerCase() != "all"
+                  ? `b${post_type} rounded-lg`
+                  : "border-b border-y-[#4B5563]"
               }`}
             >
               <HomeInfo
