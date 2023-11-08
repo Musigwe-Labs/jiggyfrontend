@@ -5,7 +5,13 @@ import CommentInfo from "./commentInfo";
 import Gist from "./gist";
 import GistLinks from "./gistLinks";
 import profile_pic from "../../../assets/profile_pics/pic1.png";
-import { FaArrowLeftLong } from "react-icons/fa6";
+import {
+  FaArrowLeftLong,
+  FaForward,
+  FaReply,
+  FaReplyAll,
+  FaReplyd,
+} from "react-icons/fa6";
 import axios from "../../../services/axios";
 import { IoIosCheckmark, IoIosSend } from "react-icons/io";
 import _ from "lodash";
@@ -14,6 +20,7 @@ import { FaSpinner } from "react-icons/fa";
 const Comment = ({ post, setSelectedPost, reloadPosts }) => {
   const [inputValue, setInputValue] = useState("");
   const [inputHeight, setInputHeight] = useState("35px");
+  const [openReplyComment, setopenReplyComment] = useState(false);
   const [status, setStatus] = useState({
     loading: false,
     succesful: false,
@@ -43,9 +50,9 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
 
   const handleSendComment = async () => {
     try {
-      if(inputValue){
+      if (inputValue) {
         setStatus({ ...status, loading: true });
-        const data = { content: inputValue, post: post.id, };
+        const data = { content: inputValue, post: post.id };
         await axios.post("annon/posts/comment/", data, { headers });
         await reloadPosts();
         setInputValue("");
@@ -56,7 +63,7 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
       setStatus({ ...status, error: error });
     }
   };
-  
+
   const throttledApiRequest = _.throttle(handleSendComment, 2000);
 
   return (
@@ -97,7 +104,7 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
                     alt="profile-img"
                   />
                   <h4 className="text-white mr-1 text-base font-bold">
-                    {comment.user.generated_username}
+                    {comment.user}
                   </h4>
                 </div>
                 <p className="text-base">
@@ -106,6 +113,37 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
                   </span>
                   {comment.content}
                 </p>
+                <div className="">
+                  {!openReplyComment ? (
+                    <button
+                      onClick={() => setopenReplyComment(true)}
+                      className="flex items-center gap-1 ml-4 mt-1 transition-all duration-200 ease-linear hover:bg-gray-700 px-3 rounded-3xl py-1"
+                    >
+                      <FaReplyAll /> Reply
+                    </button>
+                  ) : (
+                    <div className="w-[85%] mx-auto transition-all duration-200 ease-linear">
+                      <input
+                        type="text"
+                        placeHolder="Reply comment"
+                        className="px-2 py-1 w-full bg-transparent border-b-2 mb-2 "
+                        name=""
+                        id=""
+                      />
+                      <div className="flex gap-4">
+                        <button
+                          onClick={() => setopenReplyComment(false)}
+                          className="ml-auto transition-all duration-200 ease-linear hover:bg-gray-700 px-3 rounded-3xl py-1"
+                        >
+                          Cancel
+                        </button>
+                        <button className="transition-all duration-200 ease-linear  hover:bg-transparent bg-[#ff0000] px-3 rounded-3xl py-1">
+                          Reply
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}
