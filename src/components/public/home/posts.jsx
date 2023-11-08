@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Gist from "./gist";
 import GistLinks from "./gistLinks";
 import HomeInfo from "./homeInfo";
 import { PostType } from "./postType";
 import Spinner from "../../common/Spinner";
 import { HiRefresh } from "react-icons/hi";
+import { FaSpinner } from "react-icons/fa6";
 
 const Posts = ({
   posts,
@@ -13,17 +14,43 @@ const Posts = ({
   onPostClick,
   filterBy,
   isLoading,
+  setCurrentPageIndex,
   selectedSchool,
+  hasMorePosts,
 }) => {
   const [sortedPostsByTime, setSortedPostsByTime] = useState([]);
-  const observer = useRef();
-  const lastPost = useCallback((node) => console.log(node));
+  const lastPostRef = useRef();
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [isLoadingMorePosts, setIsLoadingMorePosts] = useState(false);
+
+  useEffect(() => {
+    if (posts.length === 0) return;
+    if (!lastPostRef.current) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsIntersecting(entry.isIntersecting);
+    });
+    observer.observe(lastPostRef.current);
+    return () => {
+      observer.disconnect();
+      setIsLoadingMorePosts(false);
+    };
+  }, [posts, isIntersecting]);
+
+  useEffect(() => {
+    setIsLoadingMorePosts(false);
+
+    if (isIntersecting && hasMorePosts) {
+      setIsLoadingMorePosts(true);
+      setCurrentPageIndex((prevPageIndex) => prevPageIndex + 1);
+    }
+  }, [isIntersecting]);
+
   useEffect(() => {
     sortPosts();
   }, [posts, filterBy]);
+
   const sortPosts = async () => {
     let postsToBeSorted = posts;
-    console.log(posts);
     const sortedPosts = await postsToBeSorted.sort((post1, post2) => {
       let post1date = new Date(post1.created_at);
       let post2date = new Date(post2.created_at);
@@ -46,12 +73,33 @@ const Posts = ({
     <div className="pb-[29px] transition duration-300 ease-linear">
       {sortedPostsByTime.map((post, index) => {
         let { id, post_type, user, content, created_at, images } = post;
+        if (sortedPostsByTime.length === index + 1) {
+          return (
+            <div key={id} ref={lastPostRef} className="text-base mt-2">
+              <div
+                className={`mx-4  md:mx-16 p-3 transition-all duration-300 ease-linear  ${
+                  selectedSchool.toLowerCase() != "all"
+                    ? `b${post_type} rounded-lg`
+                    : "border-b border-y-[#4B5563]"
+                }`}
+              >
+                <HomeInfo
+                  school={user.school}
+                  name={user.generated_username}
+                  created_at={created_at}
+                />
+                <PostType post_type={post_type} />
+                <div onClick={() => onPostClick(post)}>
+                  <Gist content={content} images={images} />
+                </div>
+
+                <GistLinks post={post} onPostClick={onPostClick} />
+              </div>
+            </div>
+          );
+        }
         return (
-          <div
-            key={id}
-            ref={sortedPostsByTime.length === index + 1 && lastPostRef}
-            className="text-base mt-2"
-          >
+          <div key={id} className="text-base mt-2">
             <div
               className={`mx-4  md:mx-16 p-3 transition-all duration-300 ease-linear  ${
                 selectedSchool.toLowerCase() != "all"
@@ -74,6 +122,11 @@ const Posts = ({
           </div>
         );
       })}
+      {isLoadingMorePosts && (
+        <div className="grid place-content-center py-4">
+          <FaSpinner color="ff0000" className=" animate-spin text-3xl" />
+        </div>
+      )}
     </div>
   );
 };

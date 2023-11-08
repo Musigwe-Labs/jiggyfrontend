@@ -33,8 +33,8 @@ const timeGap = (date) => {
 };
 
 const timeGapStatement = (gap, measure) => {
-  if (gap > 1) return `${gap}${measure}s`;
-  return `${gap}${measure}`;
+  if (gap > 1) return `${Math.abs(parseInt(gap))}${measure}s`;
+  return `${Math.abs(parseInt(gap))}${measure}`;
 };
 
 export default timeGap;

@@ -43,20 +43,25 @@ const Home = () => {
   const handlePostClick = (post) => {
     setSelectedPost(post);
   };
-
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`annon/posts/?page=${currentPageIndex}`);
-        setInitialPosts(response.data.results);
-        setPosts(response.data.results);
-        setHasMorePosts(Boolean(response.data.next));
+        const response = await axios.get(
+          `annon/posts/?page=${currentPageIndex}`
+        );
+        setInitialPosts([...initialPosts, ...response.data.results]);
+        setPosts([...posts, ...response.data.results]);
+        setHasMorePosts(Boolean(response.data.next))
         // setIsRecievedData(false);
+        
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
       }
     };
+    fetchPosts();
+  }, [currentPageIndex]);
+  useEffect(() => {
     const headers = {
       Authorization: `Token ${key}`,
     };
@@ -71,13 +76,16 @@ const Home = () => {
       } catch (error) {}
     };
     fetchUser();
-    fetchPosts();
   }, []);
 
   //Ajax
   const reloadPosts = () => {
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", `https://jiggybackend.com.ng/annon/posts?page=${currentPageIndex}`, true);
+    xhr.open(
+      "GET",
+      `https://jiggybackend.com.ng/annon/posts?page=${currentPageIndex}`,
+      true
+    );
     xhr.onload = function () {
       if (xhr.status === 200) {
         let response = JSON.parse(this.response);
@@ -86,9 +94,7 @@ const Home = () => {
     };
     xhr.send();
   };
-const loadNextPost = async () => {
-  
-}
+
   //School filtering
   let handleSchoolFilter = (school) => {
     setSelectedSchool(school.toUpperCase());
@@ -216,7 +222,9 @@ const loadNextPost = async () => {
               error={error}
               onPostClick={handlePostClick}
               isLoading={isLoading}
+              setCurrentPageIndex={setCurrentPageIndex}
               selectedSchool={selectedSchool}
+              hasMorePosts={hasMorePosts}
             />
           ) : (
             <Trending posts={posts} />
@@ -228,7 +236,7 @@ const loadNextPost = async () => {
       {sharePost.view && (
         <SharePost sharePost={sharePost} setSharePost={setSharePost} />
       )}
-      <HomeFooter />
+      {/* <HomeFooter /> */}
     </>
   );
 };
