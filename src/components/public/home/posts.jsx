@@ -127,6 +127,7 @@ const Posts = ({
           <FaSpinner color="ff0000" className=" animate-spin text-3xl" />
         </div>
       )}
+      loading ...
     </div>
   );
 };
