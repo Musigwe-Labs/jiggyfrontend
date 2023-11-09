@@ -24,8 +24,10 @@ const Posts = ({
   const [isLoadingMorePosts, setIsLoadingMorePosts] = useState(false);
 
   useEffect(() => {
+    let allPosts = document.querySelector(".posts");
+let lastPost = allPosts.lastChild;
     console.log(posts);
-    console.log(lastPostRef.current);
+    console.log(allPosts.lastChild);
     if (posts.length === 0) return;
     if (!lastPostRef.current) return;
     console.log(lastPostRef.current);
@@ -81,12 +83,12 @@ const Posts = ({
       </div>
     );
   return (
-    <div className="pb-[29px] transition duration-300 ease-linear">
+    <div className="pb-[29px] posts transition duration-300 ease-linear">
       {sortedPostsByTime.map((post, index) => {
         let { id, post_type, user, content, created_at, images } = post;
         if (sortedPostsByTime.length === index + 1) {
           return (
-            <div key={id} ref={lastPostRef} className="text-base mt-2">
+            <div key={id} ref={lastPostRef} className="text-base post mt-2">
               <div
                 className={`mx-4  md:mx-16 p-3 transition-all duration-300 ease-linear  ${
                   selectedSchool.toLowerCase() != "all"
