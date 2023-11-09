@@ -27,10 +27,10 @@ const Posts = ({
     if (posts.length === 0) return;
     let allPosts = document.querySelector(".posts");
     if (!allPosts || allPosts.length === 0) return;
+    console.log(allPosts);
     let lastPost = allPosts.lastChild;
     if (!lastPost) return;
     
-    console.log(allPosts.lastChild);
 
     console.log(lastPost);
 
