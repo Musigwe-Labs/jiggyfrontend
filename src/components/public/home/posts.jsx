@@ -26,8 +26,8 @@ const Posts = ({
   useEffect(() => {
     if (posts.length === 0) return;
     let allPosts = document.querySelector(".posts");
-    if (!allPosts || allPosts.length === 0) return;
     console.log(allPosts);
+    if (!allPosts || allPosts.length === 0) return;
     let lastPost = allPosts.lastChild;
     if (!lastPost) return;
     
