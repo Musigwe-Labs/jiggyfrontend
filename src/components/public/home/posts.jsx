@@ -29,10 +29,10 @@ const Posts = ({
     console.log(allPosts);
     // if (!allPosts || allPosts.length === 0) return;
     let lastPost = allPosts.lastChild;
+    console.log(lastPost);
     if (!lastPost) return;
     
 
-    console.log(lastPost);
 
     const observer = new IntersectionObserver(([entry]) => {
       setIsIntersecting(entry.isIntersecting);
