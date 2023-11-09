@@ -29,10 +29,13 @@ const Posts = ({
     const observer = new IntersectionObserver(([entry]) => {
       setIsIntersecting(entry.isIntersecting);
     });
+    console.log("loading1");
     observer.observe(lastPostRef.current);
     return () => {
       observer.disconnect();
       setIsLoadingMorePosts(false);
+    console.log("done");
+
     };
   }, [posts, isIntersecting]);
 
@@ -41,12 +44,16 @@ const Posts = ({
 
     if (isIntersecting && hasMorePosts) {
       setIsLoadingMorePosts(true);
+    console.log("loading2");
+
       setCurrentPageIndex((prevPageIndex) => prevPageIndex + 1);
     }
   }, [isIntersecting]);
 
   useEffect(() => {
     sortPosts();
+    console.log("sorting");
+
   }, [posts, filterBy]);
 
   const sortPosts = async () => {
