@@ -24,8 +24,12 @@ const Posts = ({
   const [isLoadingMorePosts, setIsLoadingMorePosts] = useState(false);
 
   useEffect(() => {
+    console.log(posts);
+    console.log(lastPostRef.current);
     if (posts.length === 0) return;
     if (!lastPostRef.current) return;
+    console.log(lastPostRef.current);
+
     const observer = new IntersectionObserver(([entry]) => {
       setIsIntersecting(entry.isIntersecting);
     });
