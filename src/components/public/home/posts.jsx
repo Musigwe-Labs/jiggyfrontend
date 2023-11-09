@@ -24,24 +24,25 @@ const Posts = ({
   const [isLoadingMorePosts, setIsLoadingMorePosts] = useState(false);
 
   useEffect(() => {
-    let allPosts = document.querySelector(".posts");
-let lastPost = allPosts.lastChild;
-    console.log(posts);
-    console.log(allPosts.lastChild);
     if (posts.length === 0) return;
-    if (!lastPostRef.current) return;
-    console.log(lastPostRef.current);
+    let allPosts = document.querySelector(".posts");
+    if (!allPosts || allPosts.length === 0) return;
+    let lastPost = allPosts.lastChild;
+    if (!lastPost) return;
+    
+    console.log(allPosts.lastChild);
+
+    console.log(lastPost);
 
     const observer = new IntersectionObserver(([entry]) => {
       setIsIntersecting(entry.isIntersecting);
     });
     console.log("loading1");
-    observer.observe(lastPostRef.current);
+    observer.observe(lastPost);
     return () => {
       observer.disconnect();
       setIsLoadingMorePosts(false);
-    console.log("done");
-
+      console.log("done");
     };
   }, [posts, isIntersecting]);
 
@@ -50,7 +51,7 @@ let lastPost = allPosts.lastChild;
 
     if (isIntersecting && hasMorePosts) {
       setIsLoadingMorePosts(true);
-    console.log("loading2");
+      console.log("loading2");
 
       setCurrentPageIndex((prevPageIndex) => prevPageIndex + 1);
     }
@@ -59,7 +60,6 @@ let lastPost = allPosts.lastChild;
   useEffect(() => {
     sortPosts();
     console.log("sorting");
-
   }, [posts, filterBy]);
 
   const sortPosts = async () => {
@@ -140,7 +140,6 @@ let lastPost = allPosts.lastChild;
           <FaSpinner color="ff0000" className=" animate-spin text-3xl" />
         </div>
       )}
-      loading ...
     </div>
   );
 };
