@@ -27,7 +27,7 @@ const Posts = ({
     if (posts.length === 0) return;
     let allPosts = document.querySelector(".posts");
     console.log(allPosts);
-    if (!allPosts || allPosts.length === 0) return;
+    // if (!allPosts || allPosts.length === 0) return;
     let lastPost = allPosts.lastChild;
     if (!lastPost) return;
     
