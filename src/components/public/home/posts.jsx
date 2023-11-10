@@ -102,7 +102,7 @@ const Posts = ({
                   created_at={created_at}
                 />
                 <PostType post_type={post_type} />
-                <div onClick={() => onPostClick(post)}>
+                <div onClick={() => onPostClick(post, index)}>
                   <Gist content={content} images={images} />
                 </div>
 

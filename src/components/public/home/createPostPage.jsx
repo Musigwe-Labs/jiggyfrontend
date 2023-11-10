@@ -18,6 +18,9 @@ const CreatePostPage = ({
   reloadPosts,
   isLoading,
   setIsLoading,
+  setSelectedPost,
+  selectedPostIndex,
+  posts
 }) => {
   const [content, setContent] = useState("");
   const [post_type, setSelectedOption] = useState("Others");
@@ -53,6 +56,7 @@ const CreatePostPage = ({
       try {
         await axios.post("annon/posts/create/", formData, { headers });
         await reloadPosts();
+        setSelectedPost(posts[selectedPostIndex])
         setIsLoading(false);
         setCreatePost(false);
       } catch (error) {

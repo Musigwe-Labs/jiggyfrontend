@@ -1,33 +1,31 @@
 const timeGap = (date) => {
   let currentDate = new Date();
   let previousDate = new Date(date);
-  if (currentDate.getFullYear() !== previousDate.getFullYear())
-    return timeGapStatement(
-      currentDate.getFullYear() - previousDate.getFullYear(),
-      "yr"
-    );
-  if (currentDate.getMonth() !== previousDate.getMonth())
-    return timeGapStatement(
-      currentDate.getMonth() - previousDate.getMonth(),
-      "mo"
-    );
-  if (currentDate.getDay() !== previousDate.getDay())
-    return timeGapStatement(currentDate.getDay() - previousDate.getDay(), "d");
-  if (currentDate.getHours() !== previousDate.getHours())
-    return timeGapStatement(
-      currentDate.getHours() - previousDate.getHours(),
-      "hr"
-    );
-  if (currentDate.getMinutes() !== previousDate.getMinutes())
-    return timeGapStatement(
-      currentDate.getMinutes() - previousDate.getMinutes(),
-      "min"
-    );
-  if (currentDate.getSeconds() !== previousDate.getSeconds())
-    return timeGapStatement(
-      currentDate.getSeconds() - previousDate.getSeconds(),
-      "sec"
-    );
+
+  let difference = Math.abs(currentDate - previousDate) / 1000;
+  let time_units = {};
+  let seconds_rate = {
+    year: 31536000,
+    month: 2592000,
+    week: 604800,
+    day: 86400,
+    hour: 3600,
+    minute: 60,
+    second: 1,
+  };
+  Object.keys(seconds_rate).forEach(function (key) {
+    time_units[key] = Math.floor(difference / seconds_rate[key]);
+    difference -= time_units[key] * seconds_rate[key];
+  });
+  let { year, month, week, day, hour, minute, second } = time_units;
+
+  if (year > 0) return timeGapStatement(year, "yr");
+  if (month > 0) return timeGapStatement(month, "mo");
+  if (week > 0) return timeGapStatement(week, "wk");
+  if (day > 0) return timeGapStatement(day, "d");
+  if (hour > 0) return timeGapStatement(hour, "hr");
+  if (minute > 0) return timeGapStatement(minute, "min");
+  if (second > 0) return timeGapStatement(second, "sec");
 
   return "Just now";
 };

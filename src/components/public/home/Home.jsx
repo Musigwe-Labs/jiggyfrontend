@@ -24,6 +24,7 @@ const Home = () => {
   const [createPost, setCreatePost] = useState(false);
   const [profilePage, setProfilePage] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPostIndex, setSelectedPostIndex] = useState(null);
   const [isAll, setIsAll] = useState(false);
   const [posts, setPosts] = useState([]);
   const [initialPosts, setInitialPosts] = useState([]);
@@ -40,8 +41,9 @@ const Home = () => {
   const navigate = useNavigate();
   const { key } = useContext(AuthContext);
 
-  const handlePostClick = (post) => {
+  const handlePostClick = (post, index) => {
     setSelectedPost(post);
+    setSelectedPostIndex(post);
   };
   useEffect(() => {
     const fetchPosts = async () => {
@@ -128,6 +130,7 @@ const Home = () => {
           <Comment
             post={selectedPost}
             setSelectedPost={setSelectedPost}
+            setSelectedPostIndex={setSelectedPostIndex}
             reloadPosts={reloadPosts}
           />
         </div>

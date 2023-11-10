@@ -19,9 +19,15 @@ import { FaSpinner } from "react-icons/fa";
 import { ReplyComment } from "./replyComment";
 import Replies from "./replies";
 
-const Comment = ({ post, setSelectedPost, reloadPosts }) => {
+const Comment = ({
+  post,
+  setSelectedPost,
+  reloadPosts,
+  setSelectedPostIndex,
+}) => {
   const [inputValue, setInputValue] = useState("");
   const [inputHeight, setInputHeight] = useState("35px");
+  const [allComments, setAllComments] = useState([]);
   const [status, setStatus] = useState({
     loading: false,
     succesful: false,
@@ -43,6 +49,13 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
 
     setInputHeight(`${newHeight}px`); //Update the height based on newHeight
   };
+
+  useEffect(() => {
+    console.log(post.comments);
+
+    if (post) setAllComments(post.comments);
+  }, []);
+
   useEffect(() => {
     if (inputValue === "") {
       setInputHeight("35px");
@@ -57,7 +70,7 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
         await axios.post("annon/posts/comment/", data, { headers });
         await reloadPosts();
         setInputValue("");
-        console.log(post.comments);
+
         setStatus({ ...status, loading: false, successful: true });
       }
     } catch (error) {
@@ -72,7 +85,10 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
       <div className="flex align-center">
         <FaArrowLeftLong
           size={25}
-          onClick={() => setSelectedPost(null)}
+          onClick={() => {
+            setSelectedPost(null);
+            setSelectedPostIndex(null);
+          }}
           className="cursor-pointer"
         />
         <h1 className="text-3xl ml-6 text-center font-bold from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br bg-clip-text text-transparent">

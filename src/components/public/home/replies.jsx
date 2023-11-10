@@ -16,10 +16,10 @@ const Replies = ({ replies }) => {
         style={{
           clipPath: `${
             showReplies
-              ? "polygon(0 0, 100% 0, 100% 0, 0 0)"
-              : "polygon(0 0, 100% 0, 100% 100%, 0 100%)"
+              ? "polygon(0 0, 100% 0, 100% 100%, 0 100%)"
+              : "polygon(0 0, 100% 0, 100% 0, 0 0)"
           }`,
-          height: `${showReplies ? "0" : "auto"}`,
+          height: `${showReplies ? "auto" : "0"}`,
         }}
         className={`ml-5  transition-all flex flex-col gap-2 duration-300 ease-linear overflow-hidden`}
       >
