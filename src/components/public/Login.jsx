@@ -47,7 +47,8 @@ const Login = () => {
       navigate("/home");
       window.location.reload();
     }
-<<<<<<< HEAD
+// <<<<<<< HEAD
+/*
     if (error) { // Check if error is not null or undefined
       if (error.response) {
         const errorData = error.response.data;
@@ -68,12 +69,13 @@ const Login = () => {
       }
       setSigning(false);
       setError(null);
-=======
+      */
+// =======
     if (error !== null) {
       alert(error.non_field_errors[0])
       setSigning(false)
       setError(null)
->>>>>>> upstream/main
+// >>>>>>> upstream/main
     }
   }, [success, error])
 

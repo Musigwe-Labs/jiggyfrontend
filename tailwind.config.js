@@ -5,7 +5,13 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        openSans:"'Open Sans', sans-serif",
+        poppins:" 'Poppins', sans-serif",
+        sfProDisplay:" 'SFProDisplay', sans-serif"
+      }
+    }
   },
   variants:{
     extend:{
@@ -15,3 +21,5 @@ export default {
   plugins: [],
 }
 
+// font-family: 'Open Sans', sans-serif;
+// font-family: '', sans-serif;
