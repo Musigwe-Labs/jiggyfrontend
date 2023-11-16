@@ -28,7 +28,13 @@ body{
   background: linear-gradient(#ff0000, #ff004c, #0028ad);
   outline: 1px solid slategrey;
 }
+.spotlight::-webkit-scrollbar{
+  height: .3em;
+}
+.spotlight::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #ff0000 10%, #ff004c 30%, #0028ad);
 
+}
 .note-hero{
   border-radius: 100%;
 }

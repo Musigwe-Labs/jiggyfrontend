@@ -24,6 +24,7 @@ const Home = () => {
   const [createPost, setCreatePost] = useState(false);
   const [profilePage, setProfilePage] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPostIndex, setSelectedPostIndex] = useState(null);
   const [isAll, setIsAll] = useState(false);
   const [posts, setPosts] = useState([]);
   const [initialPosts, setInitialPosts] = useState([]);
@@ -34,26 +35,35 @@ const Home = () => {
   const [error, setError] = useState("");
   const [userDetails, setUserDetails] = useState();
   const [selectedSchool, setSelectedSchool] = useState("ALL");
+  const [currentPageIndex, setCurrentPageIndex] = useState(1);
+  const [hasMorePosts, setHasMorePosts] = useState(false);
 
   const navigate = useNavigate();
   const { key } = useContext(AuthContext);
 
-  const handlePostClick = (post) => {
+  const handlePostClick = (post, index) => {
     setSelectedPost(post);
+    setSelectedPostIndex(post);
   };
-
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("annon/posts/");
-        setInitialPosts(response.data);
-        setPosts(response.data);
+        const response = await axios.get(
+          `annon/posts/?page=${currentPageIndex}`
+        );
+        setInitialPosts([...initialPosts, ...response.data.results]);
+        setPosts([...posts, ...response.data.results]);
+        setHasMorePosts(Boolean(response.data.next))
         // setIsRecievedData(false);
+        
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
       }
     };
+    fetchPosts();
+  }, [currentPageIndex]);
+  useEffect(() => {
     const headers = {
       Authorization: `Token ${key}`,
     };
@@ -68,16 +78,20 @@ const Home = () => {
       } catch (error) {}
     };
     fetchUser();
-    fetchPosts();
   }, []);
 
   //Ajax
   const reloadPosts = () => {
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://jiggybackend.com.ng/annon/posts/", true);
+    xhr.open(
+      "GET",
+      `https://jiggybackend.com.ng/annon/posts?page=${currentPageIndex}`,
+      true
+    );
     xhr.onload = function () {
       if (xhr.status === 200) {
-        setPosts(JSON.parse(this.response));
+        let response = JSON.parse(this.response);
+        setPosts(response.results);
       }
     };
     xhr.send();
@@ -116,6 +130,7 @@ const Home = () => {
           <Comment
             post={selectedPost}
             setSelectedPost={setSelectedPost}
+            setSelectedPostIndex={setSelectedPostIndex}
             reloadPosts={reloadPosts}
           />
         </div>
@@ -189,7 +204,7 @@ const Home = () => {
                     className="opacity-70"
                     style={{ textShadow: "0 0 2px #490A0A" }}
                   >
-                    {/* {userDetails && userDetails.user.school.school_acronym} */}
+                    {userDetails && userDetails.user.school.school_acronym}
                   </p>
                   <BsCheckCircleFill
                     fill="#BA3131"
@@ -210,7 +225,9 @@ const Home = () => {
               error={error}
               onPostClick={handlePostClick}
               isLoading={isLoading}
+              setCurrentPageIndex={setCurrentPageIndex}
               selectedSchool={selectedSchool}
+              hasMorePosts={hasMorePosts}
             />
           ) : (
             <Trending posts={posts} />
@@ -222,7 +239,7 @@ const Home = () => {
       {sharePost.view && (
         <SharePost sharePost={sharePost} setSharePost={setSharePost} />
       )}
-      <HomeFooter />
+      {/* <HomeFooter /> */}
     </>
   );
 };

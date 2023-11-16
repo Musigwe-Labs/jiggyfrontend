@@ -5,15 +5,29 @@ import CommentInfo from "./commentInfo";
 import Gist from "./gist";
 import GistLinks from "./gistLinks";
 import profile_pic from "../../../assets/profile_pics/pic1.png";
-import { FaArrowLeftLong } from "react-icons/fa6";
+import {
+  FaArrowLeftLong,
+  FaForward,
+  FaReply,
+  FaReplyAll,
+  FaReplyd,
+} from "react-icons/fa6";
 import axios from "../../../services/axios";
 import { IoIosCheckmark, IoIosSend } from "react-icons/io";
 import _ from "lodash";
 import { FaSpinner } from "react-icons/fa";
+import { ReplyComment } from "./replyComment";
+import Replies from "./replies";
 
-const Comment = ({ post, setSelectedPost, reloadPosts }) => {
+const Comment = ({
+  post,
+  setSelectedPost,
+  reloadPosts,
+  setSelectedPostIndex,
+}) => {
   const [inputValue, setInputValue] = useState("");
   const [inputHeight, setInputHeight] = useState("35px");
+  const [allComments, setAllComments] = useState([]);
   const [status, setStatus] = useState({
     loading: false,
     succesful: false,
@@ -35,6 +49,13 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
 
     setInputHeight(`${newHeight}px`); //Update the height based on newHeight
   };
+
+  useEffect(() => {
+    console.log(post.comments);
+
+    if (post) setAllComments(post.comments);
+  }, []);
+
   useEffect(() => {
     if (inputValue === "") {
       setInputHeight("35px");
@@ -43,17 +64,20 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
 
   const handleSendComment = async () => {
     try {
-      setStatus({ ...status, loading: true });
-      const data = { post: post.id, content: inputValue };
-      await axios.post("annon/posts/comment/", data, { headers });
-      await reloadPosts();
-      setInputValue("");
-      setStatus({ ...status, loading: false, successful: true });
+      if (inputValue) {
+        setStatus({ ...status, loading: true });
+        const data = { content: inputValue, post: post.id };
+        await axios.post("annon/posts/comment/", data, { headers });
+        await reloadPosts();
+        setInputValue("");
+
+        setStatus({ ...status, loading: false, successful: true });
+      }
     } catch (error) {
       setStatus({ ...status, error: error });
     }
   };
-  
+
   const throttledApiRequest = _.throttle(handleSendComment, 2000);
 
   return (
@@ -61,7 +85,10 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
       <div className="flex align-center">
         <FaArrowLeftLong
           size={25}
-          onClick={() => setSelectedPost(null)}
+          onClick={() => {
+            setSelectedPost(null);
+            setSelectedPostIndex(null);
+          }}
           className="cursor-pointer"
         />
         <h1 className="text-3xl ml-6 text-center font-bold from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br bg-clip-text text-transparent">
@@ -78,31 +105,31 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
       </div>
       <div className="mt-4 mb-10">
         <p className="px-3 my-3 text-gray-400">
-          {post.comments.length} comments
+          {post.comments.length}{" "}
+          {post.comments.length < 1 ? "comment" : "comments"}
         </p>
-        <div className="mx-2 flex-1 overflow-auto border-l border-gray-500">
+        <div className="mx-2 flex-1 gap-4 flex flex-col overflow-auto border-l border-gray-500">
           {post.comments.map((comment) => {
             return (
               <div
                 key={comment.created_at}
                 className="text-base bg-[#1717171a] mt-2 px-3 rounded-xl"
               >
-                <div className="flex items-center mb-1">
-                  <img
-                    className="w-6 rounded-3xl mr-2"
-                    src={profile_pic}
-                    alt="profile-img"
-                  />
-                  <h4 className="text-white mr-1 text-base font-bold">
-                    {comment.user.generated_username}
-                  </h4>
+                <div className="flex items-start mb-1">
+                  <div className="px-3 py-1 rounded-3xl mr-2 bg-gray-700">
+                    {comment.user[0].toUpperCase()}
+                  </div>
+                  <div>
+                    <h4 className="text-white mr-1 text-base font-bold">
+                      @{comment.user}
+                    </h4>
+                    <p className="text-base">{comment.content}</p>
+                    <ReplyComment commentId={comment.id} />
+                    {comment.replies.length > 0 && (
+                      <Replies replies={comment.replies} />
+                    )}
+                  </div>
                 </div>
-                <p className="text-base">
-                  <span className="text-[14.5px] text-blue-500 mr-2 font-light">
-                    @{post.user.generated_username}
-                  </span>
-                  {comment.content}
-                </p>
               </div>
             );
           })}
@@ -124,7 +151,7 @@ const Comment = ({ post, setSelectedPost, reloadPosts }) => {
         />
         <button
           type="submit"
-          onClick={() => inputValue && throttledApiRequest()}
+          onClick={() => throttledApiRequest()}
           className={`ml-3 rounded-xl  font-bold text-sm absolute top-[38%] right-4`}
           disabled={status.loading}
         >
