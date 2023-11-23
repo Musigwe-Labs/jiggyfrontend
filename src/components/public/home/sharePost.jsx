@@ -8,7 +8,7 @@ function SharePost({ sharePost, setSharePost }) {
   return (
     <div className="fixed z-10 grid place-items-center top-0 left-0 w-screen h-screen">
       <div onClick={() => setSharePost({post: {}, view: false})} className="absolute top-0 left-0 w-screen bg-[rgba(0,0,0,.5)] h-screen"></div>
-      <div className="relative rounded-xl overflow-hidden bg-black shadow-[0_0_5px_0]">
+      <div className="relative rounded-xl overflow-hidden w-[min(70%,_35rem)] bg-black shadow-[0_0_5px_0]">
         <header
           className="px-4 py-5"
           style={{

@@ -10,19 +10,31 @@ import Select from "react-select";
 import axios from "../../services/axios";
 import Spinner from "../common/Spinner";
 import PasswordInput from "../common/PasswordInput";
+import {useErrorContext} from '../../contexts/ErrorContext'
 
 const Register = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [confirm_password, setConfirm_password] = useState();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [register, setRegister] = useState(false);
   const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const {setAppError} = useErrorContext()
+
+
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+    const handlePasswordChange = (newPassword) => {
+      setPassword(newPassword);
+    };
+
+    const handleConfirmPasswordChange = (newConfirmPassword) => {
+      setConfirmPassword(newConfirmPassword);
+    };
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -31,19 +43,22 @@ const Register = () => {
       password,
       school: selectedOption.value.school_acronym,
     };
-    if (password !== confirm_password) {
+
+    console.log('data: ', data)
+    if (password !== confirmPassword) {
       alert("Password mismatch");
     } else {
       registerUser(data, setSuccess, setError, setRegister);
-    }
-  };
+  }
+};
   const handleSelectChange = (selected) => {
     setSelectedOption(selected);
+    if (error !== null) {
+      alert('error in handleselectchange: '+JSON.stringify(error));
+      // console.log(error)
+      setError(null);
+    }
   };
-  if (error !== null) {
-    alert(error);
-    setError(null);
-  }
 
   useEffect(() => {
     if (success !== null) {
@@ -64,9 +79,14 @@ const Register = () => {
         setOptions(fetchedOptions);
         setIsLoading(false)
       })
-      .catch((error) => console.log("error fetching options", error));
+      .catch((error) => {
+        console.log("error fetching options", error)
+        const {message}=error
+        setAppError({message})
+    });
   }, []);
-if(isLoading) return <Spinner />
+  
+if(isLoading) return <Spinner /> ;
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 px-6 lg:px-24 mt-4">
       <Banner />
@@ -95,7 +115,14 @@ if(isLoading) return <Spinner />
             </div>
 
             <div>
-              <PasswordInput />
+
+            <PasswordInput
+              onPasswordChange={handlePasswordChange}
+              onConfirmPasswordChange={handleConfirmPasswordChange}
+              password={password}
+              confirmPassword={confirmPassword}
+              />
+
             </div>
 
             <div>

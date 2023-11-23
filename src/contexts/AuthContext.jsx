@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import axios from "../services/axios";
+import { getUSerLoginToken } from "../utils/getUserLocalStorageData";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
+const token= getUSerLoginToken()
 
 const AuthContextProvider = (props) => {
-  const loginData = JSON.parse(localStorage.getItem("login"));
-  const [key, setKey] = useState(loginData ? loginData.key : "");
+  const [key, setKey] = useState(token);
   const [userDetails, setUserDetails] = useState({});
+  const [error, setError] = useState("")
 
   const logout = () => {
     setKey("");
@@ -16,25 +18,32 @@ const AuthContextProvider = (props) => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("login")) {
-    //   90;
-      setKey(loginData.key);
+    if (token!=key) {
+      setKey(token);
     }
     let fetchUser = async () => {
-
         const user_response = await axios.get("account/annonyuser/", {
-            Authorization: `Token ${loginData.key}`,
+            Authorization: `Token ${token}`,
           });
           setUserDetails(user_response.data)
     }
     fetchUser();
-  }, [loginData]);
+  }, [key]);
 
   return (
-    <AuthContext.Provider value={{ key, logout, userDetails }}>
+    <AuthContext.Provider value={{ key, logout, userDetails, error, setError }}>
       {props.children}
     </AuthContext.Provider>
   );
 };
 
-export default AuthContextProvider;
+const useAuthContext=()=>{
+  const context= useContext(AuthContext)
+  if(!context){
+    return console.error('Authcontext must be used within Authcontext Provider')
+  }
+
+  return context
+}
+
+export {AuthContextProvider, useAuthContext , AuthContext};

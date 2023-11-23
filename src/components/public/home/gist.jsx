@@ -4,7 +4,7 @@ const Gist = ({ content, showFullGist, images }) => {
     <div>
       <p
         className={`cursor-pointer ${
-          !showFullGist && "text-ellipsis overflow-hidden whitespace-nowrap"
+          !showFullGist && "text-ellipsis overflow-hidden h-[3rem] whitespace-normal"
         } text-white mt-3`}
       >
         {content}

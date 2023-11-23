@@ -15,7 +15,7 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { FiBookOpen, FiGlobe, FiPhone } from "react-icons/fi";
 import { GiDualityMask } from "react-icons/gi";
 import { BsCheckCircleFill, BsFileWordFill } from "react-icons/bs";
-import { useWebSocket } from "../../../contexts/webSocketContext";
+// import { useWebSocket } from "../../../contexts/webSocketContext";
 import SharePost from "./sharePost";
 import { AuthContext } from "../../../contexts/AuthContext";
 
@@ -24,35 +24,46 @@ const Home = () => {
   const [createPost, setCreatePost] = useState(false);
   const [profilePage, setProfilePage] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPostIndex, setSelectedPostIndex] = useState(null);
   const [isAll, setIsAll] = useState(false);
   const [posts, setPosts] = useState([]);
   const [initialPosts, setInitialPosts] = useState([]);
   const [selectedTab, setSelectedTab] = useState("all");
-  const { isRecievedData, setIsRecievedData } = useWebSocket();
+  // const { isRecievedData, setIsRecievedData } = useWebSocket();
   const [sharePost, setSharePost] = useState({ post: {}, view: false });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [userDetails, setUserDetails] = useState();
   const [selectedSchool, setSelectedSchool] = useState("ALL");
+  const [currentPageIndex, setCurrentPageIndex] = useState(1);
+  const [hasMorePosts, setHasMorePosts] = useState(false);
 
   const navigate = useNavigate();
   const { key } = useContext(AuthContext);
-  const handlePostClick = (post) => {
-    setSelectedPost(post);
-  };
 
+  const handlePostClick = (post, index) => {
+    setSelectedPost(post);
+    setSelectedPostIndex(post);
+  };
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("annon/posts/");
-        setInitialPosts(response.data);
-        setPosts(response.data);
-        setIsRecievedData(false);
+        const response = await axios.get(
+          `annon/posts/?page=${currentPageIndex}`
+        );
+        setInitialPosts([...initialPosts, ...response.data.results]);
+        setPosts([...posts, ...response.data.results]);
+        setHasMorePosts(Boolean(response.data.next))
+        // setIsRecievedData(false);
+        
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
       }
     };
+    fetchPosts();
+  }, [currentPageIndex]);
+  useEffect(() => {
     const headers = {
       Authorization: `Token ${key}`,
     };
@@ -67,8 +78,26 @@ const Home = () => {
       } catch (error) {}
     };
     fetchUser();
-    fetchPosts();
-  }, [isRecievedData]);
+  }, []);
+
+  //Ajax
+  const reloadPosts = () => {
+    let xhr = new XMLHttpRequest();
+    xhr.open(
+      "GET",
+      `https://jiggybackend.com.ng/annon/posts?page=${currentPageIndex}`,
+      true
+    );
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        let response = JSON.parse(this.response);
+        setPosts(response.results);
+      }
+    };
+    xhr.send();
+  };
+
+  //School filtering
   let handleSchoolFilter = (school) => {
     setSelectedSchool(school.toUpperCase());
     if (school !== "all" && initialPosts.length > 0) {
@@ -80,8 +109,16 @@ const Home = () => {
       setPosts(schoolPosts);
     } else setPosts(initialPosts);
   };
+
   if (createPost) {
-    return <CreatePostPage setCreatePost={setCreatePost} />;
+    return (
+      <CreatePostPage
+        reloadPosts={reloadPosts}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        setCreatePost={setCreatePost}
+      />
+    );
   }
 
   if (selectedPost !== null) {
@@ -90,7 +127,12 @@ const Home = () => {
         value={{ sharePost: sharePost, setSharePost: setSharePost }}
       >
         <div className="overflow-hidden">
-          <Comment post={selectedPost} setSelectedPost={setSelectedPost} />
+          <Comment
+            post={selectedPost}
+            setSelectedPost={setSelectedPost}
+            setSelectedPostIndex={setSelectedPostIndex}
+            reloadPosts={reloadPosts}
+          />
         </div>
         {sharePost.view && (
           <SharePost sharePost={sharePost} setSharePost={setSharePost} />
@@ -98,16 +140,23 @@ const Home = () => {
       </PostSharing.Provider>
     );
   }
+
   return (
     <>
       <div className="grow">
-        {profilePage ? <Profile setProfilePage={setProfilePage} /> : ""}
+        {profilePage ? (
+          <Profile setProfilePage={setProfilePage} userDetails={userDetails} />
+        ) : (
+          ""
+        )}
         <div className="sticky top-0 bg-black">
           <HomeHeader
             setProfilePage={setProfilePage}
             userDetails={userDetails}
           />
+
           <HomeTabs setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
+
           {userDetails && (
             <div className="my-2 ml-4 flex relative">
               <span
@@ -166,9 +215,7 @@ const Home = () => {
             </div>
           )}
         </div>
-        {sharePost.view && (
-          <SharePost sharePost={sharePost} setSharePost={setSharePost} />
-        )}
+
         <PostSharing.Provider
           value={{ sharePost: sharePost, setSharePost: setSharePost }}
         >
@@ -176,19 +223,23 @@ const Home = () => {
             <Posts
               posts={posts}
               error={error}
-              isLoading={isLoading}
               onPostClick={handlePostClick}
+              isLoading={isLoading}
+              setCurrentPageIndex={setCurrentPageIndex}
               selectedSchool={selectedSchool}
+              hasMorePosts={hasMorePosts}
             />
           ) : (
-            // <div>Trending</div>
-            <Trending posts={posts} isLoading={isLoading} />
+            <Trending posts={posts} />
           )}
         </PostSharing.Provider>
 
         {userDetails && <CreatePostBtn setCreatePost={setCreatePost} />}
       </div>
-      <HomeFooter />
+      {sharePost.view && (
+        <SharePost sharePost={sharePost} setSharePost={setSharePost} />
+      )}
+      {/* <HomeFooter /> */}
     </>
   );
 };

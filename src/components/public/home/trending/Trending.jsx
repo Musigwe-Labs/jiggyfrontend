@@ -8,7 +8,7 @@ import { PostType } from "../postType";
 import timeGap from "../../../../services/dateCheck";
 import Spinner from "../../../common/Spinner";
 
-const Trending = ({ posts, onPostClick, isLoading={isLoading} }) => {
+const Trending = ({ posts, onPostClick, isLoading }) => {
   const [trendingPostsByComments, setTrendingPostsByComments] = useState([]);
   // const [trendingPostsByViews, setTrendingPostsByViews] = useState([]);
   const [trendingPostsByLikes, setTrendingPostsByLikes] = useState([]);
