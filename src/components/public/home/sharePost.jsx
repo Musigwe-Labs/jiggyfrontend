@@ -2,9 +2,10 @@ import React from "react";
 import { LiaUserCircleSolid } from "react-icons/lia";
 import HomeInfo from "./homeInfo";
 import Gist from "./gist";
+import Socialmedialinks from "./socialmedialinks";
 
 function SharePost({ sharePost, setSharePost }) {
-  let { content, user, created_at } = (sharePost.post && sharePost.post) || {};
+  let { content, user, created_at, id } = (sharePost.post && sharePost.post) || {};
   return (
     <div className="fixed z-10 grid place-items-center top-0 left-0 w-screen h-screen">
       <div onClick={() => setSharePost({post: {}, view: false})} className="absolute top-0 left-0 w-screen bg-[rgba(0,0,0,.5)] h-screen"></div>
@@ -25,6 +26,7 @@ function SharePost({ sharePost, setSharePost }) {
             created_at={created_at}
           />
           <Gist content={content} />
+          <Socialmedialinks postId={id} />
         </main>
       </div>
     </div>

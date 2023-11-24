@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, createContext, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, Route, Router, Routes, useNavigate } from "react-router-dom";
 import HomeHeader from "./homeHeader";
 import HomeTabs from "./homeTabs";
 import CreatePostBtn from "./createPostBtn";
@@ -37,6 +37,7 @@ const Home = () => {
   const [selectedSchool, setSelectedSchool] = useState("ALL");
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(undefined)
 
   const navigate = useNavigate();
   const { key } = useContext(AuthContext);
@@ -53,9 +54,9 @@ const Home = () => {
         );
         setInitialPosts([...initialPosts, ...response.data.results]);
         setPosts([...posts, ...response.data.results]);
-        setHasMorePosts(Boolean(response.data.next))
+        setHasMorePosts(Boolean(response.data.next));
         // setIsRecievedData(false);
-        
+
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
@@ -127,12 +128,12 @@ const Home = () => {
         value={{ sharePost: sharePost, setSharePost: setSharePost }}
       >
         <div className="overflow-hidden">
-          <Comment
+          {/* <Comment
             post={selectedPost}
             setSelectedPost={setSelectedPost}
             setSelectedPostIndex={setSelectedPostIndex}
             reloadPosts={reloadPosts}
-          />
+          /> */}
         </div>
         {sharePost.view && (
           <SharePost sharePost={sharePost} setSharePost={setSharePost} />
@@ -217,7 +218,7 @@ const Home = () => {
         </div>
 
         <PostSharing.Provider
-          value={{ sharePost: sharePost, setSharePost: setSharePost }}
+          value={{ sharePost: sharePost, setSharePost: setSharePost, setSelectedPostId: setSelectedPostId }}
         >
           {selectedTab === "all" ? (
             <Posts
@@ -239,6 +240,17 @@ const Home = () => {
       {sharePost.view && (
         <SharePost sharePost={sharePost} setSharePost={setSharePost} />
       )}
+      <PostSharing.Provider
+        value={{ sharePost: sharePost, setSharePost: setSharePost }}
+      >
+        {/* <Outlet
+          post={selectedPost}
+          setSelectedPost={setSelectedPost}
+          setSelectedPostIndex={setSelectedPostIndex}
+          reloadPosts={reloadPosts}
+        /> */}
+      </PostSharing.Provider>
+
       {/* <HomeFooter /> */}
     </>
   );

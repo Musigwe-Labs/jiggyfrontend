@@ -18,9 +18,11 @@ import _ from "lodash";
 import { FaSpinner } from "react-icons/fa";
 import { ReplyComment } from "./replyComment";
 import Replies from "./replies";
+import { PostSharing } from "./Home";
+import { useParams } from "react-router-dom";
 
 const Comment = ({
-  post,
+  // post,
   setSelectedPost,
   reloadPosts,
   setSelectedPostIndex,
@@ -28,11 +30,33 @@ const Comment = ({
   const [inputValue, setInputValue] = useState("");
   const [inputHeight, setInputHeight] = useState("35px");
   const [allComments, setAllComments] = useState([]);
+  const [post, setPost] = useState([])
   const [status, setStatus] = useState({
     loading: false,
     succesful: false,
     error: "",
   });
+  // const {selectedPostId} = useContext(PostSharing);
+  const {id} = useParams();
+  useEffect(() => {
+    console.log(id);
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get(
+          `annon/posts/${98}/update/`, {headers}
+        );
+        setAllComments([response.data.results.comments]);
+        setPost([response.data.results]);
+        
+        // setIsRecievedData(false);
+
+        // setIsLoading(false);
+      } catch (err) {
+        // setError(err.message);
+      }
+    };
+    fetchPosts();
+  }, []);
   const maxInputHeight = 220; // Adjust this value as needed
 
   const { key } = useContext(AuthContext);
@@ -50,11 +74,11 @@ const Comment = ({
     setInputHeight(`${newHeight}px`); //Update the height based on newHeight
   };
 
-  useEffect(() => {
-    console.log(post.comments);
+  // useEffect(() => {
+  //   console.log(post.comments);
 
-    if (post) setAllComments(post.comments);
-  }, []);
+  //   if (post) setAllComments(post.comments);
+  // }, []);
 
   useEffect(() => {
     if (inputValue === "") {
@@ -82,7 +106,7 @@ const Comment = ({
 
   return (
     <div className="z-50 min-h-screen pt-4 px-3 flex flex-col">
-      <div className="flex align-center">
+      {/* <div className="flex align-center">
         <FaArrowLeftLong
           size={25}
           onClick={() => {
@@ -163,7 +187,7 @@ const Comment = ({
             <IoIosSend size={21} color="ff0000" />
           )}
         </button>
-      </form>
+      </form> */}
     </div>
   );
 };
