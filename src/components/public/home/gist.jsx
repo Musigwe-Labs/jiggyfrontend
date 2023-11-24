@@ -13,7 +13,7 @@ const Gist = ({ content, showFullGist, images }) => {
         <img
           src={images}
           loading="lazy"
-          className="w-3/5 md:w-2/5 mx-auto"
+          className="w-[60%] md:w-2/5 mx-auto rounded-md"
           alt="post_image"
         />
       )}

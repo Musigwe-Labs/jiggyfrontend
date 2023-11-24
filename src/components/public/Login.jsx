@@ -92,7 +92,7 @@ a        } else if (errorData && errorData.password && errorData.password.length
   // }, [navigate]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 px-6 lg:px-24 mt-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 px-6 lg:px-24">
       <Banner />
 
       <div className="md:px-6 lg:px-16 md:mt-12">
