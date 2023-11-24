@@ -4,6 +4,7 @@ const ErrorContext=createContext()
 
 const ErrorContextProvider = ({children}) => {
 	const [appError, setAppError]= useState(false)
+  
     return <ErrorContext.Provider value={{appError, setAppError}} >
      		{children}
      </ErrorContext.Provider>

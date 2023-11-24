@@ -48,7 +48,6 @@ const Login = () => {
       window.location.reload();
     }
     /*
-<<<<<<< HEAD
     if (error) { // Check if error is not null or undefined
       if (error.response) {
         const errorData = error.response.data;
@@ -69,13 +68,12 @@ a        } else if (errorData && errorData.password && errorData.password.length
       }
       setSigning(false);
       setError(null);
-=======
-*/
+      */
+
     if (error !== null) {
       alert(error.non_field_errors[0])
       setSigning(false)
       setError(null)
-/* >>>>>>> upstream/main */
     }
   }, [success, error])
 
