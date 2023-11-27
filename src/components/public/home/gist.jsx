@@ -3,7 +3,7 @@ const Gist = ({ content, showFullGist, images }) => {
   return (
     <div>
       <p
-        className={`cursor-pointer ${
+        className={`cursor-pointer break-words ${
           !showFullGist && "text-ellipsis overflow-hidden h-[3rem] whitespace-normal"
         } text-white mt-3`}
       >

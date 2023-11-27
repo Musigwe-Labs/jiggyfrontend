@@ -16,10 +16,8 @@ import { FiBookOpen, FiGlobe, FiPhone } from "react-icons/fi";
 import { GiDualityMask } from "react-icons/gi";
 import { BsCheckCircleFill, BsFileWordFill } from "react-icons/bs";
 // import { useWebSocket } from "../../../contexts/webSocketContext";
-import SharePost from "./sharePost";
 import { AuthContext } from "../../../contexts/AuthContext";
 
-export const PostSharing = createContext();
 const Home = () => {
   const [createPost, setCreatePost] = useState(false);
   const [profilePage, setProfilePage] = useState(false);
@@ -30,14 +28,13 @@ const Home = () => {
   const [initialPosts, setInitialPosts] = useState([]);
   const [selectedTab, setSelectedTab] = useState("all");
   // const { isRecievedData, setIsRecievedData } = useWebSocket();
-  const [sharePost, setSharePost] = useState({ post: {}, view: false });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [userDetails, setUserDetails] = useState();
   const [selectedSchool, setSelectedSchool] = useState("ALL");
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(false);
-  const [selectedPostId, setSelectedPostId] = useState(undefined)
+  const [selectedPostId, setSelectedPostId] = useState(undefined);
 
   const navigate = useNavigate();
   const { key } = useContext(AuthContext);
@@ -50,7 +47,7 @@ const Home = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(
-          `annon/posts/?page=${currentPageIndex}`
+          `annon/posts/paginated/?page=${currentPageIndex}`
         );
         setInitialPosts([...initialPosts, ...response.data.results]);
         setPosts([...posts, ...response.data.results]);
@@ -119,26 +116,6 @@ const Home = () => {
         setIsLoading={setIsLoading}
         setCreatePost={setCreatePost}
       />
-    );
-  }
-
-  if (selectedPost !== null) {
-    return (
-      <PostSharing.Provider
-        value={{ sharePost: sharePost, setSharePost: setSharePost }}
-      >
-        <div className="overflow-hidden">
-          {/* <Comment
-            post={selectedPost}
-            setSelectedPost={setSelectedPost}
-            setSelectedPostIndex={setSelectedPostIndex}
-            reloadPosts={reloadPosts}
-          /> */}
-        </div>
-        {sharePost.view && (
-          <SharePost sharePost={sharePost} setSharePost={setSharePost} />
-        )}
-      </PostSharing.Provider>
     );
   }
 
@@ -217,9 +194,7 @@ const Home = () => {
           )}
         </div>
 
-        <PostSharing.Provider
-          value={{ sharePost: sharePost, setSharePost: setSharePost, setSelectedPostId: setSelectedPostId }}
-        >
+        
           {selectedTab === "all" ? (
             <Posts
               posts={posts}
@@ -233,25 +208,12 @@ const Home = () => {
           ) : (
             <Trending posts={posts} />
           )}
-        </PostSharing.Provider>
+        
 
         {userDetails && <CreatePostBtn setCreatePost={setCreatePost} />}
       </div>
-      {sharePost.view && (
-        <SharePost sharePost={sharePost} setSharePost={setSharePost} />
-      )}
-      <PostSharing.Provider
-        value={{ sharePost: sharePost, setSharePost: setSharePost }}
-      >
-        {/* <Outlet
-          post={selectedPost}
-          setSelectedPost={setSelectedPost}
-          setSelectedPostIndex={setSelectedPostIndex}
-          reloadPosts={reloadPosts}
-        /> */}
-      </PostSharing.Provider>
-
-      {/* <HomeFooter /> */}
+      
+      <HomeFooter />
     </>
   );
 };

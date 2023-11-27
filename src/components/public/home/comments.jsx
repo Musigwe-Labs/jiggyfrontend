@@ -18,39 +18,47 @@ import _ from "lodash";
 import { FaSpinner } from "react-icons/fa";
 import { ReplyComment } from "./replyComment";
 import Replies from "./replies";
-import { PostSharing } from "./Home";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import Spinner from "../../common/Spinner";
 
-const Comment = ({
-  // post,
-  setSelectedPost,
-  reloadPosts,
-  setSelectedPostIndex,
-}) => {
+const Comment = ({ reloadPosts }) => {
   const [inputValue, setInputValue] = useState("");
   const [inputHeight, setInputHeight] = useState("35px");
-  const [allComments, setAllComments] = useState([]);
-  const [post, setPost] = useState([])
+  const [userDetails, setUserDetails] = useState([]);
+  const [post, setPost] = useState(null);
   const [status, setStatus] = useState({
     loading: false,
     succesful: false,
     error: "",
   });
   // const {selectedPostId} = useContext(PostSharing);
-  const {id} = useParams();
+  const { id } = useParams();
+  const { key } = useContext(AuthContext);
+
+  const headers = {
+    Authorization: `Token ${key}`,
+  };
   useEffect(() => {
-    console.log(id);
+    const fetchUser = async () => {
+      try {
+        if (localStorage.getItem("login") !== null) {
+          const user_response = await axios.get("account/annonyuser/", {
+            headers,
+          });
+          setUserDetails(user_response.data);
+        }
+      } catch (error) {}
+    };
+    fetchUser();
+  }, []);
+  useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(
-          `annon/posts/${98}/update/`, {headers}
-        );
-        setAllComments([response.data.results.comments]);
-        setPost([response.data.results]);
-        
-        // setIsRecievedData(false);
+        const response = await axios.get(`/annon/posts/detail/${id}/`, {
+          headers,
+        });
+        setPost(response.data);
 
-        // setIsLoading(false);
       } catch (err) {
         // setError(err.message);
       }
@@ -59,11 +67,6 @@ const Comment = ({
   }, []);
   const maxInputHeight = 220; // Adjust this value as needed
 
-  const { key } = useContext(AuthContext);
-
-  const headers = {
-    Authorization: `Token ${key}`,
-  };
   const handleInputChange = (event) => {
     const { value, scrollHeight } = event.target;
     setInputValue(value);
@@ -73,12 +76,6 @@ const Comment = ({
 
     setInputHeight(`${newHeight}px`); //Update the height based on newHeight
   };
-
-  // useEffect(() => {
-  //   console.log(post.comments);
-
-  //   if (post) setAllComments(post.comments);
-  // }, []);
 
   useEffect(() => {
     if (inputValue === "") {
@@ -103,28 +100,28 @@ const Comment = ({
   };
 
   const throttledApiRequest = _.throttle(handleSendComment, 2000);
-
+  if (!post) {
+    return <Spinner />;
+  }
   return (
-    <div className="z-50 min-h-screen pt-4 px-3 flex flex-col">
-      {/* <div className="flex align-center">
-        <FaArrowLeftLong
-          size={25}
-          onClick={() => {
-            setSelectedPost(null);
-            setSelectedPostIndex(null);
-          }}
-          className="cursor-pointer"
-        />
-        <h1 className="text-3xl ml-6 text-center font-bold from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br bg-clip-text text-transparent">
-          Comment
-        </h1>
+    <div className="relative min-h-screen pt-4 px-3 flex flex-col">
+      <div className="flex align-center">
+        <div className="flex align-center">
+          <Link to="/home">
+            <FaArrowLeftLong size={25} className="cursor-pointer" />
+          </Link>
+          <h1 className="text-3xl ml-6 text-center font-bold from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br bg-clip-text text-transparent">
+            Comment
+          </h1>
+        </div>
+        <div></div>
       </div>
       <div className="z-10 md:mx-10 p-3">
         <CommentInfo
           school={post.user.school}
           name={post.user.generated_username}
         />
-        <Gist content={post.content} images={post.images} />
+        <Gist content={post.content} images={post.images} showFullGist={true} />
         <GistLinks post={post} />
       </div>
       <div className="mt-4 mb-10">
@@ -187,7 +184,7 @@ const Comment = ({
             <IoIosSend size={21} color="ff0000" />
           )}
         </button>
-      </form> */}
+      </form>
     </div>
   );
 };

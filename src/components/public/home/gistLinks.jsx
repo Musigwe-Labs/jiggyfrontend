@@ -6,8 +6,8 @@ import {Link} from "react-router-dom"
 import { useContext, useState } from "react";
 import "./home.css";
 import axios from "../../../services/axios";
-import { PostSharing } from "./Home";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { PostSharing } from "../../../App";
 
 // import axios from 'axios'
 

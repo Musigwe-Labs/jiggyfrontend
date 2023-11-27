@@ -127,7 +127,7 @@ const Posts = ({
                 created_at={created_at}
               />
               <PostType post_type={post_type} />
-              <a href={`/comment${id}`} onClick={() => onPostClick(post)}>
+              <a href={`/comment/${id}`} onClick={() => onPostClick(post)}>
                 <Gist content={content} images={images} showFullGist={true} />
               </a>
 
