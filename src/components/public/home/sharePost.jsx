@@ -32,7 +32,7 @@ function SharePost({ sharePost, setSharePost }) {
             name={user.generated_username}
             created_at={created_at}
           />
-          <Gist content={content} />
+          <Gist content={content} showFullGist={true} />
           <Socialmedialinks postId={id} content={content} />
         </main>
       </div>
