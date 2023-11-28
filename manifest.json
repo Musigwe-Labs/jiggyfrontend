@@ -3,7 +3,7 @@
 	"name":" Jiggy",
 	"icons":[
 		{
-			"src":"https://jiggy-app.netlify.app/assets/pwa/jiggy-1024-x-1024.png",
+			"src":import.meta.env.PROD? import.meta.env.BASE_URL+ "/assets/jiggy-1024-x-1024-[name].png": "/src/assets/pwa/jiggy-1024-x-1024.png",
 			"type":"image/png",
 			"sizes":"1024x1024",
 			"purpose":"any"
