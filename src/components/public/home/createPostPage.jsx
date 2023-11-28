@@ -20,7 +20,7 @@ const CreatePostPage = ({
   setIsLoading,
   setSelectedPost,
   selectedPostIndex,
-  posts
+  posts,
 }) => {
   const [content, setContent] = useState("");
   const [post_type, setSelectedOption] = useState("Others");
@@ -28,6 +28,7 @@ const CreatePostPage = ({
   const [openDropdown, setOpenDropdown] = useState(false);
   const [previewImgSrcs, setPreviewImgSrcs] = useState();
   const [imageSrc, setImageSrc] = useState([]);
+  const [postAction, setPostAction] = useState("done");
   const postBtn = useRef();
   const form = useRef();
   const handleTextareaChange = (e) => {
@@ -49,6 +50,7 @@ const CreatePostPage = ({
     e.preventDefault();
     if (content) {
       setIsLoading(true);
+      setPostAction("loading");
       const formData = new FormData(form.current, postBtn.current);
       formData.append("content", content);
       formData.append("post_type", post_type);
@@ -56,9 +58,11 @@ const CreatePostPage = ({
       try {
         await axios.post("annon/posts/create/", formData, { headers });
         await reloadPosts();
-        setSelectedPost(posts[selectedPostIndex])
+        setSelectedPost(posts[selectedPostIndex]);
+        setPostAction("posted");
+        // setTimeout(() => setPostAction("done"), 3000);
         setIsLoading(false);
-        setCreatePost(false);
+        // setCreatePost(false);
       } catch (error) {
         setIsLoading(false);
 
@@ -118,7 +122,9 @@ const CreatePostPage = ({
           />
           <p className="font-bold">Create an anonymous post</p>
           <button
-            className={`text-[#F33F5E] text-lg ${!isLoading && 'bg-white'} font-bold transition-all duration-300 px-3 rounded-lg ${
+            className={`text-[#F33F5E] text-lg ${
+              !isLoading && "bg-white"
+            } font-bold transition-all duration-300 px-3 rounded-lg ${
               !content
                 ? "opacity-50"
                 : "opacity-1 hover:bg-[#F33F5E] hover:text-white"
@@ -128,8 +134,12 @@ const CreatePostPage = ({
             ref={postBtn}
             disabled={isLoading}
           >
-            {isLoading ? (
+            {postAction === "loading" ? (
               <FaSpinner size={"1.5rem"} className="animate-spin" />
+            ) : postAction === "posted" ? (
+              <svg class="animated-check" viewBox="0 0 24 24">
+                <path d="M4.1 12.7L9 17.6 20.3 6.3" fill="none" />
+              </svg>
             ) : (
               "Post"
             )}

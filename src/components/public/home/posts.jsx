@@ -84,11 +84,12 @@ const Posts = ({
     );
   return (
     <div className="pb-[29px] posts transition duration-300 ease-linear">
+      <a href="#85">85</a>
       {sortedPostsByTime.map((post, index) => {
         let { id, post_type, user, content, created_at, images } = post;
         if (sortedPostsByTime.length === index + 1) {
           return (
-            <div key={id} ref={lastPostRef} className="text-base post mt-2">
+            <div key={id} id={`${id}`} ref={lastPostRef} className="text-base post mt-2">
               <div
                 className={`mx-4  md:mx-16 p-3 transition-all duration-300 ease-linear  ${
                   selectedSchool.toLowerCase() != "all"
@@ -112,7 +113,7 @@ const Posts = ({
           );
         }
         return (
-          <div key={id} className="text-base mt-2">
+          <div key={id} id={`${id}`} className="text-base mt-2">
             <div
               className={`mx-4  md:mx-16 p-3 transition-all duration-300 ease-linear  ${
                 selectedSchool.toLowerCase() != "all"
@@ -126,9 +127,9 @@ const Posts = ({
                 created_at={created_at}
               />
               <PostType post_type={post_type} />
-              <div onClick={() => onPostClick(post)}>
-                <Gist content={content} images={images} />
-              </div>
+              <a href={`/comment/${id}`} onClick={() => onPostClick(post)}>
+                <Gist content={content} images={images} showFullGist={true} />
+              </a>
 
               <GistLinks post={post} onPostClick={onPostClick} />
             </div>

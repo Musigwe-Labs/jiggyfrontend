@@ -2,17 +2,18 @@
 import { FaRegComments } from "react-icons/fa";
 import { AiOutlineEye, AiOutlineShareAlt } from "react-icons/ai";
 import { IoMdFlame } from "react-icons/io";
+import {Link} from "react-router-dom"
 import { useContext, useState } from "react";
 import "./home.css";
 import axios from "../../../services/axios";
-import { PostSharing } from "./Home";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { PostSharing } from "../../../App";
 
 // import axios from 'axios'
 
 const GistLinks = ({ post, onPostClick }) => {
   let { likes, comments, views, shared } = post;
-  const { setSharePost } = useContext(PostSharing);
+  const { setSharePost, setSelectedPostId } = useContext(PostSharing);
 
   const [isLiked, setIsLiked] = useState(false); //currently using a state but we will have to get this info from the backend
   // const [isSeen , setIsSeen] = useState(false)  //currently using a state but we will have to get this info from the backend
@@ -34,15 +35,16 @@ const GistLinks = ({ post, onPostClick }) => {
   };
   return (
     <div className="flex justify-between px-5 mt-4 text-white">
-      <div
+      <Link
         className="flex items-center cursor-pointer"
         onClick={() => {
-          onPostClick(post);
+          setSelectedPostId(post.id)
         }}
+        to={`/comment/${post.id}`}
       >
         <FaRegComments className="cursor-pointer text-2xl" />
         <p className="ml-3">{comments.length}</p>
-      </div>
+      </Link>
       <div
         className="flex items-center cursor-pointer"
         onClick={() => {

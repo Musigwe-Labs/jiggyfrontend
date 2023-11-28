@@ -80,3 +80,25 @@ border: 2px solid #A85387;
 .bOthers{
   background-color: rgba(77, 53, 128, 0.2);
 }
+
+.animated-check {
+  height: 10em;
+  width: 10em;
+}
+
+.animated-check path {
+  fill: none;
+  stroke: #7ac142;
+  stroke-width: 4;
+  stroke-dasharray: 23;
+  stroke-dashoffset: 23;
+  animation: draw 1s linear forwards;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
