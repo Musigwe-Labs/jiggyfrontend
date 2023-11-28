@@ -3,20 +3,20 @@
 	"name":" Jiggy",
 	"icons":[
 		{
-			"src":"/src/assets/pwa/jiggy-1024-x-1024.png",
+			"src":"https://jiggy-app.netlify.app/assets/pwa/jiggy-1024-x-1024.png",
 			"type":"image/png",
 			"sizes":"1024x1024",
 			"purpose":"any"
 		},
 		{
-			"src":"/src/assets/pwa/jiggy-1024-x-1024.png",
+			"src":"https://jiggy-app.netlify.app/src/assets/pwa/jiggy-1024-x-1024.png",
 			"type":"image/png",
 			"sizes":"1024x1024",
 			"purpose":"maskable"
 		}
 	],
-	"id":"/index.html",
-	"start_url":"/",
+	"id":"https://jiggy-app.netlify.app",
+	"start_url":"https://jiggy-app.netlify.app",
 	"display":"standalone",
 	"theme_color":"#000",
 	"background_color":"#000"
