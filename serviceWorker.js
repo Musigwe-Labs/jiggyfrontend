@@ -2,8 +2,10 @@ const cacheVersion='v1'
 const cacheList=[
 	"./src/components/offline/offline.html",
 	"./src/components/offline/Inter-Regular.ttf", 
-	  "./src/assets/pwa/logo.png"
+	  "./src/assets/pwa/jiggy-1024-x-1024.png"
 ]
+
+const backendOrigins=['https://jiggybackend.com.ng']
 
 self.addEventListener("install", (event) => {
 	// console.log('installing serviceWorker')
@@ -11,7 +13,7 @@ self.addEventListener("install", (event) => {
 	  	const cache= await caches.open(cacheVersion)
 	  	return cache.addAll(cacheList)
 	  })())
-})
+	})
 
 self.addEventListener('fetch', (event)=>{
 	// console.log(event.request)
@@ -26,7 +28,16 @@ self.addEventListener('fetch', (event)=>{
 			return response
 		})
 		.catch((err)=>{
-			// console.log('error: ', event.request)
+			//when network fails and the request is made to the backend api, return the normal fetch response. i.e error response
+			const origin= urlOrigin(event.request.url)
+			if(backendOrigins.includes(origin)){
+				console.log('acessing backend')
+				return fetch(event.request)
+				.then(res=>res)
+				.catch(err=>console.error(err))
+			}
+
+			// return the cached offline pages when network fails and a request is made(not to the backend API)
 			return caches.match(event.request)
 			.then(match=>{
 				if(match!=undefined) return match;
@@ -43,8 +54,14 @@ self.addEventListener('activate', ()=>{
 	.then(cacheNames=>{
 		return Promise.all(cacheNames.map(item=>item!=cacheVersion?caches.delete(item):null))
 	})
-
 })
 
+//helper functions
+function urlOrigin(url){
+	console.log(url)
+	const urlObject= new URL(url)
+	const {origin}= urlObject
+	return origin
+}
 
 
