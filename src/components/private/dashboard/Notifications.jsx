@@ -2,7 +2,7 @@
 import HomeFooter from "../../public/home/homeFooter";
 import Spinner from '../../common/Spinner'
 import {useEffect,useLayoutEffect, useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import axios from 'axios'
 
 import {useErrorContext} from '../../../contexts/ErrorContext'
@@ -23,9 +23,9 @@ export default function Notiifications(){
 	}	
 
 	const {key:token} =useAuthContext()
-	const {setAppError} = useErrorContext()
-	const navigate= useNavigate()
+	const {appError, setAppError} = useErrorContext()
 	const [state, setState]=useState(initialState)
+	// const navigate= useNavigate()
 
 	const {notifications, status} = state
 	
@@ -115,17 +115,17 @@ export default function Notiifications(){
 		})
 		.catch(err=>{
 			console.log(err)
-			if(err.response.status==401){
+			if(err.response?.status==401){
 				navigate('/login')
 			}else{
 				setAppError(err)
 			}
 		})
-	},[])
+	},[appError])
 
 
 	function handleClick(){
-		navigate('/')
+		// navigate('/')
 	}
 
 return(
@@ -144,12 +144,11 @@ return(
 			{
 				status=='loading'? <Spinner />
 				:status=='resolved' && notifications.results.length==0? <p className="font-bold text-center text-base">I'm Sorry you do not have any new  notification</p>
-				:notifications.results.map(el=>{
-					const {notification_type:type, created_at}=el
-					const time=getNotificationDate(created_at)	
+				:notifications.results.map((el, index)=>{
+					/* 	const {notification_type:type, created_at}=el
+						 const time=getNotificationDate(created_at)	
 
-					/*
-					const Notification=	(
+						const Notification=	(
 						<div 
 							className="notification flex space-between gap-2 items-center w-full px4 py-4 border-b-[1px] border-[#F2F4F5]"
 							onClick={handleClick}
@@ -181,7 +180,12 @@ return(
 					*/
 
 					// return Notification
-					return <p key={el}>{el}</p>
+					return (
+						<Link className="flex items-center py-2 border-b-[1px] border-white" to={'/posts/'+el.split(' ').at(-1)} key={el+index}>
+							<img src={comments} alt="comments" />
+							<p className="grow text-sm pl-2"> {el}</p>
+						</Link>
+					)
 				})
 			}
 		</main>

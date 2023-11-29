@@ -32,9 +32,9 @@ self.addEventListener('fetch', (event)=>{
 			const origin= urlOrigin(event.request.url)
 			if(backendOrigins.includes(origin)){
 				console.log('acessing backend')
-				// return fetch(event.request)
-				// .then(res=>res)
-				// .catch(err=>console.error(err))
+				return fetch(event.request)
+				.then(res=>res)
+				.catch(err=>console.error(err))
 			}
 
 			// return the cached offline pages when network fails and a request is made(not to the backend API)
