@@ -23,9 +23,11 @@
   <script type="module" src="/src/main.jsx"></script>
   <script type="text/javascript">
     if('serviceWorker' in navigator){
-      navigator.serviceWorker.register('./serviceWorker.js')
+      navigator.serviceWorker.register('/sw.js')
       .then(res=>console.log('serviceWorker regsistered'))
       .catch(err=>console.error(JSON.stringify(err)))
+    }else{
+      console.log('no serviceWorker in Navigator')
     }
 
   </script>
