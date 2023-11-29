@@ -1,8 +1,8 @@
 const cacheVersion='v1'
 const cacheList=[
-	"./src/components/offline/offline.html",
-	"./src/components/offline/Inter-Regular.ttf", 
-	  "./src/assets/pwa/jiggy-1024-x-1024.png"
+	"/offline/offline.html",
+	"/offline/Inter-Regular.ttf", 
+	  "/icons/jiggy-1024-x-1024.png"
 ]
 
 const backendOrigins=['https://jiggybackend.com.ng']
@@ -32,16 +32,16 @@ self.addEventListener('fetch', (event)=>{
 			const origin= urlOrigin(event.request.url)
 			if(backendOrigins.includes(origin)){
 				console.log('acessing backend')
-				return fetch(event.request)
-				.then(res=>res)
-				.catch(err=>console.error(err))
+				// return fetch(event.request)
+				// .then(res=>res)
+				// .catch(err=>console.error(err))
 			}
 
 			// return the cached offline pages when network fails and a request is made(not to the backend API)
 			return caches.match(event.request)
 			.then(match=>{
 				if(match!=undefined) return match;
-				return caches.match("./src/components/offline/offline.html")
+				return caches.match("/offline/offline.html")
 			})
 		})
 	)

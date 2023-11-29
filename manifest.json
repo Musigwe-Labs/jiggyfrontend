@@ -3,13 +3,13 @@
 	"name":" Jiggy",
 	"icons":[
 		{
-			"src":"/assets/jiggy-1024-x-1024-[name].png",
+			"src":"icons/jiggy-1024-x-1024.png",
 			"type":"image/png",
 			"sizes":"1024x1024",
 			"purpose":"any"
 		},
 		{
-			"src":"assets/jiggy-1024-x-1024.png",
+			"src":"icons/jiggy-1024-x-1024.png",
 			"type":"image/png",
 			"sizes":"1024x1024",
 			"purpose":"maskable"
