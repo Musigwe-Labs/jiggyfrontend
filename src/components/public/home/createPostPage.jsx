@@ -11,7 +11,7 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import _, { forIn } from "lodash";
 import { BsCaretDownFill, BsImages, BsThreeDots } from "react-icons/bs";
 import Spinner from "../../common/Spinner";
-import { FaSpinner } from "react-icons/fa6";
+import { FaArrowRotateRight, FaSpinner } from "react-icons/fa6";
 
 const CreatePostPage = ({
   setCreatePost,
@@ -28,8 +28,8 @@ const CreatePostPage = ({
   const [openDropdown, setOpenDropdown] = useState(false);
   const [previewImgSrcs, setPreviewImgSrcs] = useState();
   const [imageSrc, setImageSrc] = useState([]);
-  const [postAction, setPostAction] = useState("done");
   const postBtn = useRef();
+  const [error, setError] = useState("");
   const form = useRef();
   const handleTextareaChange = (e) => {
     setContent(e.target.value);
@@ -50,23 +50,24 @@ const CreatePostPage = ({
     e.preventDefault();
     if (content) {
       setIsLoading(true);
-      setPostAction("loading");
       const formData = new FormData(form.current, postBtn.current);
       formData.append("content", content);
       formData.append("post_type", post_type);
+      if (targeted_school.toLowerCase() !== "all")
+        formData.append("school", targeted_school.toUpperCase());
       imageSrc[0] && formData.append("images", imageSrc[0]);
       try {
         await axios.post("annon/posts/create/", formData, { headers });
         await reloadPosts();
         setSelectedPost(posts[selectedPostIndex]);
-        setPostAction("posted");
-        // setTimeout(() => setPostAction("done"), 3000);
         setIsLoading(false);
-        // setCreatePost(false);
+        setCreatePost(false);
       } catch (error) {
         setIsLoading(false);
-
-        console.log(error);
+        if (error.code === "ERR_BAD_RESPONSE") {
+          setError("server error");
+        }
+        console.log(error.status);
       }
     } else {
     }
@@ -103,7 +104,19 @@ const CreatePostPage = ({
   //     }
   // }
   const throttledApiRequest = _.throttle(handlePost, 3500);
-
+  if (error === "server error") {
+    return (
+      <div className="grid min-h-screen place-items-center">
+        <div className="text-center">
+          <p>Ooops, Server Error</p>
+          <a href="#" className="text-blue-500 flex items-center gap-2" onClick={() => {window.location.reload()}}>
+          <FaArrowRotateRight />
+            Try reloading the page
+          </a>
+        </div>
+      </div>
+    );
+  }
   return (
     <form
       ref={form}
@@ -134,12 +147,8 @@ const CreatePostPage = ({
             ref={postBtn}
             disabled={isLoading}
           >
-            {postAction === "loading" ? (
+            {isLoading ? (
               <FaSpinner size={"1.5rem"} className="animate-spin" />
-            ) : postAction === "posted" ? (
-              <svg class="animated-check" viewBox="0 0 24 24">
-                <path d="M4.1 12.7L9 17.6 20.3 6.3" fill="none" />
-              </svg>
             ) : (
               "Post"
             )}

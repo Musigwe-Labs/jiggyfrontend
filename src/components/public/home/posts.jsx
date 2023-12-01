@@ -84,7 +84,6 @@ const Posts = ({
     );
   return (
     <div className="pb-[29px] posts transition duration-300 ease-linear">
-      <a href="#85">85</a>
       {sortedPostsByTime.map((post, index) => {
         let { id, post_type, user, content, created_at, images } = post;
         if (sortedPostsByTime.length === index + 1) {

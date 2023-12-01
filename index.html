@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/src/assets/logo.png" />
   <link rel="apple-touch-icon" type="image/png" href="./src/assets/jiggy.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name='theme-color' content="#000000">
+  <meta property="og:image" content="/src/assets/logo.png" />
+  <meta property="og:title" content="Jiggy Cruise" />
+  <meta property="og:description" content="Let's discuss. what's trendy in your campus." />
   <meta name='description' content="Let's discuss. what's trendy in your campus.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,10 +26,10 @@
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
   <script type="text/javascript">
-    if('serviceWorker' in navigator){
+    if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./serviceWorker.js')
-      .then(res=>console.log('serviceWorker regsistered'))
-      .catch(err=>console.error(JSON.stringify(err)))
+        .then(res => console.log('serviceWorker regsistered'))
+        .catch(err => console.error(JSON.stringify(err)))
     }
 
   </script>
