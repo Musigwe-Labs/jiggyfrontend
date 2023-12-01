@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import { createContext, useEffect, useState, useContext } from "react";
 import axios from "../services/axios";
+import { getUSerLoginToken } from "../utils/getUserLocalStorageData";
 
 const AuthContext = createContext();
+const token= getUSerLoginToken()
 
 const AuthContextProvider = (props) => {
-  const loginData = JSON.parse(localStorage.getItem("login"));
-  const [key, setKey] = useState(loginData ? loginData.key : "");
+  const [key, setKey] = useState(token);
   const [userDetails, setUserDetails] = useState({});
   const [error, setError] = useState("")
 
@@ -17,19 +18,17 @@ const AuthContextProvider = (props) => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("login")) {
-    //   90;
-      setKey(loginData.key);
+    if (token!=key) {
+      setKey(token);
     }
     let fetchUser = async () => {
-
         const user_response = await axios.get("account/annonyuser/", {
-            Authorization: `Token ${loginData.key}`,
+            Authorization: `Token ${token}`,
           });
           setUserDetails(user_response.data)
     }
     fetchUser();
-  }, [loginData]);
+  }, [key]);
 
   return (
     <AuthContext.Provider value={{ key, logout, userDetails, error, setError }}>

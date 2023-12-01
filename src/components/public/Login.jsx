@@ -15,32 +15,38 @@ const getToken = (search) => {
   const token = query.get("token") ? query.get("token") : null;
   return token;
 };
+function getLoginFromLocalStotrage(){
+  //returns the user token from local storage //{key: token}
+  const token=JSON.parse(localStorage.getItem('login'))
+  return token || null
+}
 
 const Login = () => {
   const navigate = useNavigate();
+  const token=getLoginFromLocalStotrage()
 
   /**const [email, setEmail] = useState();*/
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [signing, setSigning] = useState(false);
-  const [success, setSuccess] = useState(null);
+  const [success, setSuccess] = useState(token);
   const [error, setError] = useState(null);
+
+
 
   const { search } = useLocation();
   // const [loginUser, {data, isError, error}] = useLoginUserMutation()
   useEffect(() => {
-    if(success==null){
-      //handle google sign in
- // obtain search query from the url
-      if(search){ //if it's not empty
+    if(success==null && search!=null){
         const token=getToken(search)
         token? setSuccess({key:token}): alert('error occurred')
-      }
     }
-    if (success !== null) {
-      localStorage.setItem("login", JSON.stringify({ key: success.key }));
 
+    if (success !== null) {
+      if(!token){
+        localStorage.setItem("login", JSON.stringify({ key: success.key }));
+      }
       setError("");
       setEmail("");
       setPassword("");

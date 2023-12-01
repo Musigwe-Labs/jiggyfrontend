@@ -1,15 +1,23 @@
 {
-	"short_name":"Jiggy",
-	"name":" Jiggy social ",
+	"short_name":"Jiggy social",
+	"name":" Jiggy",
 	"icons":[
 		{
-			"src":"./src/assets/pwa/logo.png",
+			"src":"https://jiggy-app.netlify.app/icons/jiggy-1024-x-1024.png",
 			"type":"image/png",
-			"sizes":"1024x1024"
+			"sizes":"1024x1024",
+			"purpose":"any"
+		},
+		{
+			"src":"https://jiggy-app.netlify.app/icons/jiggy-1024-x-1024.png",
+			"type":"image/png",
+			"sizes":"1024x1024",
+			"purpose":"maskable"
 		}
 	],
-	"start_url":"./",
+	"id":"https://jiggy-app.netlify.app",
+	"start_url":"https://jiggy-app.netlify.app",
 	"display":"standalone",
-	"theme_color":"#000000",
-	"background_color":"#ffffff"
+	"theme_color":"#000",
+	"background_color":"#000"
 }

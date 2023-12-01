@@ -1,10 +1,12 @@
+// import {FaBell as BellIcon}   from  'react-icons/fa'
 import HomeFooter from "../../public/home/homeFooter";
-import {FaBell as BellIcon}   from  'react-icons/fa'
+import Spinner from '../../common/Spinner'
 import {useEffect,useLayoutEffect, useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import axios from 'axios'
 
 import {useErrorContext} from '../../../contexts/ErrorContext'
+import { useAuthContext } from "../../../contexts/AuthContext";
 import { getNotificationDate } from "../../../utils/formatNotifications"
 
 // icons import
@@ -14,23 +16,22 @@ import heart from '../../../assets/heart.svg'
 import upvote from '../../../assets/upvote.svg'
 // import { comment } from "postcss";
 
-
-// 
-
-
-
-
-
 export default function Notiifications(){
+	const initialState={
+		notifications:{ results:[]},
+		status:'loading'
+	}	
 
-	const [notifications, setNotifications]=useState([])
-	// const {token}= useAuthcontext()
-	const {setAppError} = useErrorContext()
-	const navigate= useNavigate()
+	const {key:token} =useAuthContext()
+	const {appError, setAppError} = useErrorContext()
+	const [state, setState]=useState(initialState)
+	// const navigate= useNavigate()
+
+	const {notifications, status} = state
 	
 
 	const url='https://jiggybackend.com.ng/annon/notifications/view/?page=1'
-	const headers={'Authorization':'Token 0fbfab5a0081b535638ea060643c1bda74d5bdc9'} //churchill's token
+	const headers={'Authorization':'Token '+ token }
 	const results= {
 		"count": 123,
 		"next": "http://api.example.org/accounts/?page=4",
@@ -110,21 +111,21 @@ export default function Notiifications(){
 		axios.get(url,{headers})
 		.then(res=>{
 			console.log(res)
-			setNotifications({...results })
+			setState({...state, status:'resolved', notifications:{...res.data}})
 		})
 		.catch(err=>{
 			console.log(err)
-			if(err.response.status==401){
+			if(err.response?.status==401){
 				navigate('/login')
 			}else{
 				setAppError(err)
 			}
 		})
-	},[])
+	},[appError])
 
 
 	function handleClick(){
-		navigate('/')
+		// navigate('/')
 	}
 
 return(
@@ -141,12 +142,13 @@ return(
 		</header>
 		<main className="grow mb-20  flex flex-col items-center w-full px-3 sm:px-8">
 			{
-				!notifications.count? <div className="font-poppins">Aww, You don't have any notifications yet.</div>
-				:notifications.results.map(el=>{
-					const {notification_type:type, created_at}=el
-					const time=getNotificationDate(created_at)	
+				status=='loading'? <Spinner />
+				:status=='resolved' && notifications.results.length==0? <p className="font-bold text-center text-base">I'm Sorry you do not have any new  notification</p>
+				:notifications.results.map((el, index)=>{
+					/* 	const {notification_type:type, created_at}=el
+						 const time=getNotificationDate(created_at)	
 
-					const Notification=	(
+						const Notification=	(
 						<div 
 							className="notification flex space-between gap-2 items-center w-full px4 py-4 border-b-[1px] border-[#F2F4F5]"
 							onClick={handleClick}
@@ -175,8 +177,15 @@ return(
 							<p className="time text-[8px] text-right ">{time}</p>
 						</div>
 					)
+					*/
 
-					return Notification
+					// return Notification
+					return (
+						<Link className="flex items-center py-2 border-b-[1px] border-white" to={'/posts/'+el.split(' ').at(-1)} key={el+index}>
+							<img src={comments} alt="comments" />
+							<p className="grow text-sm pl-2"> {el}</p>
+						</Link>
+					)
 				})
 			}
 		</main>
