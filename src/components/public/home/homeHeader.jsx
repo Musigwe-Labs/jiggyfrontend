@@ -15,10 +15,10 @@ const HomeHeader = ({ setProfilePage, userDetails }) => {
             key === "" ? navigate("/login") : setProfilePage(true);
           }}
         >
-          <img className="w-14 rounded-full mx-[9px]" src={profile_pic} />
+          <img className="w-8 rounded-full mx-[9px]" src={profile_pic} />
         </div>
       )}
-      <h1 className="text-[28px] font-bold  from-[#f33f5e] via-[#ff008a9e] to-[#b416fe66] bg-gradient-to-r bg-clip-text text-transparent">
+      <h1 className="text-2xl font-bold font-openSans  from-[#f33f5e] via-[#ff008a9e] to-[#b416fe66] bg-gradient-to-r bg-clip-text text-transparent">
         Home
       </h1>
       {!userDetails && (

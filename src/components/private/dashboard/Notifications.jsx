@@ -32,7 +32,7 @@ export default function Notiifications(){
 
 	const url='https://jiggybackend.com.ng/annon/notifications/view/?page=1'
 	const headers={'Authorization':'Token '+ token }
-	const results= {
+	const mockUpresults= {
 		"count": 123,
 		"next": "http://api.example.org/accounts/?page=4",
 		"previous": "http://api.example.org/accounts/?page=2",
@@ -140,7 +140,7 @@ return(
 					</div>
 				</div>
 		</header>
-		<main className="grow mb-20  flex flex-col items-center w-full px-3 sm:px-8">
+		<main className="grow mb-20  flex flex-col  w-full px-3 sm:px-8">
 			{
 				status=='loading'? <Spinner />
 				:status=='resolved' && notifications.results.length==0? <p className="font-bold text-center text-base">I'm Sorry you do not have any new  notification</p>

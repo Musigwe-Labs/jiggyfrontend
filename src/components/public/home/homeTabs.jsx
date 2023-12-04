@@ -6,15 +6,15 @@ const HomeTabs = ({ setSelectedTab, selectedTab }) => {
   // const [isAll, setIsAll] = useState(true);
   // const [isTrending, setIsTrending] = useState(false);
   return (
-    <div className="text-white border-b border-y-[#4B5563] flex justify-between px-20 mt-2">
+    <div className="text-white border-b border-y-[#4B5563] flex justify-between px-6 mt-3 w-full">
       <h2
         onClick={() => {
-          setSelectedTab("all");
+          setSelectedTab("all")
         }}
-        className={
-          selectedTab === "all"
-            ? "hometab border-y-[#43fff6]"
-            : "hometab border-transparent"
+        className={`
+          font-openSans       
+          ${selectedTab === "all" ? "hometab border-y-[#f33f5e]" : "hometab border-transparent"}        
+        `
         }
       >
         All
@@ -23,16 +23,24 @@ const HomeTabs = ({ setSelectedTab, selectedTab }) => {
         onClick={() => {
           setSelectedTab("trending");
         }}
-        className={
-          selectedTab === "trending"
-            ? "hometab border-y-[#43fff6]"
-            : "hometab border-transparent"
+        className={`
+          font-openSans
+          ${selectedTab === "trending"? "hometab border-y-[#f33f5e]": "hometab border-transparent"}
+        `
         }
       >
         Trending
       </h2>
     </div>
   );
+
+  // return (
+  //   <div className='flex justify-between px-6 pt-4 ' >
+  //     <p>All</p>
+  //     <p>Trending</p>
+
+  //   </div>
+  //);
 };
 
 export default HomeTabs;

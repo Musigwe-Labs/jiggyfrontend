@@ -16,17 +16,17 @@ const HomeFooter = ()=>{
         {
             id: 0,
             url: "/home",
-            icon: <HomeIcon size={25} />,
+            icon: <HomeIcon size={20} />,
         },
         {
             id: 1,
             url: "/messages",
-            icon: <MessageIcon size={25} />,
+            icon: <MessageIcon size={20} />,
         },
         {
             id: 2,
             url: "/notifications",
-            icon: <BellIcon size={25} />,
+            icon: <BellIcon size={20} />,
         }
     ]
 
@@ -55,19 +55,20 @@ const HomeFooter = ()=>{
     }
 
     return (
-            <div className='w-full flex z-10 items-center  justify-between  bottom-0 border-t border-y-[#4B5563] bg-black py-3 px-2 fixed h-20'>
+            <div className='w-full flex z-10 items-center  justify-between  bottom-0 border-t border-y-[#4B5563] bg-black py-3 px-2 fixed h-20 gap-8'>
                 {
                  navlinks.map(nav => {
                     return(
                             <NavLink
                                 to={nav.url} 
                                 key={nav.id} 
-                                className={({isActive})=>isActive? (` cursor-pointer ${urlpath === nav.url ? 'text-[#f33f5e]' : 'text-gray-400'} hover:text-[#f33f5e]  w-16 h-12 flex justify-center items-center border-b-[2px]`) : (`cursor-pointer ${urlpath === nav.url ? 'text-[#f33f5e]' : 'text-gray-400'} hover:text-[#f33f5e]  w-16 h-12 flex justify-center items-center border-b-[2px] border-black`) 
+                                className={({isActive})=>isActive? (` cursor-pointer ${urlpath === nav.url ? 'text-[#f33f5e]' : 'text-gray-400'} hover:text-[#f33f5e]  w-12 h-10 flex justify-center items-center border-b-[2px] grow`) : (`cursor-pointer ${urlpath === nav.url ? 'text-[#f33f5e]' : 'text-gray-400'} hover:text-[#f33f5e]  w-12 h-10 flex justify-center items-center border-b-[2px] border-black grow`) 
                                 }
                                 onClick={handleClick}
                             
                         >
                             {nav.icon}
+                            
                          </NavLink>
                      )
                  })

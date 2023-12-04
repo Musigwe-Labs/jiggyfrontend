@@ -7,3 +7,23 @@
     font-family:'SFProDisplay';
     src:url('./assets/fonts/SFPRODISPLAYREGULAR.OTF') format('OpenType');
 }
+
+@font-face{
+    font-family:'Open Sans';
+    src:url('./assets/fonts/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf') format('TrueType');
+}
+@font-face{
+    font-family:'Open Sans';
+    src:url('./assets/fonts/Open_Sans/OpenSans-Italic-VariableFont_wdth\,wght.ttf') format('TrueType');
+}
+
+@font-face{
+    font-family:'IBM Plex Sans';
+    src:url('./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf') format('TrueType');
+    font-weight: 400;
+}
+@font-face{
+    font-family:'IBM Plex Sans';
+    src:url('./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Medium.ttf') format('TrueType');
+    font-weight: 500;
+}
