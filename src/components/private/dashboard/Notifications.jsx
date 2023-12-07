@@ -14,6 +14,7 @@ import flames from '../../../assets/flames.svg'
 import comments from '../../../assets/message.svg'
 import heart from '../../../assets/heart.svg'
 import upvote from '../../../assets/upvote.svg'
+import ErrorOccurred from "../../error/ErrorOccurred";
 // import { comment } from "postcss";
 
 export default function Notiifications(){
@@ -112,12 +113,14 @@ export default function Notiifications(){
 		.then(res=>{
 			console.log(res)
 			setState({...state, status:'resolved', notifications:{...res.data}})
+			setAppError(null)
 		})
 		.catch(err=>{
 			console.log(err)
 			if(err.response?.status==401){
 				navigate('/login')
 			}else{
+				setState({...state, status:'error'})
 				setAppError(err)
 			}
 		})
@@ -143,6 +146,7 @@ return(
 		<main className="grow mb-20  flex flex-col  w-full px-3 sm:px-8">
 			{
 				status=='loading'? <Spinner />
+				:status=='error' ? <ErrorOccurred />
 				:status=='resolved' && notifications.results.length==0? <p className="font-bold text-center text-base">I'm Sorry you do not have any new  notification</p>
 				:notifications.results.map((el, index)=>{
 					/* 	const {notification_type:type, created_at}=el

@@ -10,7 +10,7 @@ import { loginUser } from "../../apis/authenticationApis";
 import EyeOpenIcon from "../../assets/blue-eye.png";
 import EyeClosedIcon from "../../assets/closed-eye.png";
 
-const getToken = (search) => {
+const getUrlToken = (search) => {
   const query = new URLSearchParams(search); // parse params to object format
   const token = query.get("token") ? query.get("token") : null;
   return token;
@@ -32,15 +32,14 @@ const Login = () => {
   const [signing, setSigning] = useState(false);
   const [success, setSuccess] = useState(token);
   const [error, setError] = useState(null);
-
-
-
   const { search } = useLocation();
-  // const [loginUser, {data, isError, error}] = useLoginUserMutation()
+
   useEffect(() => {
-    if(success==null && search!=null){
-        const token=getToken(search)
-        token? setSuccess({key:token}): alert('error occurred')
+    if(success==null && Boolean(search)){
+        const token=getUrlToken(search)
+        token? setSuccess({key:token})
+        : setError({message:"can't retrieve token"})
+    
     }
 
     if (success !== null) {
@@ -75,8 +74,9 @@ a        } else if (errorData && errorData.password && errorData.password.length
       setSigning(false);
       setError(null);
       */
-
-    if (error !== null) {
+     
+     if (error !== null) {
+      console.log(error)
       alert(error.non_field_errors[0])
       setSigning(false)
       setError(null)

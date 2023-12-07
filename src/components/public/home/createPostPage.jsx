@@ -12,6 +12,7 @@ import _, { forIn } from "lodash";
 import { BsCaretDownFill, BsImages, BsThreeDots } from "react-icons/bs";
 import Spinner from "../../common/Spinner";
 import { FaArrowRotateRight, FaSpinner } from "react-icons/fa6";
+import { useErrorContext } from "../../../contexts/ErrorContext";
 
 const CreatePostPage = ({
   setCreatePost,
@@ -31,6 +32,8 @@ const CreatePostPage = ({
   const postBtn = useRef();
   const [error, setError] = useState("");
   const form = useRef();
+  const {setAppError}= useErrorContext()
+
   const handleTextareaChange = (e) => {
     setContent(e.target.value);
   };
@@ -62,12 +65,16 @@ const CreatePostPage = ({
         setSelectedPost(posts[selectedPostIndex]);
         setIsLoading(false);
         setCreatePost(false);
+        // setAppError(false)
+
       } catch (error) {
         setIsLoading(false);
+        console.log(error)
         if (error.code === "ERR_BAD_RESPONSE") {
           setError("server error");
         }
         console.log(error.status);
+        // setAppError(error)
       }
     } else {
     }

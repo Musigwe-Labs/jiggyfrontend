@@ -27,3 +27,9 @@
     src:url('./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Medium.ttf') format('TrueType');
     font-weight: 500;
 }
+
+@font-face{
+    font-family:'Comic Sans';
+    src:url('./assets/fonts/ComicSans/LDFComicSans.ttf') format('TrueType');
+    font-weight: 400;
+}

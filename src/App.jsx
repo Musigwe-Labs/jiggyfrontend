@@ -27,8 +27,8 @@ const App = () => {
 
   return (
     <div className="bg-black text-white min-h-screen">
+    <ErrorContextProvider>
       <AuthContextProvider>
-        <ErrorContextProvider>
           <ErrorFallBack>
             <PostSharing.Provider
               value={{
@@ -39,7 +39,7 @@ const App = () => {
               <Router>
                 <Header />
                 <Routes>
-                  <Route exact path="/" element={<Login />} />
+                  <Route exact path="/" element={Wrapper(Home)} />
                   <Route exact path="/login" element={<Login />} />
                   <Route exact path="/register" element={<Register />} />
                   <Route exact path="/comment/:id" element={Wrapper(Comment)} />
@@ -68,8 +68,8 @@ const App = () => {
               <SharePost sharePost={sharePost} setSharePost={setSharePost} />
             )}
           </ErrorFallBack>
-        </ErrorContextProvider>
       </AuthContextProvider>
+    </ErrorContextProvider>
     </div>
   );
 };

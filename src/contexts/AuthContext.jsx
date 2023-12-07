@@ -2,6 +2,7 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import axios from "../services/axios";
 import { getUSerLoginToken } from "../utils/getUserLocalStorageData";
+import { useErrorContext } from "./ErrorContext";
 
 const AuthContext = createContext();
 const token= getUSerLoginToken()
@@ -10,6 +11,7 @@ const AuthContextProvider = (props) => {
   const [key, setKey] = useState(token);
   const [userDetails, setUserDetails] = useState({});
   const [error, setError] = useState("")
+  const {setAppError} = useErrorContext()
 
   const logout = () => {
     setKey("");
@@ -22,10 +24,19 @@ const AuthContextProvider = (props) => {
       setKey(token);
     }
     let fetchUser = async () => {
-        const user_response = await axios.get("account/annonyuser/", {
-            Authorization: `Token ${token}`,
+      const headers = {
+      Authorization: `Token ${token}`,
+    };
+      try{
+         const user_response = await axios.get("account/annonyuser/", {
+            headers,
           });
+         console.log('finally')
           setUserDetails(user_response.data)
+      }catch(err){
+        console.log(err)
+        setAppError(err)
+      }
     }
     fetchUser();
   }, [key]);

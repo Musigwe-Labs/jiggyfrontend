@@ -7,10 +7,12 @@ import { PostType } from "./postType";
 import Spinner from "../../common/Spinner";
 import { HiRefresh } from "react-icons/hi";
 import { FaSpinner } from "react-icons/fa6";
+import ErrorOccurred from "../../error/ErrorOccurred";
 
 const Posts = ({
   posts,
   error,
+  setError,
   onPostClick,
   filterBy,
   isLoading,
@@ -72,16 +74,9 @@ const Posts = ({
     });
     setSortedPostsByTime(sortedPosts);
   };
+  if(error && posts.length<=0) return <ErrorOccurred setError={setError}/>
   if (isLoading) return <Spinner />;
-  if (error)
-    return (
-      <div>
-        <p>Failed to load posts</p>
-        <button>
-          <HiRefresh /> Reload page
-        </button>
-      </div>
-    );
+  
   return (
     <div className="pb-[29px] posts transition duration-300 ease-linear">
       {sortedPostsByTime.map((post, index) => {

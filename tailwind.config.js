@@ -10,7 +10,8 @@ export default {
         openSans:"'Open Sans', sans-serif",
         poppins:" 'Poppins', sans-serif",
         sfProDisplay:" 'SFProDisplay', sans-serif",
-        ibmPlexSans:" 'IBM Plex Sans', sans-serif"
+        ibmPlexSans:" 'IBM Plex Sans', sans-serif",
+        comicSans:" 'Comic Sans', sans-serif",
       }
     }
   },
