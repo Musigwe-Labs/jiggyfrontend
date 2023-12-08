@@ -20,6 +20,8 @@ import ErrorFallBack from "./components/error/ErrorFallBack";
 import SharePost from "./components/public/home/sharePost";
 import Alert from "./components/public/Alert";
 import { createContext, useState } from "react";
+import CreatePostPage from "./components/public/home/createPostPage";
+
 export const PostSharing = createContext();
 
 const App = () => {
@@ -61,6 +63,7 @@ const App = () => {
                   <Route exact path="/feedback" element={<Feedback />} />
                   <Route exact path="/help" element={<Help />} />
                   <Route exact path="/whatsnew" element={<WhatsNew />} />
+                  {/* <Route exact path="/test" element={<CreatePostPage />} /> */}
                 </Routes>
               </Router>
             </PostSharing.Provider>

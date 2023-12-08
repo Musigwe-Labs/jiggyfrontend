@@ -15,7 +15,7 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { FiBookOpen, FiGlobe, FiPhone } from "react-icons/fi";
 import { GiDualityMask } from "react-icons/gi";
 import { BsCheckCircleFill, BsFileWordFill } from "react-icons/bs";
-// import { useWebSocket } from "../../../contexts/webSocketContext";
+import Spinner from '../../common/Spinner'
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useErrorContext } from "../../../contexts/ErrorContext";
 import ChatCircle from "../../../assets/chatCircle.svg"
@@ -46,21 +46,21 @@ const Home = () => {
   const {setAppError} = useErrorContext()
 
   //navigate to /login if token a.k.a key is null or undefined
-  if(key==null){
-    navigate('/login')
-  }
 
   const handlePostClick = (post, index) => {
     setSelectedPost(post);
     setSelectedPostIndex(post);
   };
   useEffect(() => {
-   
+      if(key==null){
+        navigate('/login')
+      }
       const fetchPosts = async () => {
         try {
           const response = await axios.get(
             `annon/posts/paginated/?page=${currentPageIndex}`
-          );
+            );
+          setAppError(null)
           setInitialPosts([...initialPosts, ...response.data.results]);
           setPosts([...posts, ...response.data.results]);
           setHasMorePosts(Boolean(response.data.next));
@@ -91,6 +91,7 @@ const Home = () => {
           const user_response = await axios.get("account/annonyuser/", {
             headers,
           });
+          setAppError(null)
           setUserDetails(user_response.data);
         }
       } catch (err) {
@@ -131,6 +132,10 @@ const Home = () => {
       setPosts(schoolPosts);
     } else setPosts(initialPosts);
   };
+
+  if(!key){
+    return <Spinner />
+  }
 
   if (createPost) {
     return (

@@ -31,14 +31,13 @@ const AuthContextProvider = (props) => {
          const user_response = await axios.get("account/annonyuser/", {
             headers,
           });
-         console.log('finally')
           setUserDetails(user_response.data)
       }catch(err){
         console.log(err)
         setAppError(err)
       }
     }
-    fetchUser();
+    if(!!token) fetchUser();
   }, [key]);
 
   return (
