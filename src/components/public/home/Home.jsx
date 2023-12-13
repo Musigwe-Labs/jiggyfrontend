@@ -180,8 +180,8 @@ const Home = () => {
                 )}
               </span>
               <div
-                className={`border h-0 rounded-3xl rounded-tl-none absolute top-full transition-[all_.3s_ease] bg-[linear-gradient(0deg,_#000000d3,_#000000d3),linear-gradient(0deg,_#490A0Ad3,_#490A0Ad3)] border-[#490A0A] w-32 overflow-hidden ${
-                  !isAll ? "h-0" : "h-24"
+                className={`border rounded-3xl rounded-tl-none absolute top-full transition-[all_.3s_ease] bg-[linear-gradient(0deg,_#000000d3,_#000000d3),linear-gradient(0deg,_#490A0Ad3,_#490A0Ad3)] w-32 overflow-hidden ${
+                  !isAll ? "h-0 border-transparent" : "h-24 border-[#490A0A]"
                 }`}
               >
                 <div

@@ -33,7 +33,6 @@ const Trending = ({ posts, onPostClick, isLoading }) => {
         : 0
     );
 
- 
     setTrendingPostsByLikes(likeSortedPosts);
     setTrendingPostsByComments(commentSortedPosts.slice(0, 10));
   };

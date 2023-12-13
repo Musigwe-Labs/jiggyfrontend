@@ -20,10 +20,12 @@
     "react-icons": "^4.10.1",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.14.0",
+    "react-scroll-snap": "^1.0.0",
     "react-select": "^5.7.4",
     "reconnecting-websocket": "^4.4.0",
     "redux": "^4.2.1",
     "resize-observer-polyfill": "^1.5.1",
+    "scroll-snap": "^4.0.3",
     "typed.js": "^2.0.16"
   },
   "devDependencies": {
