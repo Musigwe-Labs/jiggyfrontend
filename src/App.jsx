@@ -21,58 +21,62 @@ import SharePost from "./components/public/home/sharePost";
 import Alert from "./components/public/Alert";
 import { createContext, useState } from "react";
 import CreatePostPage from "./components/public/home/createPostPage";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 export const PostSharing = createContext();
 
 const App = () => {
   const [sharePost, setSharePost] = useState({ post: {}, view: false });
+  const queryClient= new QueryClient()
 
   return (
     <div className="bg-black text-white min-h-screen">
-    <ErrorContextProvider>
-      <AuthContextProvider>
-          <ErrorFallBack>
-            <PostSharing.Provider
-              value={{
-                sharePost: sharePost,
-                setSharePost: setSharePost,
-              }}
-            >
-              <Router>
-                <Header />
-                <Routes>
-                  <Route exact path="/" element={Wrapper(Home)} />
-                  <Route exact path="/login" element={<Login />} />
-                  <Route exact path="/register" element={<Register />} />
-                  <Route exact path="/comment/:id" element={Wrapper(Comment)} />
-                  <Route exact path="/home" element={Wrapper(Home)}></Route>
-                  <Route exact path="/home/trending" element={Wrapper(Home)} />
-                  <Route exact path="/dashboard" element={Wrapper(Dashboard)} />
-                  <Route exact path="/privacy" element={Wrapper(Privacy)} />
-                  <Route exact path="/messages" element={Wrapper(Messages)} />
-                  <Route
-                    exact
-                    path="/notifications"
-                    element={Wrapper(Notifications)}
-                  />
-                  <Route
-                    exact
-                    path="/chat/:friend_name"
-                    element={Wrapper(Chat)}
-                  />
-                  <Route exact path="/feedback" element={<Feedback />} />
-                  <Route exact path="/help" element={<Help />} />
-                  <Route exact path="/whatsnew" element={<WhatsNew />} />
-                  {/* <Route exact path="/test" element={<CreatePostPage />} /> */}
-                </Routes>
-              </Router>
-            </PostSharing.Provider>
-            {sharePost.view && (
-              <SharePost sharePost={sharePost} setSharePost={setSharePost} />
-            )}
-          </ErrorFallBack>
-      </AuthContextProvider>
-    </ErrorContextProvider>
+      <QueryClientProvider client={queryClient} >
+        <ErrorContextProvider>
+          <AuthContextProvider>
+              <ErrorFallBack>
+                <PostSharing.Provider
+                  value={{
+                    sharePost: sharePost,
+                    setSharePost: setSharePost,
+                  }}
+                >
+                  <Router>
+                    <Header />
+                    <Routes>
+                      <Route exact path="/" element={Wrapper(Home)} />
+                      <Route exact path="/login" element={<Login />} />
+                      <Route exact path="/register" element={<Register />} />
+                      <Route exact path="/comment/:id" element={Wrapper(Comment)} />
+                      <Route exact path="/home" element={Wrapper(Home)}></Route>
+                      <Route exact path="/home/trending" element={Wrapper(Home)} />
+                      <Route exact path="/dashboard" element={Wrapper(Dashboard)} />
+                      <Route exact path="/privacy" element={Wrapper(Privacy)} />
+                      <Route exact path="/messages" element={Wrapper(Messages)} />
+                      <Route
+                        exact
+                        path="/notifications"
+                        element={Wrapper(Notifications)}
+                      />
+                      <Route
+                        exact
+                        path="/chat/:friend_name"
+                        element={Wrapper(Chat)}
+                      />
+                      <Route exact path="/feedback" element={<Feedback />} />
+                      <Route exact path="/help" element={<Help />} />
+                      <Route exact path="/whatsnew" element={<WhatsNew />} />
+                      {/* <Route exact path="/test" element={<CreatePostPage />} /> */}
+                    </Routes>
+                  </Router>
+                </PostSharing.Provider>
+                {sharePost.view && (
+                  <SharePost sharePost={sharePost} setSharePost={setSharePost} />
+                )}
+              </ErrorFallBack>
+          </AuthContextProvider>
+        </ErrorContextProvider>
+      </QueryClientProvider >
     </div>
   );
 };

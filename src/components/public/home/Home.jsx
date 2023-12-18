@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, createContext, useContext } from "react";
+import { useState, useEffect, useMemo, useLayoutEffec, useRef} from "react";
 import { Outlet, Route, Router, Routes, useNavigate } from "react-router-dom";
 import HomeHeader from "./homeHeader";
 import HomeTabs from "./homeTabs";
@@ -23,19 +23,23 @@ import Connect from "../../../assets/Connect.svg"
 import FireSimple from "../../../assets/fireSimple.svg"
 import Eye from "../../../assets/Eye.svg"
 
+import { useQuery, useQueryClient, QueryClient} from '@tanstack/react-query'
+import { getPosts, getUser } from "../../../utils/user";
+import { saveScrollPosition, setScrollPosition } from "../../../utils/scrollPage";
+
 const Home = () => {
   const [createPost, setCreatePost] = useState(false);
   const [profilePage, setProfilePage] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [selectedPostIndex, setSelectedPostIndex] = useState(null);
   const [isAll, setIsAll] = useState(false);
-  const [posts, setPosts] = useState([]);
   const [initialPosts, setInitialPosts] = useState([]);
   const [selectedTab, setSelectedTab] = useState("all");
   // const { isRecievedData, setIsRecievedData } = useWebSocket();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [userDetails, setUserDetails] = useState();
+  // const [posts, setPosts] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [error, setError] = useState("");
+  // const [userDetails, setUserDetails] = useState();
   const [selectedSchool, setSelectedSchool] = useState("ALL");
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(false);
@@ -44,13 +48,60 @@ const Home = () => {
   const navigate = useNavigate();
   const { key } =useAuthContext()
   const {setAppError} = useErrorContext()
+  const homeRef=useRef()
 
-  //navigate to /login if token a.k.a key is null or undefined
+  //using react-query to handle fetching posts 
+const {isPending:isLoading, data:postsResult, error }=useQuery({
+    queryKey:['posts', currentPageIndex], 
+    queryFn:getPosts
+  })
+  console.log(postsResult)
+  //memoized destructured data to prevent infinite rerender issue
+  const posts = useMemo(() => (postsResult? [...postsResult.data.results] : postsResult) , [postsResult]); 
+  console.log(posts)
+
+    //using react-query to handle fetching userdetails 
+  const { data:userDataResult, error:userDetailsError }=useQuery({
+    queryKey:['userDetails', key], 
+    queryFn:getUser
+  })
+    //memoized destructured data to prevent infinite rerender issue
+  const userDetails= useMemo(() => (userDataResult? {...userDataResult.data} : userDataResult) , [userDataResult]); 
+
 
   const handlePostClick = (post, index) => {
     setSelectedPost(post);
     setSelectedPostIndex(post);
   };
+  
+
+  // useLayoutEffect(()=>{
+  //   console.log('tab ', selectedTab)
+  //   if(selectedTab =='all'){
+  //     console.log('heheh')
+  //     setScrollPosition('home') 
+  //   }else{
+  //     setScrollPosition('home-trending')
+  //   }
+  // })
+
+  useEffect(() => {
+    console.log('tab ', selectedTab)
+    if(selectedTab =='all'){
+      console.log('heheh')
+      // window.scrollBy(0, sessionStorage.getItem('home'))
+      // setScrollPosition('home') 
+      homeRef.current.scrollBy(0, sessionStorage.getItem('home'))
+
+    }else{
+      // setScrollPosition('home-trending')
+      // window.scrollBy(0, 200)
+      // window.scrollBy(0, sessionStorage.getItem('home-trending'))
+      homeRef.current.scrollBy(0, sessionStorage.getItem('home-trending'))
+
+    }
+  }, [selectedTab]);
+  
   useEffect(() => {
       if(key==null){
         navigate('/login')
@@ -62,46 +113,37 @@ const Home = () => {
             );
           setAppError(null)
           setInitialPosts([...initialPosts, ...response.data.results]);
-          setPosts([...posts, ...response.data.results]);
+          // setPosts([...posts, ...response.data.results]);
           setHasMorePosts(Boolean(response.data.next));
-          // setIsRecievedData(false);
-
-          setIsLoading(false);
+          // setIsRecievedData(false);init
+          // setIsLoading(false);
         } catch (err) {
           console.log('%c error in loading paginated posts in useEffect', err )
-          setError(err.message);
+          // setError(err.message);
           setAppError(err)
         }
       }
     
 
     if(userDetails!=null && !error){
-      fetchPosts()
+      // fetchPosts()
+    } 
+
+    if(Boolean(posts)){
+      //The posts is fetched and its stored in state using the tanstack/react-query Api
+      setInitialPosts([...initialPosts, ...posts]);
+      setHasMorePosts(Boolean(postsResult))
+      setAppError(null)
+    }else if(error){
+      setAppError(error)
+    } 
+
+    if(Boolean(userDetails)){
+    }else if(userDetailsError){
+      setAppError(userDetailsError)
     }
 
   }, [currentPageIndex, key, userDetails, error]);
-
-  useEffect(() => {
-    const headers = {
-      Authorization: `Token ${key}`,
-    };
-    const fetchUser = async () => {
-      try {
-        if (localStorage.getItem("login") !== null) {
-          const user_response = await axios.get("account/annonyuser/", {
-            headers,
-          });
-          setAppError(null)
-          setUserDetails(user_response.data);
-        }
-      } catch (err) {
-          console.log(err)
-          setError(err)
-          setAppError(err)
-      }
-    };
-    fetchUser();
-  }, [key, error]);
 
   //Ajax
   const reloadPosts = () => {
@@ -141,8 +183,6 @@ const Home = () => {
     return (
       <CreatePostPage
         reloadPosts={reloadPosts}
-        isLoading={isLoading}
-        setIsLoading={setIsLoading}
         setCreatePost={setCreatePost}
       />
     );
@@ -150,7 +190,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="grow">
+      <div className="grow" ref={homeRef}>
         {profilePage ? (
           <Profile setProfilePage={setProfilePage} userDetails={userDetails} />
         ) : (
@@ -255,9 +295,9 @@ const Home = () => {
       </div> */} 
           {selectedTab === "all" ? (
             <Posts
-              posts={posts}
+              posts={posts || []}
               error={error}
-              setError={setError}
+              setError={null}
               onPostClick={handlePostClick}
               isLoading={isLoading}
               setCurrentPageIndex={setCurrentPageIndex}
