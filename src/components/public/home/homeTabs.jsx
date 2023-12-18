@@ -1,14 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import "./home.css";
+import { saveScrollPosition } from "../../../utils/scrollPage";
 
 const HomeTabs = ({ setSelectedTab, selectedTab }) => {
   // const [isAll, setIsAll] = useState(true);
   // const [isTrending, setIsTrending] = useState(false);
+  
   return (
     <div className="text-white border-b border-y-[#4B5563] flex justify-between px-6 mt-3 w-full">
       <h2
         onClick={() => {
+          saveScrollPosition('home-trending')
           setSelectedTab("all")
         }}
         className={`
@@ -21,6 +24,7 @@ const HomeTabs = ({ setSelectedTab, selectedTab }) => {
       </h2>
       <h2
         onClick={() => {
+          saveScrollPosition('home')
           setSelectedTab("trending");
         }}
         className={`

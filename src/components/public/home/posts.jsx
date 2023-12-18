@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Gist from "./gist";
 import GistLinks from "./gistLinks";
 import HomeInfo from "./homeInfo";
@@ -8,6 +8,7 @@ import Spinner from "../../common/Spinner";
 import { HiRefresh } from "react-icons/hi";
 import { FaSpinner } from "react-icons/fa6";
 import ErrorOccurred from "../../error/ErrorOccurred";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Posts = ({
   posts,
@@ -24,7 +25,10 @@ const Posts = ({
   const lastPostRef = useRef();
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [isLoadingMorePosts, setIsLoadingMorePosts] = useState(false);
+  
+  const queryClient=useQueryClient()
 
+ 
   useEffect(() => {
     if (posts.length === 0) return;
     let allPosts = document.querySelector(".posts");
@@ -74,7 +78,16 @@ const Posts = ({
     });
     setSortedPostsByTime(sortedPosts);
   };
-  if(error && posts.length<=0) return <ErrorOccurred setError={setError}/>
+  if(error && posts.length<=0){
+    return <ErrorOccurred 
+            setError={()=>{
+                   queryClient.invalidateQueries({queryKey:['posts']})
+                }
+            }
+          />
+
+    
+  }
   if (isLoading) return <Spinner />;
   
   return (

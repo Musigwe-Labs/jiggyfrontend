@@ -1,13 +1,14 @@
 // import {FaBell as BellIcon}   from  'react-icons/fa'
 import HomeFooter from "../../public/home/homeFooter";
 import Spinner from '../../common/Spinner'
-import {useEffect,useLayoutEffect, useState} from 'react'
-import {Link} from 'react-router-dom'
+import {useEffect, useLayoutEffect } from 'react'
+import {Link, useNavigate} from 'react-router-dom'
 import axios from 'axios'
 
 import {useErrorContext} from '../../../contexts/ErrorContext'
 import { useAuthContext } from "../../../contexts/AuthContext";
-import { getNotificationDate } from "../../../utils/formatNotifications"
+import { getNotifications } from "../../../utils/user";
+import { setScrollPosition } from "../../../utils/scrollPage";
 
 // icons import
 import flames from '../../../assets/flames.svg'
@@ -15,23 +16,22 @@ import comments from '../../../assets/message.svg'
 import heart from '../../../assets/heart.svg'
 import upvote from '../../../assets/upvote.svg'
 import ErrorOccurred from "../../error/ErrorOccurred";
+import { useQuery } from "@tanstack/react-query";
 // import { comment } from "postcss";
 
 export default function Notiifications(){
-	const initialState={
-		notifications:{ results:[]},
-		status:'loading'
-	}	
+
 
 	const {key:token} =useAuthContext()
-	const {appError, setAppError} = useErrorContext()
-	const [state, setState]=useState(initialState)
-	// const navigate= useNavigate()
-
-	const {notifications, status} = state
+	const { setAppError } = useErrorContext()
+	const navigate= useNavigate()
+	const {data:notifications, isPending:isLoading, error} = useQuery({
+		queryKey:['notifications', token],
+		queryFn:getNotifications
+	})
 	
 
-	const url='https://jiggybackend.com.ng/annon/notifications/view/?page=1'
+	
 	const headers={'Authorization':'Token '+ token }
 	const mockUpresults= {
 		"count": 123,
@@ -107,30 +107,23 @@ export default function Notiifications(){
 	]
 }
 	
-
 	useLayoutEffect(()=>{
-		axios.get(url,{headers})
-		.then(res=>{
-			console.log(res)
-			setState({...state, status:'resolved', notifications:{...res.data}})
+		setScrollPosition('home')
+	})
+
+	useEffect(()=>{
+		if(token==null){
+			navigate('/login')
+		}
+		if(!error){
 			setAppError(null)
-		})
-		.catch(err=>{
-			console.log(err)
-			if(err.response?.status==401){
-				navigate('/login')
-			}else{
-				setState({...state, status:'error'})
-				setAppError(err)
-			}
-		})
-	},[appError])
+		}else{
+			setAppError(error)
+		}
+	},[error, token])
 
 
-	function handleClick(){
-		// navigate('/')
-	}
-
+	
 return(
 	<>
 		<header className=''>
@@ -145,10 +138,10 @@ return(
 		</header>
 		<main className="grow mb-20  flex flex-col  w-full px-3 sm:px-8">
 			{
-				status=='loading'? <Spinner />
-				:status=='error' ? <ErrorOccurred />
-				:status=='resolved' && notifications.results.length==0? <p className="font-bold text-center text-base">I'm Sorry you do not have any new  notification</p>
-				:notifications.results.map((el, index)=>{
+				isLoading? <Spinner />
+				:error ? <ErrorOccurred />
+				:notifications.data && notifications.data.results.length==0? <p className="font-bold text-center text-base">I'm Sorry you do not have any new  notification</p>
+				:notifications.data.results.map((el, index)=>{
 					/* 	const {notification_type:type, created_at}=el
 						 const time=getNotificationDate(created_at)	
 

@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import Friends from "../../Friends";
 import Jiggy from "../../Jiggy";
 import HomeFooter from "../../public/home/homeFooter";
+import { setScrollPosition } from "../../../utils/scrollPage";
 
 export default function Messages() {
   const [selectedTab, setSelectedTab] = useState("friends");
+
+  useLayoutEffect(()=>{
+    setScrollPosition('home')
+  })
+
   return (
     <>
     <div className="text-white grow mb-20">

@@ -18,13 +18,12 @@ import Tick from '../../../assets/Tick.svg'
 const CreatePostPage = ({
   setCreatePost,
   reloadPosts,
-  isLoading,
-  setIsLoading,
   setSelectedPost,
   selectedPostIndex,
   posts,
 }) => {
   const [content, setContent] = useState("");
+  const [isLoading, setIsLoading]= useState(false)
   const [post_type, setSelectedOption] = useState("Others");
   const [targeted_school, setTargetedSchool] = useState("All");
   const [openDropdown, setOpenDropdown] = useState(false);
