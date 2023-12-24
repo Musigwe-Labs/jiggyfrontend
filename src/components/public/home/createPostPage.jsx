@@ -24,7 +24,7 @@ const CreatePostPage = ({
 }) => {
   const [content, setContent] = useState("");
   const [post_type, setSelectedOption] = useState("Others");
-  const [targeted_school, setTargetedSchool] = useState("All");
+  const [targeted_school, setTargetedSchool] = useState("FUTO");
   const [openDropdown, setOpenDropdown] = useState(false);
   const [previewImgSrcs, setPreviewImgSrcs] = useState();
   const [imageSrc, setImageSrc] = useState([]);
@@ -52,11 +52,12 @@ const CreatePostPage = ({
       setIsLoading(true);
       const formData = new FormData(form.current, postBtn.current);
       formData.append("content", content);
-      formData.append("post_type", post_type);
-      if (targeted_school.toLowerCase() !== "all")
-        formData.append("school", targeted_school.toUpperCase());
       imageSrc[0] && formData.append("images", imageSrc[0]);
+      formData.append("post_type", post_type);
+      // if (targeted_school.toLowerCase() !== "all")
+      // formData.append("school", targeted_school);
       try {
+      console.log(headers)
         await axios.post("annon/posts/create/", formData, { headers });
         await reloadPosts();
         setSelectedPost(posts[selectedPostIndex]);
