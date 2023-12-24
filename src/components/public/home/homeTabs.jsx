@@ -2,10 +2,10 @@
 import { useState } from "react";
 import "./home.css";
 import { saveScrollPosition } from "../../../utils/scrollPage";
+import { useHomeTabContext } from "../../../contexts/homeTabContext";
 
-const HomeTabs = ({ setSelectedTab, selectedTab }) => {
-  // const [isAll, setIsAll] = useState(true);
-  // const [isTrending, setIsTrending] = useState(false);
+const HomeTabs = () => {
+  const { selectedTab, setSelectedTab} =useHomeTabContext() 
   
   return (
     <div className="text-white border-b border-y-[#4B5563] flex justify-between px-6 mt-3 w-full">
@@ -24,7 +24,6 @@ const HomeTabs = ({ setSelectedTab, selectedTab }) => {
       </h2>
       <h2
         onClick={() => {
-          saveScrollPosition('home')
           setSelectedTab("trending");
         }}
         className={`

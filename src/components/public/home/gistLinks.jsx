@@ -13,13 +13,13 @@ import Eye from "../../../assets/Eye.svg"
 
 import axios from "../../../services/axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { PostSharing } from "../../../App";
+import { usePostSharingContext } from "../../../contexts/postSharingContext"; 
 
 // import axios from 'axios'
 
 const GistLinks = ({ post, onPostClick }) => {
   let { likes, comments, views, shared } = post;
-  const { setSharePost, setSelectedPostId } = useContext(PostSharing);
+  const { setSharePost, setSelectedPostId } = usePostSharingContext();
 
   const [isLiked, setIsLiked] = useState(false); //currently using a state but we will have to get this info from the backend
   // const [isSeen , setIsSeen] = useState(false)  //currently using a state but we will have to get this info from the backend
@@ -47,7 +47,7 @@ const GistLinks = ({ post, onPostClick }) => {
       <Link
         className="flex items-center gap-1 cursor-pointer"
         onClick={() => {
-          setSelectedPostId(post.id)
+          // setSelectedPostId(post.id)
         }}
         to={`/comment/${post.id}`}
       >

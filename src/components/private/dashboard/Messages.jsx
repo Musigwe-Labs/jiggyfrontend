@@ -8,9 +8,9 @@ import { setScrollPosition } from "../../../utils/scrollPage";
 export default function Messages() {
   const [selectedTab, setSelectedTab] = useState("friends");
 
-  useLayoutEffect(()=>{
-    setScrollPosition('home')
-  })
+  // useLayoutEffect(()=>{
+  //   setScrollPosition('home')
+  // })
 
   return (
     <>

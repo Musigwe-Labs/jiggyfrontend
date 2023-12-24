@@ -22,6 +22,8 @@ const Trending = ({ posts, onPostClick, isLoading }) => {
   })
 
   useEffect(() => {
+
+    window.scrollTo(0, 50)
     getPosts();
   }, [posts]);
   let getPosts = async () => {

@@ -7,7 +7,24 @@ export  function setScrollPosition(tab){
 }
 
 
+export  function saveScrollPosition(tab, pos){
+    sessionStorage.setItem(tab, pos)
+}
 
-export  function saveScrollPosition(tab){
-    sessionStorage.setItem(tab + '-scroll-position', window.scrollY)
+export function getScrollPosition(tab){
+    return sessionStorage.getItem(tab)
+}
+
+export function getScrollOptions (tab){
+    return {left:0, top:sessionStorage.getItem(tab), behavior:'smooth'}
+}
+
+export function mountScrollListener (tab){
+    window.onscroll=()=>{
+        saveScrollPosition(tab, window.scrollY)
+    }
+}
+
+export function unmountScrollListener (){
+    window.onscroll=null
 }
