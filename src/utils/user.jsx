@@ -24,3 +24,11 @@ export async function getNotifications({queryKey:[, key]}){
 }
 
 
+export  async function getComments({queryKey:[, id, key ]}){
+  const url= "/annon/posts/detail/" +id 
+  const headers = {
+    Authorization: `Token ${key}`
+  };
+  const response = await axios.get(url,{headers})
+  return response
+}

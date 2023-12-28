@@ -54,7 +54,6 @@ const HomeFooter = ()=>{
 
     function handleClick(url){
     const tab=urlpath.slice(1)
-       saveScrollPosition(tab)
        navigate(url)
     }
 

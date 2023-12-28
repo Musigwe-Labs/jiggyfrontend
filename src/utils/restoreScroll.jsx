@@ -1,76 +1,54 @@
 import { useLocation } from "react-router-dom"
 import { useEffect, useLayoutEffect, useRef } from "react"
-import { getScrollPosition, saveScrollPosition } from "./scrollPage"
-
-
+import { useHomeTabContext } from '../contexts/homeTabContext'
+import {mountScrollListener, unmountScrollListener, scrollPage} from './scrollPage'
 
 export default function RestoreScroll({children, tab='', deps=[]}){
    
     const location= useLocation()
+    const { selectedTab }= useHomeTabContext()
     let path=location.pathname
     path= path=='/'? 'home' : path.slice(1)
     path= path + (tab?  '-' + tab : '') 
     
 
-    const refPath=useRef(path)
-    const pageRef=useRef()
+    // useLayoutEffect(()=>{
+    //     console.log('path: ', path)
+    //     console.log(sessionStorage.getItem(path))
 
+    //     scrollPage(path)
+    //     mountScrollListener(path)
+
+    //     return ()=>{ unmountScrollListener() }
+
+    // }, [ selectedTab, path ])
+
+
+    return <> {children} </>
+ }
+
+
+  
+
+export function useRestoreScroll(tab, deps=[]){
     useLayoutEffect(()=>{
-        window.scrollTo(0, 234)
-    })
+        scrollPage(tab)       
+        mountScrollListener(tab)
 
-    useEffect(()=>{
-        const scrollY= sessionStorage.getItem(path+'-scroll-position')
-        // window.scrollTo(0, scrollY)
-        window.scroll(0, 52)
-        // console.log(path, 'scrollY: ' + scrollY)
-        console.log('scrollHeight', window.scrollHeight)
+        return ()=>{ unmountScrollListener() }
+  }, [tab, ...deps])
+ }
 
-        // window.scrollTo(0, scrollY)
-    //     pageRef.current=window
-    //     console.log(path, sessionStorage.getItem(path + '-scroll-position') );
-    //     pageRef.current.scrollTo(0, Number(sessionStorage.getItem(path + '-scroll-position')))
-    //   sessionStorage.setItem('tab', tab)
-    //   sessionStorage.setItem('path', path+ '-scroll-position')
 
-        window.onscroll=()=>{
-            saveScrollPosition(path , window.scrollY)
-      }
-      window.onload=()=>{
-        console.log('page loaded')
-      }
-
-     // .scrollTo(0, 164)
-      return ()=>{
-        window.onscroll=null
-      } 
-    
-    })
-  
-    return <> { children } </>
-  }
   
 
+  // useLayoutEffect(()=>{
+//   const tab='home-'+ selectedTab
+//   const top=sessionStorage.getItem(tab)
 
-// export default function RestoreScroll({children, tab='', deps=[]}){
-//     const location= useLocation()
-//     let path=location.pathname.slice()
-//     path=='/'? 'home' : path.slice(1)
-//     path + (tab? '-'+ tab : '')
+//   window.requestAnimationFrame(()=>{
+//     console.log(top +'test', window)
+//     window.scrollTo(0, top)
+//   })
 
-//     const refPath=useRef(path)
-//     const pageRef=useRef()
-
-//     useEffect(()=>{
-//         pageRef.current=window
-//         pageRef.current.scrollTo(0, sessionStorage.getItem(refPath.current + '-scroll-position' || 0) || 0)
-   
-//         return (selectedTab)=> {
-//             console.log('unmounting: ', pageRef.current.scrollY)
-//             saveScrollPosition(refPath.current, pageRef.current.scrollY)
-//         }   
-  
-//     }, [...deps])
-  
-//     return <> { children } </>
-//   }
+// },[selectedTab])

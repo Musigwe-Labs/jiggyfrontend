@@ -86,25 +86,29 @@ const router= createBrowserRouter([
     element: <WhatsNew /> 
   },
   {
-    path:'/test',
-    element: <Test /> 
-  }
+    path:'/comments/:id',
+    element: <Comment /> 
+  },
+  // {
+  //   path:'/test',
+  //   element: <Test /> 
+  // }
 ])
 
-function Test(){
-  useEffect(()=>{
-    console.log('child use effect')
-  })
+// function Test(){
+//   useEffect(()=>{
+//     console.log('child use effect')
+//   })
 
-  return (
-    <RestoreScroll>
-      <div className="h-[700px] flex justify-between w-full">
-        <Link to={'/messages'}>msgs</Link>
-        <Link to={'/notifications'}>notes</Link>
-     </div>
-    </RestoreScroll>
-  )
-}
+//   return (
+//     <RestoreScroll>
+//       <div className="h-[700px] flex justify-between w-full">
+//         <Link to={'/messages'}>msgs</Link>
+//         <Link to={'/notifications'}>notes</Link>
+//      </div>
+//     </RestoreScroll>
+//   )
+// }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -116,33 +120,3 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </React.StrictMode>,
 )
 
-
-// ReactDOM.createRoot(document.getElementById('root')).render(
-//   <React.StrictMode>
-//     {/* <WebSocketProvider> */}
-//       <App />
-//     {/* </WebSocketProvider> */}
-//   </React.StrictMode>,
-// )
-
-
-{/* <QueryClientProvider client={queryClient} >
-<ErrorContextProvider>
-  <AuthContextProvider>
-      <ErrorFallBack>
-        <PostSharing.Provider
-          value={{
-            sharePost: sharePost,
-            setSharePost: setSharePost,
-          }}
-        >
-          
-
-        </PostSharing.Provider>
-        {sharePost.view && (
-          <SharePost sharePost={sharePost} setSharePost={setSharePost} />
-        )}
-      </ErrorFallBack>
-  </AuthContextProvider>
-</ErrorContextProvider>
-</QueryClientProvider > */}

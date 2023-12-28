@@ -6,18 +6,17 @@ import {IoCloudOfflineSharp} from 'react-icons/io5'
 
 	const offline=
 		<>
-			<div className="offline-icon">
+			<div className="offline-icon flex gap-1">
 				<IoCloudOfflineSharp />
 			</div>
 			<p className='text-white text-xs font-ibmPlexSans pl-2'>check your internet connection.</p>
 		</>
 		
 		function Alert({message}){
-			console.log('na here')
 			return (
-				<div className={`offline bg-[#f33f5e] w-full flex items-center pl-4 py-2 `}>
+				<div className={`alert px-4 flex gap-1 items-center bg-[#f33f5e]   text-center pl-4 py-2 fixed right-2 top-1  z-10 rounded`}>
 					{ message=="Network Error" && offline}
-					{ message!= "Network Error" && <p className='text-white text-xs font-ibmPlexSans pl-2'>{ message }</p> }
+					{ message!= "Network Error" && <p className='text-white text-xs font-ibmPlexSans'>{ message }</p> }
 				</div>
 			)
 		}

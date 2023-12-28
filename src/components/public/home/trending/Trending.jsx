@@ -15,17 +15,10 @@ const Trending = ({ posts, onPostClick, isLoading }) => {
   // const [trendingPostsByViews, setTrendingPostsByViews] = useState([]);
   const [trendingPostsByLikes, setTrendingPostsByLikes] = useState([]);
   // let navigate = useNavigate();
-
-  useLayoutEffect(()=>{ 
-    console.log()
-    // setScrollPosition('home-trending')
-  })
-
   useEffect(() => {
-
-    window.scrollTo(0, 50)
     getPosts();
   }, [posts]);
+
   let getPosts = async () => {
     let likeSortedPosts = await posts.sort((post1, post2) =>
       post1.likes.length > post2.likes.length && post1.views > post2.views

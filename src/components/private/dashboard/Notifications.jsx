@@ -2,6 +2,7 @@
 import HomeFooter from "../../public/home/homeFooter";
 import Spinner from '../../common/Spinner'
 import ErrorOccurred from "../../error/ErrorOccurred";
+import { useRestoreScroll} from "../../../utils/restoreScroll";
 
 
 import {useEffect } from 'react'
@@ -14,15 +15,13 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 
 // icons import
 import comments from '../../../assets/message.svg'
-import RestoreScroll from "../../../utils/restoreScroll";
 // import flames from '../../../assets/flames.svg'
 // import heart from '../../../assets/heart.svg'
 // import upvote from '../../../assets/upvote.svg'
 
 
 export default function Notiifications(){
-
-
+	const restoreScroll=useRestoreScroll('notifications')
 	const {key:token} =useAuthContext()
 	const { setAppError } = useErrorContext()
 	const navigate= useNavigate()
@@ -30,88 +29,10 @@ export default function Notiifications(){
 		queryKey:['notifications', token],
 		queryFn:getNotifications
 	})
-	
 
-	
-	const headers={'Authorization':'Token '+ token }
-	const mockUpresults= {
-		"count": 123,
-		"next": "http://api.example.org/accounts/?page=4",
-		"previous": "http://api.example.org/accounts/?page=2",
-		"results": [
-		{
-			"id": 0,
-			"notification_type": "hot trend",
-			"created_at": "2023-11-11T00:00:41.472Z",
-			"comment": 0,
-			"reply": 0,
-			"post": 0,
-			"user": [
-			  0
-			]
-		},
-		{
-			"id": 1,
-			"notification_type": "comment",
-			"created_at": "2023-11-10T00:06:00.472Z",
-			"comment": 0,
-			"reply": 0,
-			"post": 0,
-			"user": [
-			  0
-			]
-		},
-		{
-			"id": 7,
-			"notification_type": "fun trend",
-			"created_at": "2023-11-10T14:39:41.472Z",
-			"comment": 0,
-			"reply": 0,
-			"post": 0,
-			"user": [
-				0
-			]
-		},
-		{
-			"id": 8,
-			"notification_type": "comment",
-			"created_at": "2023-11-09T17:39:41.472Z",
-			"comment": 0,
-			"reply": 0,
-			"post": 0,
-			"user": [
-				0
-			]
-		},
-		{
-			"id": 2,
-			"notification_type": "hot trend",
-			"created_at": "2023-10-06T15:39:41.472Z",
-			"comment": 0,
-			"reply": 0,
-			"post": 0,
-			"user": [
-				0
-			]
-		},
-		{
-			"id": 3,
-			"notification_type": "upvote",
-			"created_at": "2022-11-06T15:39:41.472Z",
-			"comment": 0,
-			"reply": 0,
-			"post": 0,
-			"user": [
-				0
-			]
-		}
-	]
-}
-	
-	// useLayoutEffect(()=>{
-	// 	setScrollPosition('home')
-	// })
 
+// {"data":{"count":4,"next":null,"previous":null,"results":[{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 98"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 98"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 100"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 100"}]}]},
+	
 	useEffect(()=>{
 		if(token==null){
 			navigate('/login')
@@ -127,25 +48,58 @@ export default function Notiifications(){
 	
 return(
 	<>
-		<RestoreScroll>
-			<header className=''>
-					<div className="flex justify-between items-center px-8 py-6">
-						<h1 className="nav text-2xl font-bold bg-gradient-to-l from-[#B416FE40] via-[#FF008A62] to-[#F33F5E] bg-clip-text text-transparent font-openSans ">
-							Notifications
-						</h1>
-						<div className="mark-all text-xs text-[#B20000] font-poppins ">
-							Mark all as read
-						</div>
+		<header className='fixed  top-0 w-full h-20 '>
+				<div className="flex justify-between items-center px-4 py-6">
+					<h1 className="nav text-2xl font-bold bg-gradient-to-l from-[#B416FE40] via-[#FF008A62] to-[#F33F5E] bg-clip-text text-transparent font-openSans ">
+						Notifications
+					</h1>
+					<div className="mark-all text-xs text-[#B20000] font-poppins ">
+						Mark all as read
 					</div>
-			</header>
-			<main className="grow mb-20  flex flex-col  w-full px-3 sm:px-8">
+				</div>
+		</header>
+		<main className="w-full pt-20">
+			{
+					error ? <ErrorOccurred />
+					:isLoading? <Spinner />
+					:notifications.data && notifications.data.results.length==0? <p className="font-bold text-center text-base">I'm Sorry you do not have any new  notification</p>
+					:notifications.data.results.map((el, index)=>{
+						const note=el.notifications[0].notification_text
+						const postId= note.split(' ').at(-1)
+											
+						return (
+							<Link className="flex items-center py-2 px-4 border-b-[1px] border-white" to={'/comments/'+ postId } key={note + index}>
+								<img src={comments} alt="comments" />
+								{
+									
+								}
+								<p className="grow text-sm pl-2"> {note}</p>
+							</Link>
+						)
+
+				 	}).reverse()
+			}
+
+		</main>	
+		
+		<HomeFooter />
+	</>
+
+	
+	)
+}
+
+
+{/*
+<main className="grow mb-20  flex flex-col  w-full px-3 sm:px-8">
 				{
 					error ? <ErrorOccurred />
 					:isLoading? <Spinner />
 					:notifications.data && notifications.data.results.length==0? <p className="font-bold text-center text-base">I'm Sorry you do not have any new  notification</p>
 					:notifications.data.results.map((el, index)=>{
-						/* 	const {notification_type:type, created_at}=el
+						 	const {notification_type:type, created_at}=el
 							const time=getNotificationDate(created_at)	
+
 
 							const Notification=	(
 							<div 
@@ -176,12 +130,15 @@ return(
 								<p className="time text-[8px] text-right ">{time}</p>
 							</div>
 						)
-						*/
+						
 
 						// return Notification
 						return (
-							<Link className="flex items-center py-2 border-b-[1px] border-white" to={'/posts/'+el.split(' ').at(-1)} key={el+index}>
+							<Link className="flex items-center py-2 border-b-[1px] border-white" to={'/comments/'+el.split(' ').at(-1)} key={el+index}>
 								<img src={comments} alt="comments" />
+								{
+									item.notifications[1]	
+								}
 								<p className="grow text-sm pl-2"> {el}</p>
 							</Link>
 						)
@@ -190,12 +147,4 @@ return(
 				{/* <div className=" test-div-remove-if-you-want h-[500px] w-full text-white">hello
 				</div>
 				 */}
-			</main>
-			<HomeFooter />
-		</RestoreScroll>	
-	</>
-
-	
-	)
-}
-
+			// </main>*/}

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { useState, useEffect, useMemo } from "react";
+import { useAuthContext } from "../../../contexts/AuthContext";
 import CommentInfo from "./commentInfo";
 import Gist from "./gist";
 import GistLinks from "./gistLinks";
@@ -20,51 +20,69 @@ import { ReplyComment } from "./replyComment";
 import Replies from "./replies";
 import { Link, useParams } from "react-router-dom";
 import Spinner from "../../common/Spinner";
+import {getComments} from '../../../utils/user'
+import { useErrorContext}  from  '../../../contexts/ErrorContext'
+import { useQuery, useQueryClient, QueryClient} from '@tanstack/react-query'
+import { useRestoreScroll } from "../../../utils/restoreScroll";
+
+
 
 const Comment = ({ reloadPosts }) => {
+  const {setAppError}= useErrorContext()
   const [inputValue, setInputValue] = useState("");
   const [inputHeight, setInputHeight] = useState("35px");
   const [userDetails, setUserDetails] = useState([]);
-  const [post, setPost] = useState(null);
+  // const [post, setPost] = useState(null);
   const [status, setStatus] = useState({
     loading: false,
     succesful: false,
     error: "",
   });
-  // const {selectedPostId} = useContext(PostSharing);
   const { id } = useParams();
-  const { key } = useContext(AuthContext);
+  const { key } = useAuthContext();
+  const restoreScroll=useRestoreScroll('comments-'+id)
 
-  const headers = {
-    Authorization: `Token ${key}`,
-  };
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        if (localStorage.getItem("login") !== null) {
-          const user_response = await axios.get("account/annonyuser/", {
-            headers,
-          });
-          setUserDetails(user_response.data);
-        }
-      } catch (error) {}
-    };
-    fetchUser();
-  }, []);
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get(`/annon/posts/detail/${id}/`, {
-          headers,
-        });
-        setPost(response.data);
+  const {isPending:isLoading, data, error }=useQuery({
+    queryKey:['commments '+id, id, key],
+    queryFn:getComments
+  })
 
-      } catch (err) {
-        // setError(err.message);
+const post= useMemo(()=> data? data.data : data , [data])
+
+  // const headers = {
+  //   Authorization: `Token ${key}`,
+  // };
+  // useEffect(() => {
+  //   const fetchUser = async () => {,
+  //     try {
+  //       if (localStorage.getItem("login") !== null) {
+  //         const user_response = await axios.get("account/annonyuser/", {
+  //           headers,
+  //         });
+  //         setUserDetails(user_response.data)
+  //       }
+  //     } catch (error) {}
+  //   };
+  //   fetchUser();
+  // }, []);
+  
+  useEffect(() => {
+    // const fetchPosts = async () => {
+    //   try {
+    //     const response = await axios.get(`/annon/posts/detail/${id}/`, {
+    //       headers,
+    //     });
+    //     setPost(response.data);
+
+    //   } catch (err) {
+    //     // setError(err.message);
+    //   }
+    // };
+    // fetchPosts();
+      if(error){
+          setAppError(error)
       }
-    };
-    fetchPosts();
-  }, []);
+  }, [post, error]);
   const maxInputHeight = 220; // Adjust this value as needed
 
   const handleInputChange = (event) => {
@@ -93,6 +111,7 @@ const Comment = ({ reloadPosts }) => {
         setInputValue("");
 
         setStatus({ ...status, loading: false, successful: true });
+        setAppError({message:'comment sent'})
       }
     } catch (error) {
       setStatus({ ...status, error: error });

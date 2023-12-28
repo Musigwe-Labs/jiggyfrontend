@@ -11,7 +11,7 @@ const HomeTabs = () => {
     <div className="text-white border-b border-y-[#4B5563] flex justify-between px-6 mt-3 w-full">
       <h2
         onClick={() => {
-          saveScrollPosition('home-trending')
+          // saveScrollPosition('home-trending')
           setSelectedTab("all")
         }}
         className={`
