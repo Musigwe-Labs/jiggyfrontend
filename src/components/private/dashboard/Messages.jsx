@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import Friends from "../../Friends";
 import Jiggy from "../../Jiggy";
 import HomeFooter from "../../public/home/homeFooter";
+import { useRestoreScroll} from "../../../utils/restoreScroll";
+
 
 export default function Messages() {
   const [selectedTab, setSelectedTab] = useState("friends");
+  const restoreScroll=useRestoreScroll('Messages')  
+  
   return (
     <>
     <div className="text-white grow mb-20">

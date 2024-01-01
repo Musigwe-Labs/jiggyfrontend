@@ -1,5 +1,6 @@
 // import axios from "../../../../services/axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { useBeforeUnload } from "react-router-dom";
 import { HiDotsVertical, HiUser } from "react-icons/hi";
 import Spotlight from "./Spotlight";
 import Gist from "../gist";
@@ -7,6 +8,7 @@ import GistLinks from "../gistLinks";
 import { PostType } from "../postType";
 import timeGap from "../../../../services/dateCheck";
 import Spinner from "../../../common/Spinner";
+import { saveScrollPosition, setScrollPosition } from "../../../../utils/scrollPage";
 
 const Trending = ({ posts, onPostClick, isLoading }) => {
   const [trendingPostsByComments, setTrendingPostsByComments] = useState([]);
@@ -15,8 +17,8 @@ const Trending = ({ posts, onPostClick, isLoading }) => {
   // let navigate = useNavigate();
   useEffect(() => {
     getPosts();
-    // return () => window.location.pathname.replace("trending", "")
   }, [posts]);
+
   let getPosts = async () => {
     let likeSortedPosts = await posts.sort((post1, post2) =>
       post1.likes.length > post2.likes.length && post1.views > post2.views
@@ -33,7 +35,6 @@ const Trending = ({ posts, onPostClick, isLoading }) => {
         : 0
     );
 
- 
     setTrendingPostsByLikes(likeSortedPosts);
     setTrendingPostsByComments(commentSortedPosts.slice(0, 10));
   };

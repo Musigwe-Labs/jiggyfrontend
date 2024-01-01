@@ -1,77 +1,91 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/common/Header";
-import Home from "./components/public/home/Home";
-import Login from "./components/public/Login";
-import Register from "./components/public/Register";
-import { AuthContextProvider } from "./contexts/AuthContext";
-import { ErrorContextProvider } from "./contexts/ErrorContext";
-import Comment from "./components/public/home/comments";
-import Dashboard from "./components/private/dashboard/Dashboard";
-import { Privacy } from "./components/private/dashboard/Privacy";
-import Messages from "./components/private/dashboard/Messages";
-import Notifications from "./components/private/dashboard/Notifications";
-import Chat from "./components/private/dashboard/Chat";
+//package imports
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+//components import
 import "./App.css";
-import { Wrapper } from "./components/private/common/Wrapper";
-import Feedback from "./components/private/dashboard/Feedback";
-import Help from "./components/private/dashboard/Help";
-import WhatsNew from "./components/private/dashboard/WhatsNew";
+// import Header from "./components/common/Header";
+// import Notifications from "./components/private/dashboard/Notifications";
+// import Messages from "./components/private/dashboard/Messages";
+// import Login from "./components/public/Login";
+// import Register from "./components/public/Register";
+// import Home from "./components/public/home/Home";
+// import Comment from "./components/public/home/comments";
+// import Dashboard from "./components/private/dashboard/Dashboard";
+// import { Privacy } from "./components/private/dashboard/Privacy";
+// import Chat from "./components/private/dashboard/Chat";
+// import { Wrapper } from "./components/private/common/Wrapper";
+// import Feedback from "./components/private/dashboard/Feedback";
+// import Help from "./components/private/dashboard/Help";
+// import WhatsNew from "./components/private/dashboard/WhatsNew";
 import ErrorFallBack from "./components/error/ErrorFallBack";
 import SharePost from "./components/public/home/sharePost";
-import Alert from "./components/public/Alert";
-import { createContext, useState } from "react";
-export const PostSharing = createContext();
+// import Alert from "./components/public/Alert";
 
-const App = () => {
-  const [sharePost, setSharePost] = useState({ post: {}, view: false });
+//context usgae
+// import { createContext, useState } from "react";
+import { AuthContextProvider } from "./contexts/AuthContext";
+import { ErrorContextProvider } from "./contexts/ErrorContext";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { PostSharingContextProvider } from "./contexts/postSharingContext";
+import { HomeTabContextProvider } from "./contexts/homeTabContext";
 
+
+export const  AllContextProvider=({children})=>{
+  const queryClient= new QueryClient()
   return (
     <div className="bg-black text-white min-h-screen">
-      <AuthContextProvider>
+      <QueryClientProvider client={queryClient} >
         <ErrorContextProvider>
-          <ErrorFallBack>
-            <PostSharing.Provider
-              value={{
-                sharePost: sharePost,
-                setSharePost: setSharePost,
-              }}
-            >
-              <Router>
-                <Header />
-                <Routes>
-                  <Route exact path="/" element={<Login />} />
-                  <Route exact path="/login" element={<Login />} />
-                  <Route exact path="/register" element={<Register />} />
-                  <Route exact path="/comment/:id" element={Wrapper(Comment)} />
-                  <Route exact path="/home" element={Wrapper(Home)}></Route>
-                  <Route exact path="/home/trending" element={Wrapper(Home)} />
-                  <Route exact path="/dashboard" element={Wrapper(Dashboard)} />
-                  <Route exact path="/privacy" element={Wrapper(Privacy)} />
-                  <Route exact path="/messages" element={Wrapper(Messages)} />
-                  <Route
-                    exact
-                    path="/notifications"
-                    element={Wrapper(Notifications)}
-                  />
-                  <Route
-                    exact
-                    path="/chat/:friend_name"
-                    element={Wrapper(Chat)}
-                  />
-                  <Route exact path="/feedback" element={<Feedback />} />
-                  <Route exact path="/help" element={<Help />} />
-                  <Route exact path="/whatsnew" element={<WhatsNew />} />
-                </Routes>
-              </Router>
-            </PostSharing.Provider>
-            {sharePost.view && (
-              <SharePost sharePost={sharePost} setSharePost={setSharePost} />
-            )}
-          </ErrorFallBack>
+          <AuthContextProvider>
+              <PostSharingContextProvider>
+                <HomeTabContextProvider>
+                  <ErrorFallBack>
+                    {children}
+                  </ErrorFallBack>
+                </HomeTabContextProvider>
+              </PostSharingContextProvider>
+          </AuthContextProvider>
         </ErrorContextProvider>
-      </AuthContextProvider>
+      </QueryClientProvider >
     </div>
-  );
-};
+  )
+}
+const App = () => {
+  return (
+    <>
+    <SharePost />
 
+   </>
+  )
+}
 export default App;
+
+
+{/* <Router>
+                    <Header />
+                    <Routes>
+                        <Route exact path="/" element={Wrapper(Home)} />
+                        <Route exact path="/login" element={<Login />} />
+                        <Route exact path="/register" element={<Register />} />
+                        <Route exact path="/comment/:id" element={Wrapper(Comment)} />
+                        <Route exact path="/home" element={Wrapper(Home)}></Route>
+                        <Route exact path="/home/trending" element={Wrapper(Home)} />
+                        <Route exact path="/dashboard" element={Wrapper(Dashboard)} />
+                        <Route exact path="/privacy" element={Wrapper(Privacy)} />
+                        <Route exact path="/messages" element={Wrapper(Messages)} />
+                        <Route
+                          exact
+                          path="/notifications"
+                          element={Wrapper(Notifications)}
+                        />
+                        <Route
+                          exact
+                          path="/chat/:friend_name"
+                          element={Wrapper(Chat)}
+                        />
+                      <Route exact path="/feedback" element={<Feedback />} />
+                      <Route exact path="/help" element={<Help />} />
+                      <Route exact path="/whatsnew" element={<WhatsNew />} />
+                      <Route exact path="/test" element={<CreatePostPage />} /> 
+                    </Routes>
+</Router> */}

@@ -11,18 +11,17 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import _ from "lodash";
 import { BsCaretDownFill, BsImages } from "react-icons/bs";
 import { FaArrowRotateRight, FaSpinner } from "react-icons/fa6";
+import { useErrorContext } from "../../../contexts/ErrorContext";
+import Tick from '../../../assets/Tick.svg'
 
 const CreatePostPage = ({
   setCreatePost,
   reloadPosts,
-  isLoading,
-  setIsLoading,
   setSelectedPost,
   selectedPostIndex,
   posts,
 }) => {
   const [content, setContent] = useState("");
-  const [isPosted, setIsPosted] = useState(false);
   const [post_type, setSelectedOption] = useState("Others");
   const [targeted_school, setTargetedSchool] = useState("ALL");
   const [code, setCode] = useState(0);
@@ -32,6 +31,8 @@ const CreatePostPage = ({
   const postBtn = useRef();
   const [error, setError] = useState("");
   const form = useRef();
+  const {setAppError}= useErrorContext()
+
   const handleTextareaChange = (e) => {
     setContent(e.target.value);
   };
@@ -73,15 +74,18 @@ const CreatePostPage = ({
         await reloadPosts();
         setSelectedPost(posts[selectedPostIndex]);
         setIsLoading(false);
-        await setCreatePost(false);
-      
-       
+        setCreatePost(false);
       } catch (error) {
         setIsLoading(false);
+        console.log(error)
+        if(error.message=='Network Error'){
+          setAppError(error)
+        }
         if (error.code === "ERR_BAD_RESPONSE") {
           setError("server error");
         }
         console.log(error.status);
+        // setAppError(error)
       }
     } else {
     }
@@ -107,6 +111,10 @@ const CreatePostPage = ({
     setPreviewImgSrcs("");
     setImageSrc("");
   };
+  function reset(){
+    setAppError(null)
+    setError(null)
+  }
 
   // const handlePost= ()=>{
   //     const data = { content , post_type }
@@ -123,14 +131,8 @@ const CreatePostPage = ({
       <div className="grid min-h-screen place-items-center">
         <div className="text-center">
           <p>Ooops, Server Error</p>
-          <a
-            href="#"
-            className="text-blue-500 flex items-center gap-2"
-            onClick={() => {
-              window.location.reload();
-            }}
-          >
-            <FaArrowRotateRight />
+          <a href="#" className="text-blue-500 flex items-center gap-2" onClick={() => {window.location.reload()}}>
+          <FaArrowRotateRight />
             Try reloading the page
           </a>
         </div>
@@ -140,21 +142,36 @@ const CreatePostPage = ({
   return (
     <form
       ref={form}
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={throttledApiRequest}
       className="fixed top-0 z-50 flex py-8 flex-col h-screen w-full bg-[#000]"
     >
-      <div>
-        <div className="flex justify-between px-5  pb-2 border-b align-center">
+      <div className="pt-8">
+        <div className="flex justify-between items-center px-5  pb-2 border-b border-[#9E9898] align-center">
           <LiaTimesCircleSolid
-            size="25"
+            size="20"
             color="#F33F5E"
             cursor="pointer"
             onClick={() => {
               setCreatePost(false);
             }}
           />
-          <p className="font-bold">Create an anonymous post</p>
-          <button
+          <p className="font-bold text-xs  font-openSans">Create an anonymous post</p>
+          <button 
+            onSubmit={throttledApiRequest}
+            type="submit"
+            ref={postBtn}
+            disabled={isLoading}
+          >
+            {
+              !isLoading?
+              <img src={Tick} alt='create post' />
+              :<FaSpinner size={"1.5rem"} className="animate-spin" />
+            }
+
+          </button>
+          {/* <button
+
+
             className={`text-[#F33F5E] text-lg ${
               !isLoading && "bg-white"
             } font-bold transition-all duration-300 px-3 rounded-lg ${
@@ -174,12 +191,12 @@ const CreatePostPage = ({
             ) : (
               "Post"
             )}
-          </button>
+          </button> */}
         </div>
         <div>
           <button
             name="post_type"
-            className={`${post_type} rounded-full px-2 mx-3 mt-3 mb-1`}
+            className={`${post_type} rounded-full px-2 mx-3 mt-3 mb-1 text-sm border-[1px]`}
           >
             {post_type}
           </button>
@@ -187,9 +204,9 @@ const CreatePostPage = ({
             <div className="relative">
               <button
                 onClick={() => setOpenDropdown(!openDropdown)}
-                className="flex school_btn items-center gap-4 rounded-2xl border-[2px] px-2 "
+                className="flex school_btn items-center gap-2  rounded-2xl border-[1px] px-2 "
               >
-                <span className="font-semibold text-lg school_btn">
+                <span className="font-semibold text-sm  school_btn">
                   {targeted_school}
                 </span>
                 <span className="school_btn">
@@ -242,7 +259,7 @@ const CreatePostPage = ({
         value={content}
         onChange={handleTextareaChange}
         placeholder="Secret crush ? Confession ? Share ? what's on your mind...."
-        className="focus:outline-none text-[20px] mb-8 h-full post-placeholder"
+        className="focus:outline-none text-[20px] max-h-3/5 post-placeholder"
       ></textarea>
       <footer className="mt-auto h-auto">
         <div className="px-5">
@@ -261,51 +278,51 @@ const CreatePostPage = ({
           </output>
         </div>
 
-        <div className="px-3">
+        <div className="px-3 flex gap-1 flex-wrap">
           <button
-            className="Confession rounded-full px-2 m-2"
+            className="Confession rounded-full text-xs border-[1px] my-2 px-2 "
             onClick={(e) => handleBtnClick(e, "Confession")}
           >
             Confession
           </button>
           <button
-            className="Question rounded-full px-2 m-2"
+            className="Question rounded-full px-2 text-xs border-[1px] my-2"
             onClick={(e) => handleBtnClick(e, "Question")}
           >
             Question
           </button>
           <button
-            className="Crush rounded-full px-2 m-2"
+            className="Crush rounded-full px-2 text-xs border-[1px] my-2"
             onClick={(e) => handleBtnClick(e, "Crush")}
           >
             Crush
           </button>
           <button
-            className="DM rounded-full px-2 m-2"
+            className="DM rounded-full px-2 text-xs border-[1px] my-2"
             onClick={(e) => handleBtnClick(e, "DM")}
           >
             DM
           </button>
           <button
-            className="Advice rounded-full px-2 m-2"
+            className="Advice rounded-full px-2 text-xs border-[1px] my-2"
             onClick={(e) => handleBtnClick(e, "Advice")}
           >
             Advice
           </button>
           <button
-            className="Cruise rounded-full px-2 m-2"
+            className="Cruise rounded-full px-2 text-xs border-[1px] my-2"
             onClick={(e) => handleBtnClick(e, "Cruise")}
           >
             Cruise
           </button>
           <button
-            className="Talk rounded-full px-2 m-2"
+            className="Talk rounded-full px-2 text-xs border-[1px] my-2"
             onClick={(e) => handleBtnClick(e, "Talk")}
           >
             Talk
           </button>
           <button
-            className="Others rounded-full px-2 m-2"
+            className="Others rounded-full px-2 text-xs border-[1px] my-2"
             onClick={(e) => handleBtnClick(e, "Others")}
           >
             Others

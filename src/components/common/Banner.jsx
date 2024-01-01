@@ -15,6 +15,8 @@ const Banner = () => {
       const options = {
         strings: ["Your campus, Your Secret, Your story", "Get ready to embrace the mystery!"],
         typeSpeed: 50,
+        loop: true, // Add loop property to enable infinite typing
+        loopCount: Infinity, // Ensure an infinite loop
       };
       const typed = new Typed(typedElementRef.current, options);
       return () => {

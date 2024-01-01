@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Gist from "./gist";
 import GistLinks from "./gistLinks";
 import HomeInfo from "./homeInfo";
@@ -7,10 +7,14 @@ import { PostType } from "./postType";
 import Spinner from "../../common/Spinner";
 import { HiRefresh } from "react-icons/hi";
 import { FaSpinner } from "react-icons/fa6";
+import ErrorOccurred from "../../error/ErrorOccurred";
+import { useQueryClient } from "@tanstack/react-query";
+import { Link} from "react-router-dom";
 
 const Posts = ({
   posts,
   error,
+  setError,
   onPostClick,
   filterBy,
   isLoading,
@@ -18,18 +22,22 @@ const Posts = ({
   selectedSchool,
   hasMorePosts,
 }) => {
+  // console.log(posts)http://localhost:5174/home
   const [sortedPostsByTime, setSortedPostsByTime] = useState([]);
   const lastPostRef = useRef();
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [isLoadingMorePosts, setIsLoadingMorePosts] = useState(false);
+  
+  const queryClient=useQueryClient()
 
+ 
   useEffect(() => {
     if (posts.length === 0) return;
     let allPosts = document.querySelector(".posts");
-    console.log(allPosts);
+    // console.log(allPosts);
     // if (!allPosts || allPosts.length === 0) return;
     let lastPost = allPosts.lastChild;
-    console.log(lastPost);
+    // console.log(lastPost);
     if (!lastPost) return;
     
 
@@ -37,12 +45,12 @@ const Posts = ({
     const observer = new IntersectionObserver(([entry]) => {
       setIsIntersecting(entry.isIntersecting);
     });
-    console.log("loading1");
+    // console.log("loading1");
     observer.observe(lastPost);
     return () => {
       observer.disconnect();
       setIsLoadingMorePosts(false);
-      console.log("done");
+      // console.log("done");
     };
   }, [posts, isIntersecting]);
 
@@ -59,7 +67,6 @@ const Posts = ({
 
   useEffect(() => {
     sortPosts();
-    console.log("sorting");
   }, [posts, filterBy]);
 
   const sortPosts = async () => {
@@ -72,16 +79,18 @@ const Posts = ({
     });
     setSortedPostsByTime(sortedPosts);
   };
+  if(error && posts.length<=0){
+    return <ErrorOccurred 
+            setError={()=>{
+                   queryClient.invalidateQueries({queryKey:['posts']})
+                }
+            }
+          />
+
+    
+  }
   if (isLoading) return <Spinner />;
-  if (error)
-    return (
-      <div>
-        <p>Failed to load posts</p>
-        <button>
-          <HiRefresh /> Reload page
-        </button>
-      </div>
-    );
+  
   return (
     <div className="pb-[29px] posts transition duration-300 ease-linear">
       {sortedPostsByTime.map((post, index) => {
@@ -126,9 +135,9 @@ const Posts = ({
                 created_at={created_at}
               />
               <PostType post_type={post_type} />
-              <a href={`/comment/${id}`} onClick={() => onPostClick(post)}>
+              <Link to={`/comment/${id}`} onClick={() => onPostClick(post)}>
                 <Gist content={content} images={images} showFullGist={true} />
-              </a>
+              </Link>
 
               <GistLinks post={post} onPostClick={onPostClick} />
             </div>

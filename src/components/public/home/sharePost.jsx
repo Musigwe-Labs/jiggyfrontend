@@ -3,13 +3,18 @@ import { LiaUserCircleSolid } from "react-icons/lia";
 import HomeInfo from "./homeInfo";
 import Gist from "./gist";
 import Socialmedialinks from "./socialmedialinks";
+import { usePostSharingContext } from "../../../contexts/postSharingContext";
 
-function SharePost({ sharePost, setSharePost }) {
+function SharePost() {
+
+  const { sharePost, setSharePost }= usePostSharingContext()
   let { content, user, created_at, id } =
     (sharePost.post && sharePost.post) || {};
   console.log(id);
-  return (
-    <div className="fixed z-10 grid place-items-center top-0 left-0 w-screen h-screen">
+
+  if(sharePost.view){
+    return (  
+      <div className="fixed z-10 grid place-items-center top-0 left-0 w-screen h-screen">
       <div
         onClick={() => setSharePost({ post: {}, view: false })}
         className="absolute top-0 left-0 w-screen bg-[rgba(0,0,0,.5)] h-screen"
@@ -37,7 +42,11 @@ function SharePost({ sharePost, setSharePost }) {
         </main>
       </div>
     </div>
-  );
+  ) ;
+  }else{
+    return <div></div>
+  }
+ 
 }
 
 export default SharePost;

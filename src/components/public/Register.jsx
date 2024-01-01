@@ -11,6 +11,7 @@ import axios from "../../services/axios";
 import Spinner from "../common/Spinner";
 import PasswordInput from "../common/PasswordInput";
 import {useErrorContext} from '../../contexts/ErrorContext'
+import ErrorOccurred from "../error/ErrorOccurred";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -82,11 +83,14 @@ const Register = () => {
       .catch((error) => {
         console.log("error fetching options", error)
         const {message}=error
+        setError(error)
         setAppError({message})
     });
-  }, []);
+  }, [error]);
   
-if(isLoading) return <Spinner /> ;
+if (error) return <ErrorOccurred setError={setError} />  
+if (isLoading) return <Spinner /> ;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 px-6 lg:px-24 mt-4">
       <Banner />
