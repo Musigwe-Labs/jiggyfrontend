@@ -8,9 +8,8 @@ import {
 import axios from "../../../services/axios";
 import { useState, useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
-import _, { forIn } from "lodash";
-import { BsCaretDownFill, BsImages, BsThreeDots } from "react-icons/bs";
-import Spinner from "../../common/Spinner";
+import _ from "lodash";
+import { BsCaretDownFill, BsImages } from "react-icons/bs";
 import { FaArrowRotateRight, FaSpinner } from "react-icons/fa6";
 
 const CreatePostPage = ({
@@ -23,8 +22,10 @@ const CreatePostPage = ({
   posts,
 }) => {
   const [content, setContent] = useState("");
+  const [isPosted, setIsPosted] = useState(false);
   const [post_type, setSelectedOption] = useState("Others");
-  const [targeted_school, setTargetedSchool] = useState("FUTO");
+  const [targeted_school, setTargetedSchool] = useState("ALL");
+  const [code, setCode] = useState(0);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [previewImgSrcs, setPreviewImgSrcs] = useState();
   const [imageSrc, setImageSrc] = useState([]);
@@ -46,23 +47,35 @@ const CreatePostPage = ({
     "Content-Type": "multipart/form-data",
   };
 
+  const schoolCode = (school) => {
+    switch (school.toLowerCase()) {
+      case "futo":
+        setCode(1);
+        break;
+
+      default:
+        setCode(0);
+        break;
+    }
+    return code;
+  };
+
   const handlePost = async (e) => {
     e.preventDefault();
     if (content) {
       setIsLoading(true);
       const formData = new FormData(form.current, postBtn.current);
-      formData.append("content", content);
-      imageSrc[0] && formData.append("images", imageSrc[0]);
       formData.append("post_type", post_type);
-      // if (targeted_school.toLowerCase() !== "all")
-      // formData.append("school", targeted_school);
+      formData.append("school", code);
       try {
-      console.log(headers)
+        console.log(...formData);
         await axios.post("annon/posts/create/", formData, { headers });
         await reloadPosts();
         setSelectedPost(posts[selectedPostIndex]);
         setIsLoading(false);
-        setCreatePost(false);
+        await setCreatePost(false);
+      
+       
       } catch (error) {
         setIsLoading(false);
         if (error.code === "ERR_BAD_RESPONSE") {
@@ -110,8 +123,14 @@ const CreatePostPage = ({
       <div className="grid min-h-screen place-items-center">
         <div className="text-center">
           <p>Ooops, Server Error</p>
-          <a href="#" className="text-blue-500 flex items-center gap-2" onClick={() => {window.location.reload()}}>
-          <FaArrowRotateRight />
+          <a
+            href="#"
+            className="text-blue-500 flex items-center gap-2"
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            <FaArrowRotateRight />
             Try reloading the page
           </a>
         </div>
@@ -121,7 +140,7 @@ const CreatePostPage = ({
   return (
     <form
       ref={form}
-      onSubmit={throttledApiRequest}
+      onSubmit={(e) => e.preventDefault()}
       className="fixed top-0 z-50 flex py-8 flex-col h-screen w-full bg-[#000]"
     >
       <div>
@@ -143,13 +162,15 @@ const CreatePostPage = ({
                 ? "opacity-50"
                 : "opacity-1 hover:bg-[#F33F5E] hover:text-white"
             }`}
-            onSubmit={throttledApiRequest}
+            onClick={throttledApiRequest}
             type="submit"
             ref={postBtn}
             disabled={isLoading}
           >
             {isLoading ? (
               <FaSpinner size={"1.5rem"} className="animate-spin" />
+            ) : isPosted ? (
+              "Posted"
             ) : (
               "Post"
             )}
@@ -184,28 +205,28 @@ const CreatePostPage = ({
                   Choose audience
                 </h5>
                 <button
-                  onClick={() => setTargetedSchool("All")}
+                  onClick={() => {schoolCode("ALL"); setTargetedSchool("ALL")}}
                   className="flex w-full text-lg py-2 px-4 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
                 >
                   <span>
                     <LiaGlobeSolid />
                   </span>
-                  <span className="font-semibold">All</span>
-                  {targeted_school === "All" && (
+                  <span className="font-semibold">ALL</span>
+                  {code === 0 && (
                     <span className="ml-auto font-semibold">
                       <LiaCheckSolid />
                     </span>
                   )}
                 </button>
                 <button
-                  onClick={() => setTargetedSchool("FUTO")}
+                  onClick={() => {schoolCode("FUTO"); setTargetedSchool("FUTO")}}
                   className="flex w-full text-lg py-2 px-4 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
                 >
                   <span>
                     <LiaSchoolSolid />
                   </span>
                   <span className="font-semibold">FUTO</span>
-                  {targeted_school === "FUTO" && (
+                  {code === 1 && (
                     <span className="ml-auto font-semibold">
                       <LiaCheckSolid />
                     </span>
@@ -221,7 +242,7 @@ const CreatePostPage = ({
         value={content}
         onChange={handleTextareaChange}
         placeholder="Secret crush ? Confession ? Share ? what's on your mind...."
-        className="focus:outline-none text-[20px] max-h-3/5 post-placeholder"
+        className="focus:outline-none text-[20px] mb-8 h-full post-placeholder"
       ></textarea>
       <footer className="mt-auto h-auto">
         <div className="px-5">

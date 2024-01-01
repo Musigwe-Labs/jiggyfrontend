@@ -83,7 +83,7 @@ const Home = () => {
     let xhr = new XMLHttpRequest();
     xhr.open(
       "GET",
-      `https://jiggybackend.com.ng/annon/posts?page=${currentPageIndex}`,
+      `https://jiggybackend.com.ng/annon/posts/paginated/?page=${currentPageIndex}`,
       true
     );
     xhr.onload = function () {
