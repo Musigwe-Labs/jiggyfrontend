@@ -29,9 +29,9 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { PostSharingContextProvider } from "./contexts/postSharingContext";
 import { HomeTabContextProvider } from "./contexts/homeTabContext";
 
+export const queryClient= new QueryClient()
 
 export const  AllContextProvider=({children})=>{
-  const queryClient= new QueryClient()
   return (
     <div className="bg-black text-white min-h-screen">
       <QueryClientProvider client={queryClient} >
@@ -41,6 +41,7 @@ export const  AllContextProvider=({children})=>{
                 <HomeTabContextProvider>
                   <ErrorFallBack>
                     {children}
+                    <SharePost />
                   </ErrorFallBack>
                 </HomeTabContextProvider>
               </PostSharingContextProvider>
@@ -53,7 +54,6 @@ export const  AllContextProvider=({children})=>{
 const App = () => {
   return (
     <>
-    <SharePost />
 
    </>
   )

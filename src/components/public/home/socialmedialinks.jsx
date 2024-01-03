@@ -11,19 +11,23 @@ const Socialmedialinks = ({ postId, content }) => {
         href={`https://www.facebook.com/sharer.php?u=${url}?img=${img}`}
         target="blank"
         rel="noopener noreferrer"
-        className="hover:scale-125 transition-all duration-100 ease-linear rounded-full p-2 from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br"
+        className="hover:scale-125 transition-all duration-200 ease-in-out rounded-full p-2 from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br"
       >
         <FiFacebook size={"1.5rem"} />
       </a>
       <a
         href={`https://twitter.com/intent/tweet?url=${url}&text=${content}`}
-        className="hover:scale-125 transition-all duration-100 ease-linear rounded-full p-2 from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br"
+        className="hover:scale-125 transition-all duration-200 ease-in-out rounded-full p-2 from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br"
         target="blank"
         rel="noopener noreferrer"
       >
         <FiTwitter size={"1.5rem"} />
       </a>
-      <a href={`whatsapp://send?text=${content} \n\n ${url}`}       data-action="share/whatsapp/share"   className="hover:scale-125 transition-all duration-100 ease-linear rounded-full p-2 from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br">
+      <a
+        href={`whatsapp://send?text=${content} \n\n ${url}`}
+        data-action="share/whatsapp/share"
+        className="hover:scale-125 transition-all duration-200 ease-linear rounded-full p-2 from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br"
+      >
         <BsWhatsapp size={"1.5rem"} />
       </a>
     </div>

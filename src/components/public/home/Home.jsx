@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useLayoutEffect, useMemo } from "react";
+import React, { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import { ScrollRestoration, useNavigate } from "react-router-dom";
 import HomeHeader from "./homeHeader";
 import HomeTabs from "./homeTabs";
@@ -8,26 +8,29 @@ import CreatePostPage from "./createPostPage";
 import { Profile } from "../../private/dashboard/Profile";
 import HomeFooter from "./homeFooter";
 import Trending from "./trending/Trending";
-import Comment from "./comments";
 import Posts from "./posts";
-import axios from "../../../services/axios";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { FiBookOpen, FiGlobe, FiPhone } from "react-icons/fi";
 import { GiDualityMask } from "react-icons/gi";
 import { BsCheckCircleFill, BsFileWordFill } from "react-icons/bs";
-import Spinner from '../../common/Spinner'
+import Spinner from "../../common/Spinner";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useErrorContext } from "../../../contexts/ErrorContext";
-import ChatCircle from "../../../assets/chatCircle.svg"
-import Connect from "../../../assets/Connect.svg"
-import FireSimple from "../../../assets/fireSimple.svg"
-import Eye from "../../../assets/Eye.svg"
+import ChatCircle from "../../../assets/chatCircle.svg";
+import Connect from "../../../assets/Connect.svg";
+import FireSimple from "../../../assets/fireSimple.svg";
+import Eye from "../../../assets/Eye.svg";
 
-import { useQuery, useQueryClient, QueryClient} from '@tanstack/react-query'
+import { useQuery, useQueryClient, QueryClient } from "@tanstack/react-query";
 import { getPosts, getUser } from "../../../utils/user";
-import {  mountScrollListener, unmountScrollListener, scrollPage } from "../../../utils/scrollPage";
+import {
+  mountScrollListener,
+  unmountScrollListener,
+  scrollPage,
+} from "../../../utils/scrollPage";
 import { useRestoreScroll } from "../../../utils/restoreScroll";
 import { useHomeTabContext } from "../../../contexts/homeTabContext";
+import { queryClient } from "../../../App";
 
 const Home = () => {
   const [createPost, setCreatePost] = useState(false);
@@ -36,94 +39,77 @@ const Home = () => {
   const [selectedPostIndex, setSelectedPostIndex] = useState(null);
   const [isAll, setIsAll] = useState(false);
   const [initialPosts, setInitialPosts] = useState([]);
- const {selectedTab}= useHomeTabContext()
- 
-  // const { isRecievedData, setIsRecievedData } = useWebSocket();
-  // const [posts, setPosts] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [error, setError] = useState("");
-  // const [userDetails, setUserDetails] = useState();
+  const { selectedTab } = useHomeTabContext();
   const [selectedSchool, setSelectedSchool] = useState("ALL");
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(false);
-  const [selectedPostId, setSelectedPostId] = useState(undefined);
 
   const navigate = useNavigate();
-  const { key } =useAuthContext()
-  const {setAppError} = useErrorContext()
-  
-//using react-query to handle fetching posts 
-const {isPending:isLoading, data:postsResult, error }=useQuery({
-    queryKey:['posts', currentPageIndex], 
-    queryFn:getPosts
-  })
-  const restoreScroll=useRestoreScroll('home-'+selectedTab, [selectedTab])
-  
-  //memoized destructured data to prevent infinite rerender issue 
+  const { key } = useAuthContext();
+  const { setAppError } = useErrorContext();
+
+  //using react-query to handle fetching posts
+  const { isPending: isLoading, data: postsResult, error } = useQuery({
+    queryKey: ["posts", currentPageIndex],
+    queryFn: getPosts,
+  });
+  const restoreScroll = useRestoreScroll("home-" + selectedTab, [selectedTab]);
+
+  //memoized destructured data to prevent infinite rerender issue
   // Note: it later occured to me that, alternatively, one could access the "data" properties directly rather than destructuring to avoid using memoization.
-  const posts = useMemo(() => (postsResult? [...postsResult.data.results] : postsResult) , [postsResult]);
-  // console.log(posts, postsResult) 
-  
+  const posts = useMemo(
+    () => (postsResult ? [...postsResult.data.results] : postsResult),
+    [postsResult]
+  ); 
 
-  //using react-query to handle fetching userdetails 
-  const { data:userDataResult, error:userDetailsError }=useQuery({
-    queryKey:['userDetails', key], 
-    queryFn:getUser
-  })
+  //using react-query to handle fetching userdetails
+  const { data: userDataResult, error: userDetailsError } = useQuery({
+    queryKey: ["userDetails", key],
+    queryFn: getUser,
+  });
 
-    //memoized destructured data to prevent infinite rerender issue
-  const userDetails= useMemo(() => (userDataResult? {...userDataResult.data} : userDataResult) , [userDataResult]); 
-
-
-
+  //memoized destructured data to prevent infinite rerender issue
+  const userDetails = useMemo(
+    () => (userDataResult ? { ...userDataResult.data } : userDataResult),
+    [userDataResult]
+  );
 
   const handlePostClick = (post, index) => {
     setSelectedPost(post);
     setSelectedPostIndex(post);
   };
-    
-  useEffect(() => {   
-    
-      if(key==null){
-        navigate('/login')
-      }
-    
 
-    if(userDetails!=null && !error){
-      // fetchPosts()
-    } 
-
-    if(Boolean(posts)){
-      //The posts is fetched and its stored in state using the tanstack/react-query Api
-      setInitialPosts([...initialPosts, ...posts]);
-      setHasMorePosts(Boolean(postsResult))
-      setAppError(null)
-    }else if(error){
-      setAppError(error)
-    } 
-
-    if(Boolean(userDetails)){
-    }else if(userDetailsError){
-      setAppError(userDetailsError)
+  useEffect(() => {
+    if (key == null) {
+      navigate("/login");
     }
 
+    if (userDetails != null && !error) {
+      // fetchPosts()
+    }
+
+    if (Boolean(posts)) {
+      //The posts is fetched and its stored in state using the tanstack/react-query Api
+      setInitialPosts([...initialPosts, ...posts]);
+      setHasMorePosts(Boolean(postsResult));
+      setAppError(null);
+    } else if (error) {
+      setAppError(error);
+    }
+
+    if (Boolean(userDetails)) {
+    } else if (userDetailsError) {
+      setAppError(userDetailsError);
+    }
   }, [currentPageIndex, key, userDetails, error, selectedTab]);
 
-  //Ajax
-  const reloadPosts = () => {
-    let xhr = new XMLHttpRequest();
-    xhr.open(
-      "GET",
-      `https://jiggybackend.com.ng/annon/posts/paginated/?page=${currentPageIndex}`,
-      true
-    );
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        let response = JSON.parse(this.response);
-        setPosts(response.results);
-      }
-    };
-    xhr.send();
+  //Refetch posts after posting
+  const reloadPosts = async () => {
+    await queryClient.refetchQueries({
+      queryKey: ["posts", 1],
+      exact: true,
+      type: "active",
+    });
   };
 
   //School filtering
@@ -139,31 +125,33 @@ const {isPending:isLoading, data:postsResult, error }=useQuery({
     } else setPosts(initialPosts);
   };
 
-  if(!key){
-    return <Spinner />
+  if (!key) {
+    return <Spinner />;
   }
 
   if (createPost) {
     return (
-      <CreatePostPage
-        reloadPosts={reloadPosts}
-        setCreatePost={setCreatePost}
-      />
+      <CreatePostPage reloadPosts={reloadPosts} setCreatePost={setCreatePost} />
     );
   }
 
   return (
     <>
-      {
-        !key? <Spinner />
-        :createPost? <CreatePostPage
-        reloadPosts={reloadPosts}
-        setCreatePost={setCreatePost}
+      {!key ? (
+        <Spinner />
+      ) : createPost ? (
+        <CreatePostPage
+          reloadPosts={reloadPosts}
+          setCreatePost={setCreatePost}
         />
-      :<>
-            <div className="grow">
+      ) : (
+        <>
+          <div className="grow">
             {profilePage ? (
-              <Profile setProfilePage={setProfilePage} userDetails={userDetails} />
+              <Profile
+                setProfilePage={setProfilePage}
+                userDetails={userDetails}
+              />
             ) : (
               ""
             )}
@@ -191,7 +179,9 @@ const {isPending:isLoading, data:postsResult, error }=useQuery({
                   </span>
                   <div
                     className={`border rounded-3xl rounded-tl-none absolute top-full transition-[all_.3s_ease] bg-[linear-gradient(0deg,_#000000d3,_#000000d3),linear-gradient(0deg,_#490A0Ad3,_#490A0Ad3)] w-32 overflow-hidden ${
-                      !isAll ? "h-0 border-transparent" : "h-24 border-[#490A0A]"
+                      !isAll
+                        ? "h-0 border-transparent"
+                        : "h-24 border-[#490A0A]"
                     }`}
                   >
                     <div
@@ -212,7 +202,9 @@ const {isPending:isLoading, data:postsResult, error }=useQuery({
                     </div>
                     <div
                       onClick={() =>
-                        handleSchoolFilter(userDetails.user.school.school_acronym)
+                        handleSchoolFilter(
+                          userDetails.user.school.school_acronym
+                        )
                       }
                       className="flex justify-between p-2 cursor-pointer items-center mb-2"
                     >
@@ -232,31 +224,29 @@ const {isPending:isLoading, data:postsResult, error }=useQuery({
                 </div>
               )}
             </div>
-            
-              {selectedTab === "all" ? (
-                  <Posts
-                    posts={posts || []}
-                    error={error}
-                    setError={null}
-                    onPostClick={handlePostClick}
-                    isLoading={isLoading}
-                    setCurrentPageIndex={setCurrentPageIndex}
-                    selectedSchool={selectedSchool}
-                    hasMorePosts={hasMorePosts}
-                  />
-              ) : (
-                  <Trending posts={posts} />
-              )}
-            
+
+            {selectedTab === "all" ? (
+              <Posts
+                posts={posts || []}
+                error={error}
+                setError={null}
+                onPostClick={handlePostClick}
+                isLoading={isLoading}
+                setCurrentPageIndex={setCurrentPageIndex}
+                selectedSchool={selectedSchool}
+                hasMorePosts={hasMorePosts}
+              />
+            ) : (
+              <Trending posts={posts} />
+            )}
 
             {userDetails && <CreatePostBtn setCreatePost={setCreatePost} />}
           </div>
           <HomeFooter />
-       </>
-      }
-      
+        </>
+      )}
     </>
   );
 };
 
-export default Home;
+export default React.memo(Home);

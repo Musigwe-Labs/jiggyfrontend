@@ -12,7 +12,7 @@ import _ from "lodash";
 import { BsCaretDownFill, BsImages } from "react-icons/bs";
 import { FaArrowRotateRight, FaSpinner } from "react-icons/fa6";
 import { useErrorContext } from "../../../contexts/ErrorContext";
-import Tick from '../../../assets/Tick.svg'
+import Tick from "../../../assets/Tick.svg";
 
 const CreatePostPage = ({
   setCreatePost,
@@ -22,6 +22,7 @@ const CreatePostPage = ({
   posts,
 }) => {
   const [content, setContent] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [post_type, setSelectedOption] = useState("Others");
   const [targeted_school, setTargetedSchool] = useState("ALL");
   const [code, setCode] = useState(0);
@@ -31,7 +32,7 @@ const CreatePostPage = ({
   const postBtn = useRef();
   const [error, setError] = useState("");
   const form = useRef();
-  const {setAppError}= useErrorContext()
+  const { setAppError } = useErrorContext();
 
   const handleTextareaChange = (e) => {
     setContent(e.target.value);
@@ -61,33 +62,32 @@ const CreatePostPage = ({
     return code;
   };
 
-  const handlePost = async (e) => {
-    e.preventDefault();
+  const handlePost = async () => {
+    // e.preventDefault();
     if (content) {
       setIsLoading(true);
       const formData = new FormData(form.current, postBtn.current);
       formData.append("post_type", post_type);
-      formData.append("school", code);
+      formData.append("school", code === 0 ? "" : code);
       try {
-        console.log(...formData);
         await axios.post("annon/posts/create/", formData, { headers });
-        await reloadPosts();
-        setSelectedPost(posts[selectedPostIndex]);
-        setIsLoading(false);
         setCreatePost(false);
-      } catch (error) {
+        await reloadPosts();
         setIsLoading(false);
-        console.log(error)
-        if(error.message=='Network Error'){
-          setAppError(error)
+        setAppError(null);
+        // setAppError(false)
+      } catch (error) {
+        if (error) {
+          setIsLoading(false);
+          if (error.message == "Network Error") {
+            setAppError(error);
+          }
+          if (error.code === "ERR_BAD_RESPONSE") {
+            setError("server error");
+          }
+          console.log(error.status);
         }
-        if (error.code === "ERR_BAD_RESPONSE") {
-          setError("server error");
-        }
-        console.log(error.status);
-        // setAppError(error)
       }
-    } else {
     }
   };
   useEffect(() => {
@@ -111,9 +111,9 @@ const CreatePostPage = ({
     setPreviewImgSrcs("");
     setImageSrc("");
   };
-  function reset(){
-    setAppError(null)
-    setError(null)
+  function reset() {
+    setAppError(null);
+    setError(null);
   }
 
   // const handlePost= ()=>{
@@ -131,9 +131,13 @@ const CreatePostPage = ({
       <div className="grid min-h-screen place-items-center">
         <div className="text-center">
           <p>Ooops, Server Error</p>
-          <a href="#" className="text-blue-500 flex items-center gap-2" onClick={() => {window.location.reload()}}>
-          <FaArrowRotateRight />
-            Try reloading the page
+          <a
+            href="#"
+            className="text-blue-500 flex items-center gap-2"
+            onClick={reset}
+          >
+            <FaArrowRotateRight />
+            Try Again
           </a>
         </div>
       </div>
@@ -142,7 +146,7 @@ const CreatePostPage = ({
   return (
     <form
       ref={form}
-      onSubmit={throttledApiRequest}
+      onSubmit={(e) => e.preventDefault()}
       className="fixed top-0 z-50 flex py-8 flex-col h-screen w-full bg-[#000]"
     >
       <div className="pt-8">
@@ -155,19 +159,20 @@ const CreatePostPage = ({
               setCreatePost(false);
             }}
           />
-          <p className="font-bold text-xs  font-openSans">Create an anonymous post</p>
-          <button 
-            onSubmit={throttledApiRequest}
+          <p className="font-bold text-xs  font-openSans">
+            Create an anonymous post
+          </p>
+          <button
+            onClick={throttledApiRequest}
             type="submit"
             ref={postBtn}
             disabled={isLoading}
           >
-            {
-              !isLoading?
-              <img src={Tick} alt='create post' />
-              :<FaSpinner size={"1.5rem"} className="animate-spin" />
-            }
-
+            {!isLoading ? (
+              <img src={Tick} alt="create post" />
+            ) : (
+              <FaSpinner size={"1.5rem"} className="animate-spin" />
+            )}
           </button>
           {/* <button
 
@@ -214,21 +219,24 @@ const CreatePostPage = ({
                 </span>
               </button>
               <div
-                className={`shadow-[0_0_3px_0px_#fff] rounded-lg mt-2 absolute w-[13rem] z-10 bg-[#321616] ${
+                className={`shadow-[0_0_3px_0px_#fff] rounded-lg mt-2 absolute w-[9rem] z-10 bg-[#321616] ${
                   openDropdown ? "block" : "hidden"
                 }`}
               >
-                <h5 className="font-bold text-lg mb-2 px-4 pt-4">
+                <h5 className="font-bold text-sm mb-2 px-2 pt-2">
                   Choose audience
                 </h5>
                 <button
-                  onClick={() => {schoolCode("ALL"); setTargetedSchool("ALL")}}
-                  className="flex w-full text-lg py-2 px-4 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
+                  onClick={() => {
+                    schoolCode("ALL");
+                    setTargetedSchool("ALL");
+                  }}
+                  className="flex w-full py-2 px-2 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
                 >
                   <span>
                     <LiaGlobeSolid />
                   </span>
-                  <span className="font-semibold">ALL</span>
+                  <span className="font-semibold text-sm">ALL</span>
                   {code === 0 && (
                     <span className="ml-auto font-semibold">
                       <LiaCheckSolid />
@@ -236,13 +244,16 @@ const CreatePostPage = ({
                   )}
                 </button>
                 <button
-                  onClick={() => {schoolCode("FUTO"); setTargetedSchool("FUTO")}}
-                  className="flex w-full text-lg py-2 px-4 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
+                  onClick={() => {
+                    schoolCode("FUTO");
+                    setTargetedSchool("FUTO");
+                  }}
+                  className="flex w-full py-2 px-2 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
                 >
                   <span>
                     <LiaSchoolSolid />
                   </span>
-                  <span className="font-semibold">FUTO</span>
+                  <span className="font-semibold text-sm">FUTO</span>
                   {code === 1 && (
                     <span className="ml-auto font-semibold">
                       <LiaCheckSolid />
@@ -254,14 +265,18 @@ const CreatePostPage = ({
           </div>
         </div>
       </div>
-      <textarea
-        name="content"
-        value={content}
-        onChange={handleTextareaChange}
-        placeholder="Secret crush ? Confession ? Share ? what's on your mind...."
-        className="focus:outline-none text-[20px] max-h-3/5 post-placeholder"
-      ></textarea>
-      <footer className="mt-auto h-auto">
+      <div className="text-input grow">
+        <textarea
+          name="content"
+          value={content}
+          spellCheck={false}
+          onChange={handleTextareaChange}
+          placeholder="Secret crush ? Confession ? Share ? what's on your mind...."
+          className="focus:outline-none text-sm font-ibmPlexSans post-placeholder placeholder:font-comicSans placeholder:text-base min-h-[150px]"
+        ></textarea>
+      </div>
+
+      <footer className="">
         <div className="px-5">
           <output className="flex gap-2">
             {previewImgSrcs && (
