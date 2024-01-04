@@ -265,7 +265,7 @@ const CreatePostPage = ({
                     </span>
                   )}
                 </button>
-                {schoolList.map(({ id, school_acronym }) => (
+                {schoolList && schoolList.map(({ id, school_acronym }) => (
                   <button
                     onClick={() => {
                       setCode(id);
