@@ -21,7 +21,7 @@ import Connect from "../../../assets/Connect.svg";
 import FireSimple from "../../../assets/fireSimple.svg";
 import Eye from "../../../assets/Eye.svg";
 
-import { useQuery, useQueryClient, QueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getPosts, getUser } from "../../../utils/user";
 import {
   mountScrollListener,
@@ -87,7 +87,6 @@ const Home = () => {
     if (userDetails != null && !error) {
       // fetchPosts()
     }
-
     if (Boolean(posts)) {
       //The posts is fetched and its stored in state using the tanstack/react-query Api
       setInitialPosts([...initialPosts, ...posts]);

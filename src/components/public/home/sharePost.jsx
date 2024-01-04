@@ -10,7 +10,6 @@ function SharePost() {
   const { sharePost, setSharePost }= usePostSharingContext()
   let { content, user, created_at, id } =
     (sharePost.post && sharePost.post) || {};
-  console.log(id);
 
   if(sharePost.view){
     return (  

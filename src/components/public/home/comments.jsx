@@ -49,9 +49,9 @@ const Comment = ({ reloadPosts }) => {
 
 const post= useMemo(()=> data? data.data : data , [data])
 
-  // const headers = {
-  //   Authorization: `Token ${key}`,
-  // };
+  const headers = {
+    Authorization: `Token ${key}`,
+  };
   // useEffect(() => {
   //   const fetchUser = async () => {,
   //     try {
@@ -103,16 +103,16 @@ const post= useMemo(()=> data? data.data : data , [data])
 
   const handleSendComment = async () => {
     try {
-      if (inputValue) {
+      // if (inputValue) {
         setStatus({ ...status, loading: true });
         const data = { content: inputValue, post: post.id };
         await axios.post("annon/posts/comment/", data, { headers });
-        await reloadPosts();
+        console.log(inputValue);
         setInputValue("");
-
+        await reloadPosts();
         setStatus({ ...status, loading: false, successful: true });
         setAppError({message:'comment sent'})
-      }
+      // }
     } catch (error) {
       setStatus({ ...status, error: error });
     }
@@ -187,13 +187,13 @@ const post= useMemo(()=> data? data.data : data , [data])
           placeholder="Comment your thought"
           rows={{ inputHeight }}
           value={inputValue}
-          onChange={handleInputChange}
+          onChange={e => handleInputChange(e)}
         />
         <button
           type="submit"
           onClick={() => throttledApiRequest()}
-          className={`ml-3 rounded-xl  font-bold text-sm absolute top-[38%] right-4`}
-          disabled={status.loading}
+          className={`ml-3 rounded-xl disabled:opacity-50 transition-opacity duration-200 ease-linear font-bold text-sm absolute top-[38%] right-4`}
+          disabled={status.loading || !inputValue}
         >
           {status.loading && inputValue ? (
             <FaSpinner className="animate-spin" size={21} color="ff0000" />

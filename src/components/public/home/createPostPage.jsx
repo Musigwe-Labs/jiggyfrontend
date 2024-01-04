@@ -13,6 +13,9 @@ import { BsCaretDownFill, BsImages } from "react-icons/bs";
 import { FaArrowRotateRight, FaSpinner } from "react-icons/fa6";
 import { useErrorContext } from "../../../contexts/ErrorContext";
 import Tick from "../../../assets/Tick.svg";
+import { useQuery } from "@tanstack/react-query";
+import { getSchoolList } from "../../../utils/user";
+import { useMemo } from "react";
 
 const CreatePostPage = ({
   setCreatePost,
@@ -46,8 +49,20 @@ const CreatePostPage = ({
   const { key } = useContext(AuthContext);
   const headers = {
     Authorization: `Token ${key}`,
+    // "Content-Type": "application/json",
     "Content-Type": "multipart/form-data",
   };
+
+  const { isPending, data: schoolListResult, error: hasError } = useQuery({
+    queryKey: ["schoolList", 1, key],
+    queryFn: getSchoolList,
+  });
+
+  const schoolList = useMemo(
+    () =>
+      schoolListResult ? [...schoolListResult.data.results] : schoolListResult,
+    [schoolListResult]
+  );
 
   const schoolCode = (school) => {
     switch (school.toLowerCase()) {
@@ -64,11 +79,20 @@ const CreatePostPage = ({
 
   const handlePost = async () => {
     // e.preventDefault();
+
     if (content) {
       setIsLoading(true);
       const formData = new FormData(form.current, postBtn.current);
       formData.append("post_type", post_type);
-      formData.append("school", code === 0 ? "" : code);
+      imageSrc[0] && formData.append("images", imageSrc[0]);
+      // formData.append("school", JSON.stringify({id: code, name: targeted_school}));
+      formData.append("school", code);
+      // let data = {
+      //   content: content,
+      //   images: imageSrc[0] ? imageSrc[0].name : undefined,
+      //   post_type: post_type,
+      //   school: code
+      // };
       try {
         await axios.post("annon/posts/create/", formData, { headers });
         setCreatePost(false);
@@ -79,13 +103,13 @@ const CreatePostPage = ({
       } catch (error) {
         if (error) {
           setIsLoading(false);
+          console.log(error.message);
           if (error.message == "Network Error") {
             setAppError(error);
           }
           if (error.code === "ERR_BAD_RESPONSE") {
             setError("server error");
           }
-          console.log(error.status);
         }
       }
     }
@@ -233,9 +257,7 @@ const CreatePostPage = ({
                   }}
                   className="flex w-full py-2 px-2 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
                 >
-                  <span>
-                    <LiaGlobeSolid />
-                  </span>
+                  <LiaGlobeSolid />
                   <span className="font-semibold text-sm">ALL</span>
                   {code === 0 && (
                     <span className="ml-auto font-semibold">
@@ -243,23 +265,26 @@ const CreatePostPage = ({
                     </span>
                   )}
                 </button>
-                <button
-                  onClick={() => {
-                    schoolCode("FUTO");
-                    setTargetedSchool("FUTO");
-                  }}
-                  className="flex w-full py-2 px-2 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
-                >
-                  <span>
+                {schoolList.map(({ id, school_acronym }) => (
+                  <button
+                    onClick={() => {
+                      setCode(id);
+                      setTargetedSchool(school_acronym);
+                    }}
+                    key={id}
+                    className="flex w-full py-2 px-2 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
+                  >
                     <LiaSchoolSolid />
-                  </span>
-                  <span className="font-semibold text-sm">FUTO</span>
-                  {code === 1 && (
-                    <span className="ml-auto font-semibold">
-                      <LiaCheckSolid />
+                    <span className="font-semibold text-sm">
+                      {school_acronym}
                     </span>
-                  )}
-                </button>
+                    {code === id && (
+                      <span className="ml-auto font-semibold">
+                        <LiaCheckSolid />
+                      </span>
+                    )}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -355,7 +380,7 @@ const CreatePostPage = ({
             accept="image/*"
             className="hidden"
             id="imageUpload"
-            name="image"
+            name="images"
             multiple={true}
             onChange={(e) => handlePreviewImg(e)}
           />
