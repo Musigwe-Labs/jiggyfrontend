@@ -1,0 +1,4 @@
+- Filtering based on school
+- Posting based on school
+- Posting images
+- make comments rerender when commented

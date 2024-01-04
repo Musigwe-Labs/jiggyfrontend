@@ -84,9 +84,9 @@ const CreatePostPage = ({
       setIsLoading(true);
       const formData = new FormData(form.current, postBtn.current);
       formData.append("post_type", post_type);
-      imageSrc[0] && formData.append("images", imageSrc[0]);
+      formData.append("images", imageSrc[0] ? imageSrc[0] : '');
       // formData.append("school", JSON.stringify({id: code, name: targeted_school}));
-      formData.append("school", code);
+       formData.append("school", code ? code : '');
       // let data = {
       //   content: content,
       //   images: imageSrc[0] ? imageSrc[0].name : undefined,
@@ -94,6 +94,7 @@ const CreatePostPage = ({
       //   school: code
       // };
       try {
+        console.log(...formData.values());
         await axios.post("annon/posts/create/", formData, { headers });
         setCreatePost(false);
         await reloadPosts();
@@ -380,7 +381,7 @@ const CreatePostPage = ({
             accept="image/*"
             className="hidden"
             id="imageUpload"
-            name="images"
+            // name="images"
             multiple={true}
             onChange={(e) => handlePreviewImg(e)}
           />
