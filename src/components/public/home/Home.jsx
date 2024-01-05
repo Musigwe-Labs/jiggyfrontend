@@ -38,7 +38,7 @@ const Home = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [selectedPostIndex, setSelectedPostIndex] = useState(null);
   const [isAll, setIsAll] = useState(false);
-  const [initialPosts, setInitialPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
   const { selectedTab } = useHomeTabContext();
   const [selectedSchool, setSelectedSchool] = useState("ALL");
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
@@ -57,7 +57,7 @@ const Home = () => {
 
   //memoized destructured data to prevent infinite rerender issue
   // Note: it later occured to me that, alternatively, one could access the "data" properties directly rather than destructuring to avoid using memoization.
-  const posts = useMemo(
+  const initialPosts = useMemo(
     () => (postsResult ? [...postsResult.data.results] : postsResult),
     [postsResult]
   ); 
@@ -79,6 +79,10 @@ const Home = () => {
     setSelectedPostIndex(post);
   };
 
+  useEffect(()=>{
+      setPosts(initialPosts)
+  }, [postsResult])
+
   useEffect(() => {
     if (key == null) {
       navigate("/login");
@@ -89,7 +93,7 @@ const Home = () => {
     }
     if (Boolean(posts)) {
       //The posts is fetched and its stored in state using the tanstack/react-query Api
-      setInitialPosts([...initialPosts, ...posts]);
+      // setInitialPosts([...initialPosts, ...posts]);
       setHasMorePosts(Boolean(postsResult));
       setAppError(null);
     } else if (error) {
@@ -114,13 +118,13 @@ const Home = () => {
   //School filtering
   let handleSchoolFilter = (school) => {
     setSelectedSchool(school.toUpperCase());
-    if (school !== "all" && initialPosts.length > 0) {
-      let schoolPosts = initialPosts.filter(
+    if (school !== "all" && posts.length > 0) {
+      let schoolPosts = posts.filter(
         (post) =>
           post.user.school &&
           post.user.school.school_acronym.toLowerCase() === school.toLowerCase()
       );
-      setPosts(schoolPosts);
+      setPosts(schoolPosts)
     } else setPosts(initialPosts);
   };
 
@@ -130,7 +134,7 @@ const Home = () => {
 
   if (createPost) {
     return (
-      <CreatePostPage reloadPosts={reloadPosts} setCreatePost={setCreatePost} />
+      <CreatePostPage userSchool={userDetails.user.school} reloadPosts={reloadPosts} setCreatePost={setCreatePost} />
     );
   }
 

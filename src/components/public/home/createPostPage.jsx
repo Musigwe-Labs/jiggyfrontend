@@ -17,13 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getSchoolList } from "../../../utils/user";
 import { useMemo } from "react";
 
-const CreatePostPage = ({
-  setCreatePost,
-  reloadPosts,
-  setSelectedPost,
-  selectedPostIndex,
-  posts,
-}) => {
+const CreatePostPage = ({ setCreatePost, reloadPosts, userSchool }) => {
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [post_type, setSelectedOption] = useState("Others");
@@ -65,36 +59,26 @@ const CreatePostPage = ({
   );
 
   const schoolCode = (school) => {
-    switch (school.toLowerCase()) {
-      case "futo":
-        setCode(1);
-        break;
-
-      default:
-        setCode(0);
-        break;
+    if (school.toLowerCase() === "all") {
+      setCode(0);
+      return;
     }
-    return code;
+    let schoolIndex = schoolList.findIndex(
+      (school) => school.school_acronym === userSchool.school_acronym
+    );
+    setCode(schoolIndex + 1);
   };
 
   const handlePost = async () => {
-    // e.preventDefault();
 
     if (content) {
       setIsLoading(true);
       const formData = new FormData(form.current, postBtn.current);
       formData.append("post_type", post_type);
-      formData.append("images", imageSrc[0] ? imageSrc[0] : '');
-      // formData.append("school", JSON.stringify({id: code, name: targeted_school}));
-       formData.append("school", code ? code : '');
-      // let data = {
-      //   content: content,
-      //   images: imageSrc[0] ? imageSrc[0].name : undefined,
-      //   post_type: post_type,
-      //   school: code
-      // };
+      formData.append("images", imageSrc[0] ? imageSrc[0] : "");
+      formData.append("school", code ? code : "");
+
       try {
-        console.log(...formData.values());
         await axios.post("annon/posts/create/", formData, { headers });
         setCreatePost(false);
         await reloadPosts();
@@ -266,26 +250,23 @@ const CreatePostPage = ({
                     </span>
                   )}
                 </button>
-                {schoolList && schoolList.map(({ id, school_acronym }) => (
-                  <button
-                    onClick={() => {
-                      setCode(id);
-                      setTargetedSchool(school_acronym);
-                    }}
-                    key={id}
-                    className="flex w-full py-2 px-2 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
-                  >
-                    <LiaSchoolSolid />
-                    <span className="font-semibold text-sm">
-                      {school_acronym}
+                <button
+                  onClick={() => {
+                    schoolCode(userSchool.school_acronym);
+                    setTargetedSchool(userSchool.school_acronym);
+                  }}
+                  className="flex w-full py-2 px-2 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
+                >
+                  <LiaSchoolSolid />
+                  <span className="font-semibold text-sm">
+                    {userSchool.school_acronym}
+                  </span>
+                  {code !== 0 && (
+                    <span className="ml-auto font-semibold">
+                      <LiaCheckSolid />
                     </span>
-                    {code === id && (
-                      <span className="ml-auto font-semibold">
-                        <LiaCheckSolid />
-                      </span>
-                    )}
-                  </button>
-                ))}
+                  )}
+                </button>
               </div>
             </div>
           </div>

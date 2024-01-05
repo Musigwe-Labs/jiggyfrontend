@@ -24,6 +24,7 @@ import {getComments} from '../../../utils/user'
 import { useErrorContext}  from  '../../../contexts/ErrorContext'
 import { useQuery, useQueryClient, QueryClient} from '@tanstack/react-query'
 import { useRestoreScroll } from "../../../utils/restoreScroll";
+import { queryClient } from "../../../App";
 
 
 
@@ -109,7 +110,12 @@ const post= useMemo(()=> data? data.data : data , [data])
         await axios.post("annon/posts/comment/", data, { headers });
         console.log(inputValue);
         setInputValue("");
-        await reloadPosts();
+        // await reloadPosts();
+        await queryClient.refetchQueries({
+          queryKey: ['commments '+id, id, key],
+          exact: true,
+          type: "active",
+        });
         setStatus({ ...status, loading: false, successful: true });
         setAppError({message:'comment sent'})
       // }
