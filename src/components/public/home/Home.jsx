@@ -53,7 +53,7 @@ const Home = () => {
     queryKey: ["posts", currentPageIndex],
     queryFn: getPosts,
   });
-  const restoreScroll = useRestoreScroll("home-" + selectedTab, [selectedTab]);
+  const restoreScroll = useRestoreScroll("home-" + selectedTab);
 
   //memoized destructured data to prevent infinite rerender issue
   // Note: it later occured to me that, alternatively, one could access the "data" properties directly rather than destructuring to avoid using memoization.

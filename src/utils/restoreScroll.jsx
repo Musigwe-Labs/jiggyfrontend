@@ -30,13 +30,13 @@ export default function RestoreScroll({children, tab='', deps=[]}){
 
   
 
-export function useRestoreScroll(tab, deps=[]){
+export function useRestoreScroll(tab){
     useLayoutEffect(()=>{
         scrollPage(tab)       
         mountScrollListener(tab)
 
         return ()=>{ unmountScrollListener() }
-  }, [tab, ...deps])
+  }, [tab])
  }
 
 
