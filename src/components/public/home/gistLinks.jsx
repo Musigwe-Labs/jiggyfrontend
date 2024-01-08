@@ -23,7 +23,7 @@ import popSound from "../../../assets/sound/pop-sound.mp3"
 const GistLinks = ({ post, onPostClick }) => {
   let { likes, comments, views, shared, user } = post;
   const { setSharePost, setSelectedPostId } = usePostSharingContext();
-  const [play]= useSound(popSound)
+  const [play]= useSound(popSound, {volume:0.7})
   console.log(play)
 
   const [isLiked, setIsLiked] = useState(false); //currently using a state but we will have to get this info from the backend
