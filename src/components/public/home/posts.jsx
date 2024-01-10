@@ -31,39 +31,39 @@ const Posts = ({
   const queryClient=useQueryClient()
 
  
-  useEffect(() => {
-    if (posts.length === 0) return;
-    let allPosts = document.querySelector(".posts");
-    // console.log(allPosts);
-    // if (!allPosts || allPosts.length === 0) return;
-    let lastPost = allPosts.lastChild;
-    // console.log(lastPost);
-    if (!lastPost) return;
+  // useEffect(() => {
+  //   if (posts.length === 0) return;
+  //   let allPosts = document.querySelector(".posts");
+  //   // console.log(allPosts);
+  //   // if (!allPosts || allPosts.length === 0) return;
+  //   let lastPost = allPosts.lastChild;
+  //   // console.log(lastPost);
+  //   if (!lastPost) return;
     
 
 
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsIntersecting(entry.isIntersecting);
-    });
-    // console.log("loading1");
-    observer.observe(lastPost);
-    return () => {
-      observer.disconnect();
-      setIsLoadingMorePosts(false);
-      // console.log("done");
-    };
-  }, [posts, isIntersecting]);
+  //   const observer = new IntersectionObserver(([entry]) => {
+  //     setIsIntersecting(entry.isIntersecting);
+  //   });
+  //   // console.log("loading1");
+  //   observer.observe(lastPost);
+  //   return () => {
+  //     observer.disconnect();
+  //     setIsLoadingMorePosts(false);
+  //     // console.log("done");
+  //   };
+  // }, [posts, isIntersecting]);
 
-  useEffect(() => {
-    setIsLoadingMorePosts(false);
+  // useEffect(() => {
+  //   setIsLoadingMorePosts(false);
 
-    if (isIntersecting && hasMorePosts) {
-      setIsLoadingMorePosts(true);
-      console.log("loading2");
+  //   if (isIntersecting && hasMorePosts) {
+  //     setIsLoadingMorePosts(true);
+  //     console.log("loading2");
 
-      setCurrentPageIndex((prevPageIndex) => prevPageIndex + 1);
-    }
-  }, [isIntersecting]);
+  //     setCurrentPageIndex((prevPageIndex) => prevPageIndex + 1);
+  //   }
+  // }, [isIntersecting]);
 
   useEffect(() => {
     sortPosts();

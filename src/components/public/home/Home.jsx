@@ -78,6 +78,22 @@ const Home = () => {
     setSelectedPost(post);
     setSelectedPostIndex(post);
   };
+const handleScroll = async() => {
+  if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoading) {
+    return;
+  }
+  let newPosts = await queryClient.refetchQueries({
+    queryKey: ["posts", currentPageIndex+1],
+    exact: true,
+    type: "active",
+  });
+setPosts((posts) => [...posts, newPosts])
+  setCurrentPageIndex(currentPageIndex+1)
+}
+useEffect(() => {
+  window.addEventListener('scroll', handleScroll);
+  return () => window.removeEventListener('scroll', handleScroll);
+}, [isLoading]);
 
   useEffect(()=>{
       setPosts(initialPosts)
@@ -117,6 +133,7 @@ const Home = () => {
 
   //School filtering
   let handleSchoolFilter = (school) => {
+    console.log(posts);
     setSelectedSchool(school.toUpperCase());
     if (school !== "all" && posts.length > 0) {
       let schoolPosts = posts.filter(
