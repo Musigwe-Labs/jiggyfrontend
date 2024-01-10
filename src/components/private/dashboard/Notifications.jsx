@@ -48,7 +48,7 @@ export default function Notiifications(){
 	
 return(
 	<>
-		<header className='fixed  top-0 w-full h-20 '>
+		<header className='fixed  top-0 w-full h-20 bg-black '>
 				<div className="flex justify-between items-center px-4 py-6">
 					<h1 className="nav text-2xl font-bold bg-gradient-to-l from-[#B416FE40] via-[#FF008A62] to-[#F33F5E] bg-clip-text text-transparent font-openSans ">
 						Notifications
@@ -58,30 +58,28 @@ return(
 					</div>
 				</div>
 		</header>
-		<main className="w-full pt-20">
-			{
-					error ? <ErrorOccurred />
-					:isLoading? <Spinner />
-					:notifications.data && notifications.data.results.length==0? <p className="font-bold text-center text-base">I'm Sorry you do not have any new  notification</p>
-					:notifications.data.results.map((el, index)=>{
-						const note=el.notifications[0].notification_text
-						const postId= note.split(' ').at(-1)
-											
-						return (
-							<Link className="flex items-center py-2 px-4 border-b-[1px] border-white" to={'/comments/'+ postId } key={note + index}>
-								<img src={comments} alt="comments" />
-								{
-									
-								}
-								<p className="grow text-sm pl-2"> {note}</p>
-							</Link>
-						)
+		<main className="w-full  pt-20 pb-24">
+			{ 
+				error ? <ErrorOccurred />
+				:isLoading? <Spinner />
+				:notifications.data && notifications.data.results.length==0? <p className="font-bold text-center text-base">I'm Sorry you do not have any new  notification</p>
+				:notifications.data.results.map((el, index)=>{
+					const note=el.notifications[0].notification_text
+					const postId= note.split(' ').at(-1)
+										
+					return (
+						<Link className="flex items-center py-2 px-4 border-b-[1px] border-white" to={'/comments/'+ postId } key={note + index}>
+							<img src={comments} alt="comments" />
+							{
+								
+							}
+							<p className="grow text-sm pl-2"> {note}</p>
+						</Link>
+					)
 
-				 	}).reverse()
+			 	}).reverse()
 			}
-
 		</main>	
-		
 		<HomeFooter />
 	</>
 

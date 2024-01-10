@@ -27,7 +27,8 @@
     "redux": "^4.2.1",
     "resize-observer-polyfill": "^1.5.1",
     "scroll-snap": "^4.0.3",
-    "typed.js": "^2.0.16"
+    "typed.js": "^2.0.16",
+    "use-sound": "^4.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",
