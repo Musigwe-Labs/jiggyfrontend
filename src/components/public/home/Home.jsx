@@ -6,6 +6,7 @@ import HomeTabs from "./homeTabs";
 import CreatePostBtn from "./createPostBtn";
 import CreatePostPage from "./createPostPage";
 import { Profile } from "../../private/dashboard/Profile";
+import NotificationButton from "./NotificationButton";
 import HomeFooter from "./homeFooter";
 import Trending from "./trending/Trending";
 import Posts from "./posts";
@@ -49,7 +50,11 @@ const Home = () => {
   const { setAppError } = useErrorContext();
 
   //using react-query to handle fetching posts
-  const { isPending: isLoading, data: postsResult, error } = useQuery({
+  const {
+    isPending: isLoading,
+    data: postsResult,
+    error,
+  } = useQuery({
     queryKey: ["posts", currentPageIndex],
     queryFn: getPosts,
   });
@@ -60,7 +65,7 @@ const Home = () => {
   const initialPosts = useMemo(
     () => (postsResult ? [...postsResult.data.results] : postsResult),
     [postsResult]
-  ); 
+  );
 
   //using react-query to handle fetching userdetails
   const { data: userDataResult, error: userDetailsError } = useQuery({
@@ -78,26 +83,30 @@ const Home = () => {
     setSelectedPost(post);
     setSelectedPostIndex(post);
   };
-const handleScroll = async() => {
-  if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoading) {
-    return;
-  }
-  let newPosts = await queryClient.refetchQueries({
-    queryKey: ["posts", currentPageIndex+1],
-    exact: true,
-    type: "active",
-  });
-setPosts((posts) => [...posts, newPosts])
-  setCurrentPageIndex(currentPageIndex+1)
-}
-useEffect(() => {
-  window.addEventListener('scroll', handleScroll);
-  return () => window.removeEventListener('scroll', handleScroll);
-}, [isLoading]);
+  const handleScroll = async () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight ||
+      isLoading
+    ) {
+      return;
+    }
+    let newPosts = await queryClient.refetchQueries({
+      queryKey: ["posts", currentPageIndex + 1],
+      exact: true,
+      type: "active",
+    });
+    setPosts((posts) => [...posts, newPosts]);
+    setCurrentPageIndex(currentPageIndex + 1);
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isLoading]);
 
-  useEffect(()=>{
-      setPosts(initialPosts)
-  }, [postsResult])
+  useEffect(() => {
+    setPosts(initialPosts);
+  }, [postsResult]);
 
   useEffect(() => {
     if (key == null) {
@@ -141,7 +150,7 @@ useEffect(() => {
           post.user.school &&
           post.user.school.school_acronym.toLowerCase() === school.toLowerCase()
       );
-      setPosts(schoolPosts)
+      setPosts(schoolPosts);
     } else setPosts(initialPosts);
   };
 
@@ -151,7 +160,11 @@ useEffect(() => {
 
   if (createPost) {
     return (
-      <CreatePostPage userSchool={userDetails.user.school} reloadPosts={reloadPosts} setCreatePost={setCreatePost} />
+      <CreatePostPage
+        userSchool={userDetails.user.school}
+        reloadPosts={reloadPosts}
+        setCreatePost={setCreatePost}
+      />
     );
   }
 
@@ -176,6 +189,7 @@ useEffect(() => {
               ""
             )}
             <div className="sticky top-0 bg-black">
+              <NotificationButton />
               <HomeHeader
                 setProfilePage={setProfilePage}
                 userDetails={userDetails}
