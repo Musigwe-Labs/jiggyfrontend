@@ -1,4 +1,5 @@
 import { FaRegBell as BellIcon } from "react-icons/fa";
+
 import { Link } from "react-router-dom";
 
 const NotificationButton = () => {
@@ -8,7 +9,7 @@ const NotificationButton = () => {
                    hover:text-[#f33f5e] w-12 h-12 flex justify-center items-center grow"
     >
       <Link to="/notifications">
-        <BellIcon className="text-3xl" />
+        <BellIcon size={20} />
       </Link>
     </div>
   );
