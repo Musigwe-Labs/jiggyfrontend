@@ -10,6 +10,11 @@ import { loginUser } from "../../apis/authenticationApis";
 import EyeOpenIcon from "../../assets/blue-eye.png";
 import EyeClosedIcon from "../../assets/closed-eye.png";
 
+import { useAuthContext } from '../../contexts/AuthContext'
+import { useErrorContext } from '../../contexts/ErrorContext'
+
+
+
 const getUrlToken = (search) => {
   const query = new URLSearchParams(search); // parse params to object format
   const token = query.get("token") ? query.get("token") : null;
@@ -24,11 +29,15 @@ function getLoginFromLocalStotrage(){
 const Login = () => {
   const navigate = useNavigate();
   const token=getLoginFromLocalStotrage()
+  const {setAppError} = useErrorContext()
+
+  // const { redirect, setRedirect} =useAuthContext()
+  // console.log('redirect', redirect)
 
   /**const [email, setEmail] = useState();*/
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [signing, setSigning] = useState(false);
   const [success, setSuccess] = useState(token);
   const [error, setError] = useState(null);
@@ -76,9 +85,13 @@ a        } else if (errorData && errorData.password && errorData.password.length
       */
      
      if (error !== null) {
-      console.log(error)
-      alert(error.non_field_errors[0])
+      console.error(error)
       setSigning(false)
+      if(error?.response?.data?.type=='validation_error'){
+        setAppError({message:'account not found '})
+        navigate('/register')
+      }
+
       setError(null)
     }
   }, [success, error])
