@@ -10,9 +10,10 @@ import { loginUser } from "../../apis/authenticationApis";
 import EyeOpenIcon from "../../assets/blue-eye.png";
 import EyeClosedIcon from "../../assets/closed-eye.png";
 
+
 import { useAuthContext } from '../../contexts/AuthContext'
 import { useErrorContext } from '../../contexts/ErrorContext'
-
+//import {  } from '../..//ErrorContext'
 
 
 const getUrlToken = (search) => {
@@ -28,9 +29,9 @@ function getLoginFromLocalStotrage(){
 
 const Login = () => {
   const navigate = useNavigate();
-  const token=getLoginFromLocalStotrage()
+  //const token=getLoginFromLocalStotrage()
   const {setAppError} = useErrorContext()
-
+  const {key, setKey, setUserDetails} = useAuthContext()
   // const { redirect, setRedirect} =useAuthContext()
   // console.log('redirect', redirect)
 
@@ -42,24 +43,47 @@ const Login = () => {
   const [success, setSuccess] = useState(token);
   const [error, setError] = useState(null);
   const { search } = useLocation();
-
+  useLayoutEffect(()=>{
+   if(key) navigate('/home') ;
+  }, [key])
+  
   useEffect(() => {
     if(success==null && Boolean(search)){
         const token=getUrlToken(search)
-        token? setSuccess({key:token})
-        : setError({message:"can't retrieve token"})
-    
+        if(token){
+          setSuccess({key:token})
+        }
+        else{
+          setError({message:"can't retrieve token"})
+        }
     }
 
     if (success !== null) {
-      if(!token){
-        localStorage.setItem("login", JSON.stringify({ key: success.key }));
+      runAsync()
+      async function runAsync(){
+        const key=success.key
+        //load user_details from backend
+        try{
+          const user=  await getUser({ queryKey: [null, key] })
+          localStorage.setItem("login", JSON.stringify({ key: success.key }));
+          setKey(success.key)
+          setUserDetails({ user.data})
+          navigate("/home");
+        }catch (err){
+          console.log(err)
+          if(err?.response?.status==401){
+          removeFieldFromLS('login') // remove lodin from localStorag
+          setKey(null)
+          setAppError({message:'account not found'})
+          navigate('/register')
+          }else{
+            setAppError(err)
+          }
+        }
       }
-      setError("");
-      setEmail("");
-      setPassword("");
+      localStorage.setItem("login", JSON.stringify({ key: success.key }));
+        setKey(success.key)
       navigate("/home");
-      window.location.reload();
     }
     /*
     if (error) { // Check if error is not null or undefined
