@@ -21,7 +21,7 @@ import Connect from "../../../assets/Connect.svg";
 import FireSimple from "../../../assets/fireSimple.svg";
 import Eye from "../../../assets/Eye.svg";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { getPosts, getUser } from "../../../utils/user";
 import {
   mountScrollListener,
@@ -49,19 +49,34 @@ const Home = () => {
   const { setAppError } = useErrorContext();
 
   //using react-query to handle fetching posts
-  const { isPending: isLoading, data: postsResult, error } = useQuery({
-    queryKey: ["posts", currentPageIndex],
+  const {
+    isPending: isLoading,
+    data: postsResult,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["posts"],
     queryFn: getPosts,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, pages) => {
+      // console.log(lastPage.data.next);
+    },
   });
   const restoreScroll = useRestoreScroll("home-" + selectedTab);
 
   //memoized destructured data to prevent infinite rerender issue
   // Note: it later occured to me that, alternatively, one could access the "data" properties directly rather than destructuring to avoid using memoization.
   const initialPosts = useMemo(
-    () => (postsResult ? [...postsResult.data.results] : postsResult),
+    () =>
+      postsResult
+        ? postsResult.pages.map((page) => [...page.data.results])
+        : postsResult,
     [postsResult]
-  ); 
-
+  );
+  // console.log(initialPosts);
   //using react-query to handle fetching userdetails
   const { data: userDataResult, error: userDetailsError } = useQuery({
     queryKey: ["userDetails", key],
@@ -78,26 +93,40 @@ const Home = () => {
     setSelectedPost(post);
     setSelectedPostIndex(post);
   };
-const handleScroll = async() => {
-  if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoading) {
-    return;
-  }
-  let newPosts = await queryClient.refetchQueries({
-    queryKey: ["posts", currentPageIndex+1],
-    exact: true,
-    type: "active",
-  });
-setPosts((posts) => [...posts, newPosts])
-  setCurrentPageIndex(currentPageIndex+1)
-}
-useEffect(() => {
-  window.addEventListener('scroll', handleScroll);
-  return () => window.removeEventListener('scroll', handleScroll);
-}, [isLoading]);
 
-  useEffect(()=>{
-      setPosts(initialPosts)
-  }, [postsResult])
+  //infinite scrolling
+  const handleScroll = async () => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+    if (!(scrollTop + clientHeight >= scrollHeight - 20)) {
+      return;
+    }
+
+    !isFetching && fetchNextPage();
+    console.log(postsResult);
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isLoading]);
+  // const handleScroll = async() => {
+  //   if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoading) {
+  //     console.log("ooh");
+  //     return;
+  //   }
+  //   console.log("yeah");
+  //   // setCurrentPageIndex(prevIndex =>prevIndex+1)
+  //   !isFetching && fetchNextPage()
+  // }
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, [isLoading]);
+
+//posts initialization
+  useEffect(() => {
+    let allPosts = initialPosts && initialPosts.flat().filter((post) => post.school === null);
+    setPosts(allPosts);
+  }, [postsResult]);
 
   useEffect(() => {
     if (key == null) {
@@ -120,6 +149,7 @@ useEffect(() => {
     } else if (userDetailsError) {
       setAppError(userDetailsError);
     }
+   
   }, [currentPageIndex, key, userDetails, error, selectedTab]);
 
   //Refetch posts after posting
@@ -129,20 +159,24 @@ useEffect(() => {
       exact: true,
       type: "active",
     });
+    let allPosts = initialPosts && initialPosts.flat().filter((post) => post.school === null);
+    setPosts(allPosts);
   };
 
   //School filtering
   let handleSchoolFilter = (school) => {
-    console.log(posts);
     setSelectedSchool(school.toUpperCase());
-    if (school !== "all" && posts.length > 0) {
-      let schoolPosts = posts.filter(
+    if (school !== "all" && initialPosts.flat().length > 0) {
+      let schoolPosts = initialPosts.flat().filter(
         (post) =>
-          post.user.school &&
-          post.user.school.school_acronym.toLowerCase() === school.toLowerCase()
+          post.school &&
+          post.school.school_acronym.toLowerCase() === school.toLowerCase()
       );
-      setPosts(schoolPosts)
-    } else setPosts(initialPosts);
+      setPosts(schoolPosts);
+    } else {
+      let allPosts = initialPosts.flat().filter((post) => post.school === null);
+      setPosts(allPosts);
+    }
   };
 
   if (!key) {
@@ -151,7 +185,11 @@ useEffect(() => {
 
   if (createPost) {
     return (
-      <CreatePostPage userSchool={userDetails.user.school} reloadPosts={reloadPosts} setCreatePost={setCreatePost} />
+      <CreatePostPage
+        userSchool={userDetails.user.school}
+        reloadPosts={reloadPosts}
+        setCreatePost={setCreatePost}
+      />
     );
   }
 
@@ -255,6 +293,12 @@ useEffect(() => {
                 setCurrentPageIndex={setCurrentPageIndex}
                 selectedSchool={selectedSchool}
                 hasMorePosts={hasMorePosts}
+                scrollFetch={{
+                  fetchNextPage,
+                  hasNextPage,
+                  isFetching,
+                  isFetchingNextPage,
+                }}
               />
             ) : (
               <Trending posts={posts} />

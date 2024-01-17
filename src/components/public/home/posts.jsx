@@ -9,7 +9,7 @@ import { HiRefresh } from "react-icons/hi";
 import { FaSpinner } from "react-icons/fa6";
 import ErrorOccurred from "../../error/ErrorOccurred";
 import { useQueryClient } from "@tanstack/react-query";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Posts = ({
   posts,
@@ -21,16 +21,21 @@ const Posts = ({
   setCurrentPageIndex,
   selectedSchool,
   hasMorePosts,
+  scrollFetch,
 }) => {
   // console.log(posts)http://localhost:5174/home
   const [sortedPostsByTime, setSortedPostsByTime] = useState([]);
   const lastPostRef = useRef();
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [isLoadingMorePosts, setIsLoadingMorePosts] = useState(false);
+  let {
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+  } = scrollFetch;
+  const queryClient = useQueryClient();
   
-  const queryClient=useQueryClient()
-
- 
   // useEffect(() => {
   //   if (posts.length === 0) return;
   //   let allPosts = document.querySelector(".posts");
@@ -39,8 +44,6 @@ const Posts = ({
   //   let lastPost = allPosts.lastChild;
   //   // console.log(lastPost);
   //   if (!lastPost) return;
-    
-
 
   //   const observer = new IntersectionObserver(([entry]) => {
   //     setIsIntersecting(entry.isIntersecting);
@@ -79,25 +82,33 @@ const Posts = ({
     });
     setSortedPostsByTime(sortedPosts);
   };
-  if(error && posts.length<=0){
-    return <ErrorOccurred 
-            setError={()=>{
-                   queryClient.invalidateQueries({queryKey:['posts']})
-                }
-            }
-          />
-
-    
+  if (error && posts.length <= 0) {
+    return (
+      <ErrorOccurred
+        setError={() => {
+          queryClient.invalidateQueries({ queryKey: ["posts"] });
+        }}
+      />
+    );
   }
   if (isLoading) return <Spinner />;
-  
+
   return (
-    <div className="pb-[29px] posts transition duration-300 ease-linear">
+    <div
+      // onEndReached={() => !isFetching && fetchNextPage()}
+      className="pb-[29px] posts transition duration-300 ease-linear"
+    >
+      {/* <List /> */}
       {sortedPostsByTime.map((post, index) => {
         let { id, post_type, user, content, created_at, images } = post;
         if (sortedPostsByTime.length === index + 1) {
           return (
-            <div key={id} id={`${id}`} ref={lastPostRef} className="text-base post mt-2">
+            <div
+              key={id}
+              id={`${id}`}
+              ref={lastPostRef}
+              className="text-base post mt-2"
+            >
               <div
                 className={`mx-4  md:mx-16 p-3 transition-all duration-300 ease-linear  ${
                   selectedSchool.toLowerCase() != "all"
@@ -105,11 +116,11 @@ const Posts = ({
                     : "border-b border-y-[#4B5563]"
                 }`}
               >
-                <HomeInfo
+                {/* <HomeInfo
                   school={user.school}
                   name={user.generated_username}
                   created_at={created_at}
-                />
+                /> */}
                 <PostType post_type={post_type} />
                 <div onClick={() => onPostClick(post, index)}>
                   <Gist content={content} images={images} />
@@ -129,11 +140,11 @@ const Posts = ({
                   : "border-b border-y-[#4B5563]"
               }`}
             >
-              <HomeInfo
+              {/* <HomeInfo
                 school={user.school}
                 name={user.generated_username}
                 created_at={created_at}
-              />
+              /> */}
               <PostType post_type={post_type} />
               <Link to={`/comment/${id}`} onClick={() => onPostClick(post)}>
                 <Gist content={content} images={images} showFullGist={true} />
