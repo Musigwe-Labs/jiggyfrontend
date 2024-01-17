@@ -6,6 +6,7 @@ import HomeTabs from "./homeTabs";
 import CreatePostBtn from "./createPostBtn";
 import CreatePostPage from "./createPostPage";
 import { Profile } from "../../private/dashboard/Profile";
+import NotificationButton from "./NotificationButton";
 import HomeFooter from "./homeFooter";
 import Trending from "./trending/Trending";
 import Posts from "./posts";
@@ -76,7 +77,6 @@ const Home = () => {
         : postsResult,
     [postsResult]
   );
-  // console.log(initialPosts);
   //using react-query to handle fetching userdetails
   const { data: userDataResult, error: userDetailsError } = useQuery({
     queryKey: ["userDetails", key],
@@ -214,6 +214,7 @@ const Home = () => {
               ""
             )}
             <div className="sticky top-0 bg-black">
+              <NotificationButton />
               <HomeHeader
                 setProfilePage={setProfilePage}
                 userDetails={userDetails}
