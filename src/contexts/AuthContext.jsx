@@ -17,24 +17,22 @@
    const {setAppError} = useErrorContext()
 
    const logout = () => {
-     setKey("");
+     setKey('');
      localStorage.removeItem("login");
-     window.location.href = "/login";
    };
 
    useEffect(() => {
-     // if (token!=key) {
-     //   setKey(token);
-     // }
-          runAsync()
+         if(key) runAsync();
           async function runAsync(){
+
            //load user_details from backend
            try{
              const user=  await getUser({ queryKey: [null, key] })
+             console.log(user.data)
+             setUserDetails(user.data)
            }catch (err){
              console.log(err)
              if(err?.response?.status==401){
-               console.log(true)
                removeFieldFromLS('login') // remove lodin from localStorag
                setKey(null)
                setRedirect({url:'/login'})

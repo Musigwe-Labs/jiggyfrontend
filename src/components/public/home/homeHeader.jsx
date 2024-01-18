@@ -8,7 +8,7 @@ const HomeHeader = ({ setProfilePage, userDetails }) => {
   const { key } = useAuthContext();
   const navigate = useNavigate();
   return (
-    <div className="flex items-center gap-1.5  pt-6 px-3">
+    <div className="flex items-center gap-1.5 px-3">
       {userDetails?
        (
         <div

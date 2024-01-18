@@ -22,8 +22,10 @@ export async function getUser({ queryKey: [, key] }) {
   const headers = {
     Authorization: `Token ${key}`,
   };
-  const userDetails = await axios.get("account/annonyuser/", { headers });
-  return userDetails;
+  if(key){
+    const userDetails = await axios.get("account/annonyuser/", { headers });
+    return userDetails;
+  }
 }
 
 export async function getNotifications({ queryKey: [, key] }) {
@@ -32,8 +34,10 @@ export async function getNotifications({ queryKey: [, key] }) {
     Authorization: `Token ${key}`,
   };
 
-  const response = await axios.get(url, { headers });
-  return response;
+   if(key){
+    const response = await axios.get(url, { headers });
+    return response;
+  }
 }
 
 export async function getComments({ queryKey: [, id, key] }) {
@@ -41,6 +45,8 @@ export async function getComments({ queryKey: [, id, key] }) {
   const headers = {
     Authorization: `Token ${key}`,
   };
-  const response = await axios.get(url, { headers });
-  return response;
+  if(key){
+    const response = await axios.get(url, { headers });
+    return response;
+  }
 }

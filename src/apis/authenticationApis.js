@@ -24,11 +24,8 @@ export const loginUser = async ( data, setSuccess, setError, setSigning) => {
         setSuccess(response.data)
     }
     catch (err) {
-        if (!err?.response) {
-            setError('No Response from Server')
-        } else {
-            setError(err)
-        }
+        console.log(err)
+        setError(err)
     }
     setSigning(false);
 }

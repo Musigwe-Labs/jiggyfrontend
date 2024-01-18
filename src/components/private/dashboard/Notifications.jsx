@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { getNotifications } from "../../../utils/user";
+import { getNotificationDate } from "../../../utils/formatNotifications";
+
 
 import { useErrorContext } from "../../../contexts/ErrorContext";
 import { useAuthContext } from "../../../contexts/AuthContext";
@@ -32,6 +34,7 @@ export default function Notiifications() {
     queryKey: ["notifications", token],
     queryFn: getNotifications,
   });
+  console.log(notifications)
 
   // {"data":{"count":4,"next":null,"previous":null,"results":[{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 98"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 98"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 100"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 100"}]}]},
 
@@ -44,27 +47,32 @@ export default function Notiifications() {
     } else {
       setAppError(error);
     }
-  }, [error, token]);
+
+    if(notifications){
+    	console.log(notifications)
+    }
+  }, [error, token, notifications]);
 
   return (
     <>
-      <header className="fixed  top-0 w-full h-20 bg-black ">
-        <div
-          className="fixed top-12 left-12 cursor-pointer text-[#faf6f6]
-                   hover:text-[#f33f5e] w-12 h-12 flex justify-center items-center grow"
-        >
-          <Link to="/home">
-            <BackBtn className="text-3xl" size={25} />
-          </Link>
-        </div>
-        <div className="flex justify-between items-center px-4 py-6">
-          <h1 className="nav text-2xl font-bold bg-gradient-to-l from-[#B416FE40] via-[#FF008A62] to-[#F33F5E] bg-clip-text text-transparent font-openSans ">
-            Notifications
-          </h1>
-          <div className="mark-all text-xs text-[#B20000] font-poppins ">
+      <header className="fixed  top-0 w-full h-20 bg-black flex items-center justify-between px-4 ">
+      <div className="left flex gap-2 items-center">
+      		<Link to="/home">
+            	<BackBtn className="text-xl"  size={25} />
+          	</Link>
+          	<h1 className="nav text-2xl font-bold bg-gradient-to-l from-[#B416FE40] via-[#FF008A62] to-[#F33F5E] bg-clip-text text-transparent font-openSans ">
+            	Notifications
+          	</h1>
+      </div>
+      <div className="right">
+      	<p className="mark-all text-xs text-[#B20000] font-poppins ">
             Mark all as read
-          </div>
-        </div>
+          </p>
+      </div>
+       {/* <div className="flex justify-between items-center px-4 py-6">
+        
+          
+        </div>*/}
       </header>
       <main className="w-full  pt-20 pb-24">
         {error ? (
@@ -72,25 +80,34 @@ export default function Notiifications() {
         ) : isLoading ? (
           <Spinner />
         ) : notifications.data && notifications.data.results.length == 0 ? (
-          <p className="font-bold text-center text-base">
+          <p className=" text-center text-base">
             I'm Sorry you do not have any new notification
           </p>
         ) : (
           notifications.data.results
-            .map((el, index) => {
-              const note = el.notifications[0].notification_text;
-              const postId = note.split(" ").at(-1);
+            .map((item, index) => {
+           		const [el]= item
+           
+              	const postId = el.notification_text.split(',')[0].split(' ').at(-1) || el.notification_text.split(' ').at(-1)
+            	// let commentId=  	el.notification_text.split(',').at(-1).split(' ').at(-1)
+              	let commentId
+				const time=getNotificationDate(el.created_at)	
+
+              
 
               return (
-                <Link
-                  className="flex items-center py-2 px-4 border-b-[1px] border-white"
-                  to={"/comments/" + postId}
-                  key={note + index}
-                >
-                  <img src={comments} alt="comments" />
-                  {}
-                  <p className="grow text-sm pl-2"> {note}</p>
-                </Link>
+              	<div className="flex justify-between border-b-[1px] border-slate-400 py-2 px-4">
+	                <Link
+	                  className="flex items-center"
+	                  to={"/comments/" + postId + (commentId? 'tag?=' + commentId:'')}
+	                  key={el.notification_text + index}
+	                >
+	                  <img className="w-6" src={comments} alt="comments" />
+	                  {}
+	                  <p className="grow text-sm pl-2"> {el.notification_text}</p>
+	                </Link>
+	               <p className="time text-[.7rem]">{time}</p>
+              	</div>
               );
             })
             .reverse()
