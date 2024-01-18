@@ -5,7 +5,7 @@ import ErrorOccurred from "../../error/ErrorOccurred";
 import { useRestoreScroll } from "../../../utils/restoreScroll";
 import { GoArrowLeft as BackBtn } from "react-icons/go";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { getNotifications } from "../../../utils/user";
@@ -25,7 +25,7 @@ export default function Notiifications() {
   const { setAppError } = useErrorContext();
   const navigate = useNavigate();
   const {
-    data: notifications,
+    data: notificationsResult,
     isPending: isLoading,
     error,
   } = useQuery({
@@ -33,7 +33,13 @@ export default function Notiifications() {
     queryFn: getNotifications,
   });
 
+   //memoized destructured data to prevent infinite rerender issue
+   const notifications = useMemo(
+    () => (notificationsResult ? { ...notificationsResult.data } : notificationsResult),
+    [notificationsResult]
+  );
   // {"data":{"count":4,"next":null,"previous":null,"results":[{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 98"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 98"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 100"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 100"}]}]},
+  console.log(notifications);
 
   useEffect(() => {
     if (token == null) {
@@ -49,18 +55,22 @@ export default function Notiifications() {
   return (
     <>
       <header className="fixed  top-0 w-full h-20 bg-black ">
-        <div
-          className="fixed top-12 left-12 cursor-pointer text-[#faf6f6]
-                   hover:text-[#f33f5e] w-12 h-12 flex justify-center items-center grow"
+        
+        <div className="flex justify-between items-center px-4 py-6">
+          <div className="flex items-center">
+          <div
+          className=" cursor-pointer text-[#faf6f6]
+                   hover:text-[#f33f5e] w-12 h-12 inline-flex justify-center items-center grow"
         >
           <Link to="/home">
-            <BackBtn className="text-3xl" size={25} />
+            <BackBtn className="text-3xl inline-block" size={25} />
           </Link>
         </div>
-        <div className="flex justify-between items-center px-4 py-6">
           <h1 className="nav text-2xl font-bold bg-gradient-to-l from-[#B416FE40] via-[#FF008A62] to-[#F33F5E] bg-clip-text text-transparent font-openSans ">
             Notifications
           </h1>
+
+          </div>
           <div className="mark-all text-xs text-[#B20000] font-poppins ">
             Mark all as read
           </div>
@@ -71,14 +81,15 @@ export default function Notiifications() {
           <ErrorOccurred />
         ) : isLoading ? (
           <Spinner />
-        ) : notifications.data && notifications.data.results.length == 0 ? (
+        ) : notifications.results && notifications.results.length == 0 ? (
           <p className="font-bold text-center text-base">
             I'm Sorry you do not have any new notification
           </p>
         ) : (
-          notifications.data.results
+          notifications.results.flat()
             .map((el, index) => {
-              const note = el.notifications[0].notification_text;
+              const note = el.notification_text;
+              console.log(note);
               const postId = note.split(" ").at(-1);
 
               return (
