@@ -96,11 +96,11 @@ export default function Notiifications() {
               
 
               return (
-              	<div className="flex justify-between border-b-[1px] border-slate-400 py-2 px-4">
+              	<div className="flex justify-between border-b-[1px] border-slate-400 py-2 px-4"  key={el.notification_text + index}>
 	                <Link
 	                  className="flex items-center"
 	                  to={"/comments/" + postId + (commentId? 'tag?=' + commentId:'')}
-	                  key={el.notification_text + index}
+	                 
 	                >
 	                  <img className="w-6" src={comments} alt="comments" />
 	                  {}
