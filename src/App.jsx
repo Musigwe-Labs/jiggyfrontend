@@ -1,5 +1,5 @@
 //package imports
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
 
 //components import
 import "./App.css";
@@ -22,8 +22,7 @@ import SharePost from "./components/public/home/sharePost";
 // import Alert from "./components/public/Alert";
 
 //context usgae
-// import { createContext, useState } from "react";
-import { AuthContextProvider } from "./contexts/AuthContext";
+import { AuthContextProvider, useAuthContext } from "./contexts/AuthContext";
 import { ErrorContextProvider } from "./contexts/ErrorContext";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { PostSharingContextProvider } from "./contexts/postSharingContext";
@@ -52,7 +51,7 @@ export const  AllContextProvider=({children})=>{
   )
 }
 const App = () => {
-  return (
+    return (
     <>
 
    </>

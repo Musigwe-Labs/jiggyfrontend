@@ -1,59 +1,63 @@
-/* eslint-disable react/prop-types */
-import { createContext, useEffect, useState, useContext } from "react";
-import axios from "../services/axios";
-import { getUSerLoginToken } from "../utils/getUserLocalStorageData";
-import { useErrorContext } from "./ErrorContext";
+ /* eslint-disable react/prop-types */
+ import { createContext, useEffect, useState, useContext } from "react";
+ import axios from "../services/axios";
+ import { getUSerLoginToken, removeFieldFromLS } from "../utils/localStorage";
+ import { getUser } from "../utils/user";
+ import { useErrorContext } from "./ErrorContext";
 
-const AuthContext = createContext();
-const token= getUSerLoginToken()
 
-const AuthContextProvider = (props) => {
-  const [key, setKey] = useState(token);
-  const [userDetails, setUserDetails] = useState({});
-  const [error, setError] = useState("")
-  const {setAppError} = useErrorContext()
+ const AuthContext = createContext();
+ const token= getUSerLoginToken()
 
-  const logout = () => {
-    setKey("");
-    localStorage.removeItem("login");
-    window.location.href = "/login";
-  };
+ const AuthContextProvider = (props) => {
+   const [key, setKey] = useState(token);
+   const [userDetails, setUserDetails] = useState({});
+   const [redirect, setRedirect] = useState(null);
+   const [error, setError] = useState("")
+   const {setAppError} = useErrorContext()
 
-  useEffect(() => {
-    if (token!=key) {
-      setKey(token);
-    }
-    let fetchUser = async () => {
-      const headers = {
-      Authorization: `Token ${token}`,
-    };
-      try{
-         const user_response = await axios.get("account/annonyuser/", {
-            headers,
-          });
-          setUserDetails(user_response.data)
-      }catch(err){
-        console.log(err)
-        setAppError(err)
-      }
-    }
-    if(!!token) fetchUser();
-  }, [key]);
+   const logout = () => {
+     setKey('');
+     localStorage.removeItem("login");
+   };
 
-  return (
-    <AuthContext.Provider value={{ key, logout, userDetails, error, setError }}>
-      {props.children}
-    </AuthContext.Provider>
-  );
-};
+   useEffect(() => {
+         if(key) runAsync();
+          async function runAsync(){
 
-const useAuthContext=()=>{
-  const context= useContext(AuthContext)
-  if(!context){
-    return console.error('Authcontext must be used within Authcontext Provider')
-  }
+           //load user_details from backend
+           try{
+             const user=  await getUser({ queryKey: [null, key] })
+             console.log(user.data)
+             setUserDetails(user.data)
+           }catch (err){
+             console.log(err)
+             if(err?.response?.status==401){
+               removeFieldFromLS('login') // remove lodin from localStorag
+               setKey(null)
+               setRedirect({url:'/login'})
+             }else{
+               setAppError(err)
+             }
+           }
+          }
 
-  return context
-}
+   }, [key]);
 
-export {AuthContextProvider, useAuthContext , AuthContext};
+   return (
+     <AuthContext.Provider value={{ key, setKey, logout, userDetails, setUserDetails, error, setError, redirect, setRedirect }}>
+       {props.children}
+     </AuthContext.Provider>
+   );
+ };
+
+ const useAuthContext=()=>{
+   const context= useContext(AuthContext)
+   if(!context){
+     return console.error('Authcontext must be used within Authcontext Provider')
+   }
+
+   return context
+ }
+
+ export {AuthContextProvider, useAuthContext , AuthContext};

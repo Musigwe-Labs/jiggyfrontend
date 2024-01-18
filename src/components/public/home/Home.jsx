@@ -66,7 +66,7 @@ const Home = () => {
       // console.log(lastPage.data.next);
     },
   });
-  const restoreScroll = useRestoreScroll("home-" + selectedTab);
+  const restoreScroll = useRestoreScroll("home-" + selectedTab, selectedTab);
 
   //memoized destructured data to prevent infinite rerender issue
   // Note: it later occured to me that, alternatively, one could access the "data" properties directly rather than destructuring to avoid using memoization.
@@ -79,8 +79,8 @@ const Home = () => {
   );
   //using react-query to handle fetching userdetails
   const { data: userDataResult, error: userDetailsError } = useQuery({
-    queryKey: ["userDetails", key],
-    queryFn: getUser,
+    queryKey: ["userDetails"],
+    queryFn: ()=>getUser({queryKey:[null, key]})
   });
 
   //memoized destructured data to prevent infinite rerender issue
@@ -129,7 +129,7 @@ const Home = () => {
   }, [postsResult]);
 
   useEffect(() => {
-    if (key == null) {
+    if (!key) {
       navigate("/login");
     }
 
@@ -142,7 +142,7 @@ const Home = () => {
       setHasMorePosts(Boolean(postsResult));
       setAppError(null);
     } else if (error) {
-      setAppError(error);
+        setAppError(error);
     }
 
     if (Boolean(userDetails)) {
@@ -213,12 +213,15 @@ const Home = () => {
             ) : (
               ""
             )}
-            <div className="sticky top-0 bg-black">
-              <NotificationButton />
-              <HomeHeader
-                setProfilePage={setProfilePage}
-                userDetails={userDetails}
+            <div className="sticky top-0 bg-black pt-4">
+              <div className="flex justify-between items-center">
+                 <HomeHeader
+                    setProfilePage={setProfilePage}
+                    userDetails={userDetails}
               />
+              <NotificationButton />
+              </div>
+             
               <HomeTabs />
 
               {userDetails && (

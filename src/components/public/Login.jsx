@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import AuthIcons from '../common/AuthIcons'
 import TermsOfService from "../common/TermsOfService";
@@ -10,77 +10,83 @@ import { loginUser } from "../../apis/authenticationApis";
 import EyeOpenIcon from "../../assets/blue-eye.png";
 import EyeClosedIcon from "../../assets/closed-eye.png";
 
-const getUrlToken = (search) => {
+
+import { useAuthContext } from '../../contexts/AuthContext'
+import { useErrorContext } from '../../contexts/ErrorContext'
+import {getUser} from '../../utils/user'
+
+//import {  } from '../..//ErrorContext'
+
+
+const getTokenFromSearchParams = (search) => {
   const query = new URLSearchParams(search); // parse params to object format
   const token = query.get("token") ? query.get("token") : null;
   return token;
 };
-function getLoginFromLocalStotrage(){
-  //returns the user token from local storage //{key: token}
-  const token=JSON.parse(localStorage.getItem('login'))
-  return token || null
-}
+
 
 const Login = () => {
   const navigate = useNavigate();
-  const token=getLoginFromLocalStotrage()
+  const {setAppError} = useErrorContext()
+  const {key, setKey, setUserDetails} = useAuthContext()
+  // const { redirect, setRedirect} =useAuthContext()
+  // console.log('redirect', redirect)
 
   /**const [email, setEmail] = useState();*/
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [signing, setSigning] = useState(false);
-  const [success, setSuccess] = useState(token);
+  const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
   const { search } = useLocation();
-
+  useLayoutEffect(()=>{
+   if(key) navigate('/home') ;
+  }, [key])
+  
   useEffect(() => {
     if(success==null && Boolean(search)){
         const token=getUrlToken(search)
-        token? setSuccess({key:token})
-        : setError({message:"can't retrieve token"})
-    
+        if(token){
+          setSuccess({key:token})
+        }
+        else{
+          setError({message:"can't retrieve token"})
+        }
     }
 
     if (success !== null) {
-      if(!token){
-        localStorage.setItem("login", JSON.stringify({ key: success.key }));
-      }
-      setError("");
-      setEmail("");
-      setPassword("");
-      navigate("/home");
-      window.location.reload();
-    }
-    /*
-    if (error) { // Check if error is not null or undefined
-      if (error.response) {
-        const errorData = error.response.data;
-        if (errorData && errorData.non_field_errors && errorData.non_field_errors.length > 0) {
-          // Handle non-field-specific errors
-          alert(errorData.non_field_errors[0]);
-a        } else if (errorData && errorData.password && errorData.password.length > 0) {
-          // Handle password-related errors
-          alert(errorData.password[0]);
-        } else {
-          // Handle other types of errors
-          alert('Wrong email or password');
+      runAsync()
+      async function runAsync(){
+        const key=success.key
+        //load user_details from backend
+        try{
+          const user=  await getUser({ queryKey: [null, key] })
+          localStorage.setItem("login", JSON.stringify({ key: success.key }));
+          setKey(success.key)
+          navigate("/home");
+        }catch (err){
+          console.log(err)
+          if(err?.response?.status==401){
+            removeFieldFromLS('login') // remove lodin from localStorag
+            setKey(null)
+            setAppError({message:'account not found'})
+          }else{
+            setAppError(err)
+          }
         }
-      } else {
-        // Handle other types of errors, e.g., network issues
-      
-        alert('error: '+ error);
       }
-      setSigning(false);
-      setError(null);
-      */
-     
-     if (error !== null) {
-      console.log(error)
-      alert(error.non_field_errors[0])
-      setSigning(false)
-      setError(null)
     }
+     
+   if (error !== null) {
+    console.log(error)
+    setSigning(false)
+    if(error?.response?.data?.type=='validation_error'){
+      setAppError({message:'account not found '})
+    }else{
+      setAppError(error)
+    }
+  }
   }, [success, error])
 
   const handleLogin = (e) => {

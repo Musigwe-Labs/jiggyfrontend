@@ -7,3 +7,8 @@ export function getUSerLoginToken(){
     return token?.key || null
   }
   
+
+
+export function removeFieldFromLS(item){
+    localStorage.removeItem(item)
+  }
