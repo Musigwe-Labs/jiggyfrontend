@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export async function getPosts({ queryKey: [, currentPageIndex] }) {
+export async function getPosts({ pageParam }) {
   const response = await axios.get(
-    `annon/posts/paginated/?page=${currentPageIndex}`
+    `annon/posts/paginated/?page=${pageParam}`
   );
   return response;
 }
