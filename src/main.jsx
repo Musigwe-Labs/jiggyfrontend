@@ -7,7 +7,7 @@ import { AllContextProvider } from './App'
 import './index.css'
 // import { WebSocketProvider } from './contexts/webSocketContext.jsx'
 
-axios.defaults.baseURL="https://jiggybackend.com.ng"
+axios.defaults.baseURL="https://jiggybackend.onrender.com"
 
 import {
   Notifications,
