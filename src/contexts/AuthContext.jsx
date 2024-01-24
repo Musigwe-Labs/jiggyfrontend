@@ -12,7 +12,7 @@
  const AuthContextProvider = (props) => {
    const [key, setKey] = useState(token);
    const [userDetails, setUserDetails] = useState({});
-   const [redirect, setRedirect] = useState(null);
+   // const [redirect, setRedirect] = useState(null);
    const [error, setError] = useState("")
    const {setAppError} = useErrorContext()
 
@@ -45,7 +45,7 @@
    }, [key]);
 
    return (
-     <AuthContext.Provider value={{ key, setKey, logout, userDetails, setUserDetails, error, setError, redirect, setRedirect }}>
+     <AuthContext.Provider value={{ key, setKey, logout, userDetails, setUserDetails, error, setError }}>
        {props.children}
      </AuthContext.Provider>
    );

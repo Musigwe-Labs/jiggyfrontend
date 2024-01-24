@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useLayoutEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import CommentInfo from "./commentInfo";
 import Gist from "./gist";
@@ -12,14 +13,13 @@ import {
   FaReplyAll,
   FaReplyd,
 } from "react-icons/fa6";
+import { FaSpinner } from "react-icons/fa";
 import axios from "../../../services/axios";
 import { IoIosCheckmark, IoIosSend } from "react-icons/io";
 import _ from "lodash";
-import { FaSpinner } from "react-icons/fa";
-import { ReplyComment } from "./replyComment";
-import Replies from "./replies";
-import { Link, useParams } from "react-router-dom";
+import SingleComment from "./singleComment";
 import Spinner from "../../common/Spinner";
+import GoBackButton from "./goBackButton";
 import {getComments} from '../../../utils/user'
 import { useErrorContext}  from  '../../../contexts/ErrorContext'
 import { useQuery, useQueryClient, QueryClient} from '@tanstack/react-query'
@@ -29,62 +29,45 @@ import { queryClient } from "../../../App";
 
 
 const Comment = ({ reloadPosts }) => {
+  // const [userDetails, setUserDetails] = useState([]);
+  const [userComment, setUserComment] = useState(null)
   const {setAppError}= useErrorContext()
+  const { userDetails:{user}, key}= useAuthContext()
   const [inputValue, setInputValue] = useState("");
   const [inputHeight, setInputHeight] = useState("35px");
-  const [userDetails, setUserDetails] = useState([]);
-  // const [post, setPost] = useState(null);
   const [status, setStatus] = useState({
     loading: false,
     succesful: false,
     error: "",
   });
   const { id } = useParams();
-  const { key } = useAuthContext();
   const restoreScroll=useRestoreScroll('comments-'+id)
-
   const {isPending:isLoading, data, error }=useQuery({
     queryKey:['commments '+id, id, key],
     queryFn:getComments
   })
-
-const post= useMemo(()=> data? data.data : data , [data])
-
+  const post= useMemo(()=> data? data.data : data , [data])
   const headers = {
     Authorization: `Token ${key}`,
   };
-  // useEffect(() => {
-  //   const fetchUser = async () => {,
-  //     try {
-  //       if (localStorage.getItem("login") !== null) {
-  //         const user_response = await axios.get("account/annonyuser/", {
-  //           headers,
-  //         });
-  //         setUserDetails(user_response.data)
-  //       }
-  //     } catch (error) {}
-  //   };
-  //   fetchUser();
-  // }, []);
+  const maxInputHeight = 220; // Adjust this value as needed
   
-  useEffect(() => {
-    // const fetchPosts = async () => {
-    //   try {
-    //     const response = await axios.get(`/annon/posts/detail/${id}/`, {
-    //       headers,
-    //     });
-    //     setPost(response.data);
+  useLayoutEffect(()=>{
+    console.log(document.body.scrollHeight)
+    if(userComment){
+      window.scrollTo({ 
+        left:0, 
+        top:window.document.body.scrollHeight,
+        behavior:'smooth'
+      })
+    }
+  }, [userComment])
 
-    //   } catch (err) {
-    //     // setError(err.message);
-    //   }
-    // };
-    // fetchPosts();
+  useEffect(() => {
       if(error){
           setAppError(error)
       }
   }, [post, error]);
-  const maxInputHeight = 220; // Adjust this value as needed
 
   const handleInputChange = (event) => {
     const { value, scrollHeight } = event.target;
@@ -102,11 +85,21 @@ const post= useMemo(()=> data? data.data : data , [data])
     }
   }, [inputValue]);
 
+  function showUserCommentOffline(){
+    setUserComment({content:inputValue, replies:[], user:user.generated_username, id:""})
+    window.scrollTo({
+      left:0, 
+      top:window.document.body.scrollHeight,
+      behavior:'smooth'
+    })
+  }
+
   const handleSendComment = async () => {
+    setStatus({ ...status, loading: true });
+    showUserCommentOffline()
     try {
       // if (inputValue) {
-        setStatus({ ...status, loading: true });
-        const data = { content: inputValue, post: post.id };
+        const data = { content: inputValue, post: post.id };  
         await axios.post("annon/posts/comment/", data, { headers });
         console.log(inputValue);
         setInputValue("");
@@ -116,10 +109,11 @@ const post= useMemo(()=> data? data.data : data , [data])
           exact: true,
           type: "active",
         });
+        setUserComment(null)
         setStatus({ ...status, loading: false, successful: true });
-        setAppError({message:'comment sent'})
-      // }
-    } catch (error) {
+        setAppError({message:'comment sent', status:'success' })
+      }
+    catch (error) {
       setStatus({ ...status, error: error });
     }
   };
@@ -132,16 +126,14 @@ const post= useMemo(()=> data? data.data : data , [data])
     <div className="relative min-h-screen pt-4 px-3 flex flex-col">
       <div className="flex align-center">
         <div className="flex align-center">
-          <Link to="/home">
-            <FaArrowLeftLong size={25} className="cursor-pointer" />
-          </Link>
+          <GoBackButton />
           <h1 className="text-3xl ml-6 text-center font-bold from-[#ff0000] via-[#ff004c] to-[#0028ad] bg-gradient-to-br bg-clip-text text-transparent">
             Comment
           </h1>
         </div>
         <div></div>
       </div>
-      <div className="z-10 md:mx-10 p-3">
+      <div className="post z-10 md:mx-10 p-3">
         <CommentInfo
           school={post.user.school}
           name={post.user.generated_username}
@@ -150,35 +142,16 @@ const post= useMemo(()=> data? data.data : data , [data])
         <GistLinks post={post} />
       </div>
       <div className="mt-4 mb-10">
-        <p className="px-3 my-3 text-gray-400">
+        <p className=" comments-length px-3 my-3 text-gray-400">
           {post.comments.length}{" "}
-          {post.comments.length < 1 ? "comment" : "comments"}
+          {post.comments.length <=1 ? "comment" : "comments"}
         </p>
-        <div className="mx-2 flex-1 gap-4 flex flex-col overflow-auto border-l border-gray-500">
-          {post.comments.map((comment) => {
-            return (
-              <div
-                key={comment.created_at}
-                className="text-base bg-[#1717171a] mt-2 px-3 rounded-xl"
-              >
-                <div className="flex items-start mb-1">
-                  <div className="px-3 py-1 rounded-3xl mr-2 bg-gray-700">
-                    {comment.user[0].toUpperCase()}
-                  </div>
-                  <div>
-                    <h4 className="text-white mr-1 text-base font-bold">
-                      @{comment.user}
-                    </h4>
-                    <p className="text-base">{comment.content}</p>
-                    <ReplyComment commentId={comment.id} />
-                    {comment.replies.length > 0 && (
-                      <Replies replies={comment.replies} />
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <div className="comments mx-2 flex-1 gap-4 flex flex-col overflow-auto border-l border-gray-500">
+          {post.comments.map((comment) => 
+            <SingleComment key={comment.created_at} comment={comment} />
+            ).reverse()
+          }
+          {userComment && <SingleComment key={Date.now()} comment={userComment} /> }
         </div>
       </div>
       <form
@@ -189,11 +162,12 @@ const post= useMemo(()=> data? data.data : data , [data])
       >
         <textarea
           //   style={{ height: inputHeight }}
-          className="resize-none p-2 pr-14 block w-full border-b bg-transparent rounded-md  focus:outline-none "
+          className={`resize-none p-2 pr-14 block w-full border-b bg-transparent rounded-md  focus:outline-none ${status.loading? 'text-slate-300':''}`}
           placeholder="Comment your thought"
           rows={{ inputHeight }}
           value={inputValue}
           onChange={e => handleInputChange(e)}
+          disabled={status.loading}
         />
         <button
           type="submit"
@@ -214,3 +188,5 @@ const post= useMemo(()=> data? data.data : data , [data])
   );
 };
 export default Comment;
+
+

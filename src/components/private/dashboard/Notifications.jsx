@@ -3,7 +3,7 @@ import HomeFooter from "../../public/home/homeFooter";
 import Spinner from "../../common/Spinner";
 import ErrorOccurred from "../../error/ErrorOccurred";
 import { useRestoreScroll } from "../../../utils/restoreScroll";
-import { GoArrowLeft as BackBtn } from "react-icons/go";
+import GoBackButton from '../../public/home/goBackButton'
 
 import { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -52,12 +52,10 @@ export default function Notiifications() {
     <>
       <header className="fixed  top-0 w-full h-20 bg-black flex items-center justify-between px-4 ">
       <div className="left flex gap-2 items-center">
-      		<Link to="/home">
-            	<BackBtn className="text-xl"  size={25} />
-          	</Link>
-          	<h1 className="nav text-2xl font-bold bg-gradient-to-l from-[#B416FE40] via-[#FF008A62] to-[#F33F5E] bg-clip-text text-transparent font-openSans ">
-            	Notifications
-          	</h1>
+      		<GoBackButton />
+        	<h1 className="nav text-2xl font-bold bg-gradient-to-l from-[#B416FE40] via-[#FF008A62] to-[#F33F5E] bg-clip-text text-transparent font-openSans ">
+          	Notifications
+        	</h1>
       </div>
       <div className="right">
       	<p className="mark-all text-xs text-[#B20000] font-poppins ">

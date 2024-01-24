@@ -59,9 +59,8 @@ const Home = () => {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["posts"],
+    queryKey: ["posts", currentPageIndex],
     queryFn: getPosts,
-    initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => {
       // console.log(lastPage.data.next);
     },
@@ -142,6 +141,7 @@ const Home = () => {
       setHasMorePosts(Boolean(postsResult));
       setAppError(null);
     } else if (error) {
+        console.log(error)
         setAppError(error);
     }
 
