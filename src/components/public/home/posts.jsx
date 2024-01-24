@@ -116,11 +116,11 @@ const Posts = ({
                     : "border-b border-y-[#4B5563]"
                 }`}
               >
-                {/* <HomeInfo
+                <HomeInfo
                   school={user.school}
                   name={user.generated_username}
                   created_at={created_at}
-                /> */}
+                />
                 <PostType post_type={post_type} />
                 <div onClick={() => onPostClick(post, index)}>
                   <Gist content={content} images={images} />
@@ -140,11 +140,11 @@ const Posts = ({
                   : "border-b border-y-[#4B5563]"
               }`}
             >
-              {/* <HomeInfo
+              <HomeInfo
                 school={user.school}
                 name={user.generated_username}
                 created_at={created_at}
-              /> */}
+              />
               <PostType post_type={post_type} />
               <Link to={`/comment/${id}`} onClick={() => onPostClick(post)}>
                 <Gist content={content} images={images} showFullGist={true} />

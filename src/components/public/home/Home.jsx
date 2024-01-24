@@ -155,7 +155,8 @@ const Home = () => {
   //Refetch posts after posting
   const reloadPosts = async () => {
     await queryClient.refetchQueries({
-      queryKey: ["posts", 1],
+      queryKey: ["posts"],
+      // initialPageParam: 1,
       exact: true,
       type: "active",
     });

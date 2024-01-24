@@ -4,6 +4,7 @@ import profile_pic from "../../../assets/profile_pics/pic1.png";
 import timeGap from "../../../services/dateCheck";
 
 const HomeInfo = (props) => {
+  console.log("info");
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center">
