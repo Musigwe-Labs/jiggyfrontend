@@ -44,7 +44,6 @@ const CreatePostPage = ({ setCreatePost, reloadPosts, userSchool }) => {
   const { key } = useContext(AuthContext);
   const headers = {
     Authorization: `Token ${key}`,
-    // "Content-Type": "application/json",
     "Content-Type": "multipart/form-data",
   };
 
@@ -71,7 +70,6 @@ const CreatePostPage = ({ setCreatePost, reloadPosts, userSchool }) => {
   };
 
   const handlePost = async () => {
-
     if (content) {
       setIsLoading(true);
       const formData = new FormData(form.current, postBtn.current);
@@ -82,16 +80,13 @@ const CreatePostPage = ({ setCreatePost, reloadPosts, userSchool }) => {
       try {
         await axios.post("annon/posts/create/", formData, { headers });
         setCreatePost(false);
-        // await queryClient.refetchQueries({
-        //   queryKey: ["posts", 1],
-        //   // initialPageParam: 1,
-        //   exact: true,
-        //   type: "active",
-        // });
         await reloadPosts();
         setIsLoading(false);
         setAppError(null);
-        setAppError({message:`You've created a new post`, status:'success' })
+        setAppError({
+          message: `You've created a new post`,
+          status: "success",
+        });
       } catch (error) {
         if (error) {
           setIsLoading(false);
@@ -132,15 +127,6 @@ const CreatePostPage = ({ setCreatePost, reloadPosts, userSchool }) => {
     setError(null);
   }
 
-  // const handlePost= ()=>{
-  //     const data = { content , post_type }
-  //     if (socket && socket.readyState === WebSocket.OPEN) {
-  //         socket.send(data)
-  //         // .then((response)=>console.log(response))
-  //         // .catch((err)=>console.log(err))
-  //         setCreatePost(false)
-  //     }
-  // }
   const throttledApiRequest = _.throttle(handlePost, 3500);
   if (error === "server error") {
     return (
@@ -190,29 +176,6 @@ const CreatePostPage = ({ setCreatePost, reloadPosts, userSchool }) => {
               <FaSpinner size={"1.5rem"} className="animate-spin" />
             )}
           </button>
-          {/* <button
-
-
-            className={`text-[#F33F5E] text-lg ${
-              !isLoading && "bg-white"
-            } font-bold transition-all duration-300 px-3 rounded-lg ${
-              !content
-                ? "opacity-50"
-                : "opacity-1 hover:bg-[#F33F5E] hover:text-white"
-            }`}
-            onClick={throttledApiRequest}
-            type="submit"
-            ref={postBtn}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <FaSpinner size={"1.5rem"} className="animate-spin" />
-            ) : isPosted ? (
-              "Posted"
-            ) : (
-              "Post"
-            )}
-          </button> */}
         </div>
         <div>
           <button

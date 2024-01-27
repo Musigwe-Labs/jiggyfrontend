@@ -33,6 +33,7 @@ const Posts = ({
   let { fetchNextPage, hasNextPage, isFetchingNextPage } = scrollFetch;
   const queryClient = useQueryClient();
 
+  //infinte scrolling
   const lastElementRef = useCallback(
     (node) => {
       if (isLoading) return;
