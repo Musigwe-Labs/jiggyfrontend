@@ -16,6 +16,7 @@ import Tick from "../../../assets/Tick.svg";
 import { useQuery } from "@tanstack/react-query";
 import { getSchoolList } from "../../../utils/user";
 import { useMemo } from "react";
+import { queryClient } from "../../../App";
 
 const CreatePostPage = ({ setCreatePost, reloadPosts, userSchool }) => {
   const [content, setContent] = useState("");
@@ -81,10 +82,16 @@ const CreatePostPage = ({ setCreatePost, reloadPosts, userSchool }) => {
       try {
         await axios.post("annon/posts/create/", formData, { headers });
         setCreatePost(false);
+        // await queryClient.refetchQueries({
+        //   queryKey: ["posts", 1],
+        //   // initialPageParam: 1,
+        //   exact: true,
+        //   type: "active",
+        // });
         await reloadPosts();
         setIsLoading(false);
         setAppError(null);
-        // setAppError(false)
+        setAppError({message:`You've created a new post`, status:'success' })
       } catch (error) {
         if (error) {
           setIsLoading(false);

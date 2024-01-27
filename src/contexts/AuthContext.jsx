@@ -24,7 +24,7 @@
    useEffect(() => {
          if(key) runAsync();
           async function runAsync(){
-
+            // if(!navigator.onLine) setAppError("Network Error") 
            //load user_details from backend
            try{
              const user=  await getUser({ queryKey: [null, key] })
