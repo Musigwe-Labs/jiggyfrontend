@@ -28,7 +28,7 @@ const getTokenFromSearchParams = (search) => {
 const Login = () => {
   const navigate = useNavigate();
   const {setAppError} = useErrorContext()
-  const {key, setKey, setUserDetails} = useAuthContext()
+  const { key, redirect, setAuthContext } = useAuthContext()
   // const { redirect, setRedirect} =useAuthContext()
   // console.log('redirect', redirect)
 
@@ -39,11 +39,7 @@ const Login = () => {
   const [signing, setSigning] = useState(false);
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
-  const { search } = useLocation();
-  useLayoutEffect(()=>{
-   if(key) navigate('/home') ;
-  }, [key])
-  
+  const { search } = useLocation();  
   useEffect(() => {
     if(success==null && Boolean(search)){
         const token=getUrlToken(search)
@@ -63,13 +59,12 @@ const Login = () => {
         try{
           const user=  await getUser({ queryKey: [null, key] })
           localStorage.setItem("login", JSON.stringify({ key: success.key }));
-          setKey(success.key)
-          navigate("/home");
+          setAuthContext({ key: success.key})
         }catch (err){
           console.log(err)
           if(err?.response?.status==401){
             removeFieldFromLS('login') // remove lodin from localStorag
-            setKey(null)
+            setAuthContext({key:null})
             setAppError({message:'account not found'})
           }else{
             setAppError(err)

@@ -112,7 +112,7 @@ const Posts = ({
               <div
                 className={`mx-4  md:mx-16 p-3 transition-all duration-300 ease-linear  ${
                   selectedSchool.toLowerCase() != "all"
-                    ? `b${post_type} rounded-lg`
+                    ? `${post_type} rounded-lg`
                     : "border-b border-y-[#4B5563]"
                 }`}
               >
@@ -151,7 +151,7 @@ const Posts = ({
               </Link>
 
               <GistLinks post={post} onPostClick={onPostClick} />
-            </div>
+            </div>k
           </div>
         );
       })}

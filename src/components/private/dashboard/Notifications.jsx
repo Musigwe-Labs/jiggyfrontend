@@ -64,7 +64,7 @@ export default function Notiifications() {
       </div>
       <div className="right">
       	<p className="mark-all text-xs text-[#B20000] font-poppins ">
-            Mark all as read
+            {notifications?.data?.results?.length && 'Mark all as read' }
           </p>
       </div>
        {/* <div className="flex justify-between items-center px-4 py-6">
@@ -104,7 +104,7 @@ export default function Notiifications() {
 	                  {}
 	                  <p className="grow text-sm pl-2"> {el.notification_text}</p>
 	                </Link>
-	               <p className="time text-[.7rem]">{time}</p>
+	               <p className="time text-[.7rem] min-w-12 px-2">{time}</p>
               	</div>
               );
             })

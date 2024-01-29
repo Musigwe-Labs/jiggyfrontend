@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext } from "react";
+import { useContext, memo } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import {
@@ -14,12 +14,17 @@ import PrivacyHeader from "../common/PrivacyHeader";
 import { BsChat, BsChatFill, BsMessenger } from "react-icons/bs";
 
 //add two div side by side the secondone transparent on key press,chande profile state
-export const Profile = ({ setProfilePage, userDetails }) => {
-  const { logout } = useContext(AuthContext);
-console.log(userDetails);
+  const Profile = ({ setProfilePage, profilePage }) => {
+  const { logout, userDetails } = useContext(AuthContext);
+console.log(userDetails)
+
+  function handleClick(e){
+    e.stopPropagation()
+    setProfilePage(false)
+  }
   return (
-    <div className="fixed top-0 z-50 flex w-[100%] bg-[rgba(20,20,20,.3)] ">
-      <div className="shadow-[0_0_5px_0px] shadow-[rgba(150,150,105,.4)] flex flex-col justify-between h-[100vh] pt-6 pb-6 w-3/4 bg-black">
+    <div className={`fixed top-0 ${profilePage? 'left-0' : 'left-[-1000px]'} z-50 flex w-[100%] bg-[rgba(20,20,20,.3)] transition-[left] duration-500`}>
+      <div className="shadow-[0_0_5px_0px] shadow-[rgba(150,150,105,.4)] flex flex-col justify-between h-screen h-[100svh] pt-6 pb-6 w-3/4 bg-black ">
         <div>
           <header className="flex flex-col  font-bold items-center">
             <h2 className="text-3xl font-['Playfair_Display',_serif] ml-6 font-bold from-[#f33f5e] via-[#ff008a9e] to-[#b416fe66] bg-gradient-to-r bg-clip-text text-transparent">
@@ -28,7 +33,7 @@ console.log(userDetails);
               </span>
               iggy
             </h2>
-            <PrivacyHeader generated_username={userDetails.user.generated_username} />
+            <PrivacyHeader generated_username={userDetails?.user?.generated_username} />
           </header>
           <section className="flex gap-3 flex-col px-4">
             <Link
@@ -66,17 +71,21 @@ console.log(userDetails);
             className="flex items-center  py-1 px-2 text-black rounded-lg"
             onClick={() => logout()}
           >
-            <p className="text-xl mr-2 text-white font-bold">LOG OUT</p>
-            <HiOutlineLogout size={25} color="white" />
+            <p className="text-base mr-2 text-white font-bold">LOG OUT</p>
+            <HiOutlineLogout size={20} color="white" />
           </button>
         </div>
       </div>
       <div
-        className="h-100% w-1/4"
-        onClick={() => setProfilePage(false)}
-        onMouseDown={() => setProfilePage(false)}
-        onTouchStart={() => setProfilePage(false)}
+        className="h-100% w-1/4 bg-black opacity-60
+        "
+        onClick={handleClick}
+        onMouseDown={handleClick}
+        onTouchStart={handleClick}
       ></div>
     </div>
   );
 };
+
+
+export default memo(Profile)

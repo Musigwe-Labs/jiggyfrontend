@@ -5,7 +5,7 @@ const cacheList=[
 	  "/icons/jiggy-1024-x-1024.png"
 ]
 
-const backendOrigins=['https://jiggybackend.com.ng']
+const backendOrigins=['https://jiggybackend.onrender.com']
 
 self.addEventListener("install", (event) => {
 	// console.log('installing serviceWorker')

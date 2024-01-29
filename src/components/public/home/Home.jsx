@@ -5,7 +5,7 @@ import HomeHeader from "./homeHeader";
 import HomeTabs from "./homeTabs";
 import CreatePostBtn from "./createPostBtn";
 import CreatePostPage from "./createPostPage";
-import { Profile } from "../../private/dashboard/Profile";
+import Profile from "../../private/dashboard/Profile";
 import NotificationButton from "./NotificationButton";
 import HomeFooter from "./homeFooter";
 import Trending from "./trending/Trending";
@@ -46,7 +46,7 @@ const Home = () => {
   const [hasMorePosts, setHasMorePosts] = useState(false);
 
   const navigate = useNavigate();
-  const { key } = useAuthContext();
+  const { key, userDetails } = useAuthContext();
   const { setAppError } = useErrorContext();
 
   //using react-query to handle fetching posts
@@ -77,16 +77,16 @@ const Home = () => {
     [postsResult]
   );
   //using react-query to handle fetching userdetails
-  const { data: userDataResult, error: userDetailsError } = useQuery({
-    queryKey: ["userDetails"],
-    queryFn: ()=>getUser({queryKey:[null, key]})
-  });
+  // const { data: userDataResult, error: userDetailsError } = useQuery({
+  //   queryKey: ["userDetails"],
+  //   queryFn: ()=>getUser({queryKey:[null, key]})
+  // });
 
-  //memoized destructured data to prevent infinite rerender issue
-  const userDetails = useMemo(
-    () => (userDataResult ? { ...userDataResult.data } : userDataResult),
-    [userDataResult]
-  );
+  // //memoized destructured data to prevent infinite rerender issue
+  // const userDetails = useMemo(
+  //   () => (userDataResult ? { ...userDataResult.data } : userDataResult),
+  //   [userDataResult]
+  // );
 
   const handlePostClick = (post, index) => {
     setSelectedPost(post);
@@ -128,9 +128,6 @@ const Home = () => {
   }, [postsResult]);
 
   useEffect(() => {
-    if (!key) {
-      navigate("/login");
-    }
 
     if (userDetails != null && !error) {
       // fetchPosts()
@@ -145,10 +142,10 @@ const Home = () => {
         setAppError(error);
     }
 
-    if (Boolean(userDetails)) {
-    } else if (userDetailsError) {
-      setAppError(userDetailsError);
-    }
+    // if (Boolean(userDetails)) {
+    // } else if (userDetailsError) {
+    //   setAppError(userDetailsError);
+    // }
    
   }, [currentPageIndex, key, userDetails, error, selectedTab]);
 
@@ -179,40 +176,37 @@ const Home = () => {
     }
   };
 
-  if (!key) {
-    return <Spinner />;
-  }
+  // if (!key) {
+  //   return <Spinner />;
+  // }
 
-  if (createPost) {
-    return (
-      <CreatePostPage
-        userSchool={userDetails.user.school}
-        reloadPosts={reloadPosts}
-        setCreatePost={setCreatePost}
-      />
-    );
-  }
+  // if (createPost) {
+  //   return (
+  //     <CreatePostPage
+  //       userSchool={userDetails.user.school}
+  //       reloadPosts={reloadPosts}
+  //       setCreatePost={setCreatePost}
+  //     />
+  //   );
+  // }
 
   return (
     <>
-      {!key ? (
+      {!key ? 
         <Spinner />
-      ) : createPost ? (
-        <CreatePostPage
-          reloadPosts={reloadPosts}
-          setCreatePost={setCreatePost}
-        />
-      ) : (
+       : (
         <>
-          <div className="grow">
-            {profilePage ? (
+            <div className="grow">
               <Profile
                 setProfilePage={setProfilePage}
-                userDetails={userDetails}
-              />
-            ) : (
-              ""
-            )}
+                profilePage={profilePage}
+                user={userDetails.user}
+            />
+            <CreatePostPage
+              reloadPosts={reloadPosts}
+              setCreatePost={setCreatePost}
+              createPost={createPost}
+            />
             <div className="sticky top-0 bg-black pt-4">
               <div className="flex justify-between items-center">
                  <HomeHeader
@@ -265,7 +259,7 @@ const Home = () => {
                     <div
                       onClick={() =>
                         handleSchoolFilter(
-                          userDetails.user.school.school_acronym
+                          userDetails?.user?.school?.school_acronym
                         )
                       }
                       className="flex justify-between p-2 cursor-pointer items-center mb-2"
@@ -275,7 +269,7 @@ const Home = () => {
                         className="opacity-70"
                         style={{ textShadow: "0 0 2px #490A0A" }}
                       >
-                        {userDetails && userDetails.user.school.school_acronym}
+                        {userDetails && userDetails?.user?.school?.school_acronym}
                       </p>
                       <BsCheckCircleFill
                         fill="#BA3131"

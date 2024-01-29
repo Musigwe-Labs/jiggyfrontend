@@ -30,47 +30,47 @@ import RestoreScroll from './utils/restoreScroll.jsx'
 const router= createBrowserRouter([
   {
     path:'/',
-    element:Wrapper(Home) 
+    element:<Wrapper> <Home /> </Wrapper> 
   },
   {
     path:'/home',
-    element:Wrapper(Home)
+    element:<Wrapper> <Home /> </Wrapper>
   },
   {
     path:'/login',
-    element:Wrapper(Login)
+    element:<Wrapper> <Login /> </Wrapper>
   },
   {
     path:'/register',
-    element:Wrapper(Register)
+    element:<Wrapper> <Register /> </Wrapper>
   },
   {
     path:'/comment/:id',
-    element:Wrapper(Comment)
+    element:<Wrapper> <Comment /> </Wrapper>
   },
   {
     path:'/home/trending',
-    element:Wrapper(Home)
+    element:<Wrapper> <Home /> </Wrapper>
   },
   {
     path:'/dashboard',
-    element:Wrapper(Dashboard)
+    element:<Wrapper> <Dashboard /> </Wrapper>
   },
   {
     path:'/privacy',
-    element:Wrapper(Privacy)
+    element:<Wrapper> <Privacy /> </Wrapper>
   },
   {
     path:'/messages',
-    element:Wrapper(Messages)
+    element:<Wrapper> <Messages /> </Wrapper>
   },
   {
     path:'/notifications',
-    element:Wrapper(Notifications)
+    element:<Wrapper> <Notifications /> </Wrapper>
   },
   {
     path:'/chat/:friend_name',
-    element:Wrapper(Chat)
+    element:<Wrapper> <Chat /> </Wrapper>
   },
 
   {
@@ -87,7 +87,7 @@ const router= createBrowserRouter([
   },
   {
     path:'/comments/:id',
-    element: <Comment /> 
+    element: <Wrapper> <Comment /> </Wrapper> 
   },
   // {
   //   path:'/test',

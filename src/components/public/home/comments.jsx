@@ -43,7 +43,7 @@ const Comment = ({ reloadPosts }) => {
   const { id } = useParams();
   const restoreScroll=useRestoreScroll('comments-'+id)
   const {isPending:isLoading, data, error }=useQuery({
-    queryKey:['commments '+id, id, key],
+    queryKey:['comments '+id, id, key],
     queryFn:getComments
   })
   const post= useMemo(()=> data? data.data : data , [data])
@@ -123,7 +123,7 @@ const Comment = ({ reloadPosts }) => {
     return <Spinner />;
   }
   return (
-    <div className="relative min-h-screen pt-4 px-3 flex flex-col">
+    <div className="relative h-screen h-[100svh] pts-4 px-3 flex flex-col">
       <div className="flex align-center">
         <div className="flex align-center">
           <GoBackButton />

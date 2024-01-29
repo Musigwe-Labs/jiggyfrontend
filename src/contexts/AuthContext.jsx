@@ -4,52 +4,66 @@
  import { getUSerLoginToken, removeFieldFromLS } from "../utils/localStorage";
  import { getUser } from "../utils/user";
  import { useErrorContext } from "./ErrorContext";
-
+ import  Spinner from '../components/common/Spinner'
+ import  ErrorOccurred from '../components/error/ErrorOccurred'
 
  const AuthContext = createContext();
- const token= getUSerLoginToken()
 
- const AuthContextProvider = (props) => {
-   const [key, setKey] = useState(token);
-   const [userDetails, setUserDetails] = useState({});
-   // const [redirect, setRedirect] = useState(null);
-   const [error, setError] = useState("")
-   const {setAppError} = useErrorContext()
-
+ const AuthContextProvider = ({children}) => {
+  console.log(children)
+   const initialState = ()=> ({
+      userDetails: {},
+      key:getUSerLoginToken(),
+      status: 'loading'
+    })
+   const {setAppError} = useErrorContext() 
+   const [state, setState] = useState(initialState);
+   const {status, key, userDetails}= state
+   const {error, redirect}= status
+   const setKey = (newKey) => setState({...state, key:newKey })
+   const setStatus = (newStatus) => setState({...state, status:{...newStatus} })
+   const setAuthContext = (newContext) => setState({...state, ...newContext })
    const logout = () => {
      setKey('');
      localStorage.removeItem("login");
    };
 
    useEffect(() => {
-         if(key) runAsync();
-          async function runAsync(){
+    if(key){
+        runAsync()
+     }else{
+        console.log('no key in localStorage')
+        setAuthContext({status:{redirect:true}})
+     }
 
-           //load user_details from backend
-           try{
-             const user=  await getUser({ queryKey: [null, key] })
-             console.log(user.data)
-             setUserDetails(user.data)
-           }catch (err){
-             console.log(err)
-             if(err?.response?.status==401){
-               removeFieldFromLS('login') // remove lodin from localStorag
-               setKey(null)
-               setRedirect({url:'/login'})
-             }else{
-               setAppError(err)
-             }
-           }
+    async function runAsync(){
+       //load user_details from backend
+       try{
+         const user=  await getUser({ queryKey: [null, key] })
+         setAuthContext({userDetails: {...user.data} , status:'resolved'})
+       }catch (err){
+         console.log(err)
+         if(err?.response?.status==401){
+            removeFieldFromLS('login') // remove login from localStorage
+            setAuthContext({key:null, redirect:true, status:'redirecting'})
+         }else{
+            setAuthContext({ status: {error:err} })
+            setAppError(err)
           }
+       }      
+     }  
 
-   }, [key]);
+   }, [key, error]);
 
-   return (
-     <AuthContext.Provider value={{ key, setKey, logout, userDetails, setUserDetails, error, setError }}>
-       {props.children}
+    if(status=='loading') return <Spinner /> 
+    // if(error) return <ErrorOccurred setError={()=>{ setAuthContext({status:'loading'}) }} /> ;
+
+    return (
+     <AuthContext.Provider value={{ key, setKey, logout, userDetails, redirect, setStatus, setAuthContext }}>
+       {children}
      </AuthContext.Provider>
-   );
- };
+   )
+ }
 
  const useAuthContext=()=>{
    const context= useContext(AuthContext)
