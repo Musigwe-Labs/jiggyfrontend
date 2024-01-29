@@ -5,7 +5,7 @@ import ErrorOccurred from "../../error/ErrorOccurred";
 import { useRestoreScroll } from "../../../utils/restoreScroll";
 import GoBackButton from '../../public/home/goBackButton'
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { getNotifications } from "../../../utils/user";
@@ -34,22 +34,12 @@ export default function Notiifications() {
     queryKey: ["notifications", token],
     queryFn: getNotifications,
   });
-  console.log(notifications)
-
-  // {"data":{"count":4,"next":null,"previous":null,"results":[{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 98"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 98"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 100"}]},{"notifications":[{"user":"Samantha_359","notification_text":"Samantha_359 commented on post 100"}]}]},
-
+  
   useEffect(() => {
-    if (token == null) {
-      navigate("/login");
-    }
     if (!error) {
       setAppError(null);
     } else {
       setAppError(error);
-    }
-
-    if(notifications){
-    	console.log(notifications)
     }
   }, [error, token, notifications]);
 
@@ -64,7 +54,7 @@ export default function Notiifications() {
       </div>
       <div className="right">
       	<p className="mark-all text-xs text-[#B20000] font-poppins ">
-            {notifications?.data?.results?.length && 'Mark all as read' }
+            {notifications?.data?.results?.length? 'Mark all as read' : null }
           </p>
       </div>
        {/* <div className="flex justify-between items-center px-4 py-6">
@@ -77,19 +67,19 @@ export default function Notiifications() {
           <ErrorOccurred />
         ) : isLoading ? (
           <Spinner />
-        ) : notifications.data && notifications.data.results.length == 0 ? (
+        ) : notifications?.data && notifications?.data?.results?.length == 0 ? (
           <p className=" text-center text-base">
             I'm Sorry you do not have any new notification
           </p>
         ) : (
-          notifications.data.results
-            .map((item, index) => {
+          notifications?.data?.results
+            ?.map((item, index) => {
            		const [el]= item
            
-              	const postId = el.notification_text.split(',')[0].split(' ').at(-1) || el.notification_text.split(' ').at(-1)
+              	const postId = el?.notification_text.split(',')[0].split(' ').at(-1) || el?.notification_text.split(' ').at(-1)
             	// let commentId=  	el.notification_text.split(',').at(-1).split(' ').at(-1)
               	let commentId
-				const time=getNotificationDate(el.created_at)	
+				const time=getNotificationDate(el?.created_at)	
 
               
 
@@ -102,7 +92,7 @@ export default function Notiifications() {
 	                >
 	                  <img className="w-6" src={comments} alt="comments" />
 	                  {}
-	                  <p className="grow text-sm pl-2"> {el.notification_text}</p>
+	                  <p className="grow text-sm pl-2"> {el?.notification_text}</p>
 	                </Link>
 	               <p className="time text-[.7rem] min-w-12 px-2">{time}</p>
               	</div>

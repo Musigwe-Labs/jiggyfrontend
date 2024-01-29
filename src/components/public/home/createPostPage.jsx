@@ -17,6 +17,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getSchoolList } from "../../../utils/user";
 import { useMemo } from "react";
 import SaveDraft from './saveDraft'
+import { queryClient } from "../../../App";
+
 
 const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) => {
   const [content, setContent] = useState(()=> localStorage.getItem('draft') || '')
@@ -31,8 +33,8 @@ const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) =
   const [error, setError] = useState("");
   const form = useRef();
   const { setAppError } = useErrorContext();
-
-console.log('status', status)
+  const { key } = useAuthContext();
+  
   const handleTextareaChange = (e) => {
     setContent(e.target.value);
   };
@@ -42,10 +44,8 @@ console.log('status', status)
     setSelectedOption(option);
   };
 
-  const { key } = useAuthContext();
   const headers = {
     Authorization: `Token ${key}`,
-    // "Content-Type": "application/json",
     "Content-Type": "multipart/form-data",
   };
 
@@ -81,7 +81,6 @@ console.log('status', status)
   }
 
   const handlePost = async () => {
-
     if (content) {
       setStatus('loading');
       const formData = new FormData(form.current, postBtn.current);
@@ -92,9 +91,10 @@ console.log('status', status)
       try {
         await axios.post("annon/posts/create/", formData, { headers });
         await reloadPosts();
+        setContent('')
         setStatus('resolved');
         setCreatePost(false);
-        setAppError({message:' post sent', status:'success'});
+        setAppError({message:"You've created a new post", status:'success'});
       } catch (error) {
         if (error) {
           setStatus({error:error});
@@ -142,15 +142,6 @@ console.log('status', status)
     setError(null);
   }
 
-  // const handlePost= ()=>{
-  //     const data = { content , post_type }
-  //     if (socket && socket.readyState === WebSocket.OPEN) {
-  //         socket.send(data)
-  //         // .then((response)=>console.log(response))
-  //         // .catch((err)=>console.log(err))
-  //         setCreatePost(false)
-  //     }
-  // }
   const throttledApiRequest = _.throttle(handlePost, 3500);
   if (error === "server error") {
     return (

@@ -1,5 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import Gist from "./gist";
 import GistLinks from "./gistLinks";
 import HomeInfo from "./homeInfo";
@@ -18,55 +24,29 @@ const Posts = ({
   onPostClick,
   filterBy,
   isLoading,
-  setCurrentPageIndex,
   selectedSchool,
-  hasMorePosts,
   scrollFetch,
 }) => {
-  // console.log(posts)http://localhost:5174/home
   const [sortedPostsByTime, setSortedPostsByTime] = useState([]);
   const lastPostRef = useRef();
-  const [isIntersecting, setIsIntersecting] = useState(false);
   const [isLoadingMorePosts, setIsLoadingMorePosts] = useState(false);
-  let {
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-  } = scrollFetch;
+  let { fetchNextPage, hasNextPage, isFetchingNextPage } = scrollFetch;
   const queryClient = useQueryClient();
-  
-  // useEffect(() => {
-  //   if (posts.length === 0) return;
-  //   let allPosts = document.querySelector(".posts");
-  //   // console.log(allPosts);
-  //   // if (!allPosts || allPosts.length === 0) return;
-  //   let lastPost = allPosts.lastChild;
-  //   // console.log(lastPost);
-  //   if (!lastPost) return;
 
-  //   const observer = new IntersectionObserver(([entry]) => {
-  //     setIsIntersecting(entry.isIntersecting);
-  //   });
-  //   // console.log("loading1");
-  //   observer.observe(lastPost);
-  //   return () => {
-  //     observer.disconnect();
-  //     setIsLoadingMorePosts(false);
-  //     // console.log("done");
-  //   };
-  // }, [posts, isIntersecting]);
-
-  // useEffect(() => {
-  //   setIsLoadingMorePosts(false);
-
-  //   if (isIntersecting && hasMorePosts) {
-  //     setIsLoadingMorePosts(true);
-  //     console.log("loading2");
-
-  //     setCurrentPageIndex((prevPageIndex) => prevPageIndex + 1);
-  //   }
-  // }, [isIntersecting]);
+  //infinte scrolling
+  const lastElementRef = useCallback(
+    (node) => {
+      if (isLoading) return;
+      if (lastPostRef.current) lastPostRef.current.disconnect();
+      lastPostRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      });
+      if (node) lastPostRef.current.observe(node);
+    },
+    [isLoading, hasNextPage]
+  );
 
   useEffect(() => {
     sortPosts();
@@ -94,20 +74,22 @@ const Posts = ({
   if (isLoading) return <Spinner />;
 
   return (
-    <div
-      // onEndReached={() => !isFetching && fetchNextPage()}
-      className="pb-[29px] posts transition duration-300 ease-linear"
-    >
-      {/* <List /> */}
-      {sortedPostsByTime.map((post, index) => {
-        let { id, post_type, user, content, created_at, images } = post;
-        if (sortedPostsByTime.length === index + 1) {
+    <div className="mb-4">
+      <div
+        // onEndReached={() => !isFetching && fetchNextPage()}
+        className="pb-[29px] posts transition duration-300 ease-linear"
+      >
+        {/* <List /> */}
+        {sortedPostsByTime.map((post, index) => {
+          let { id, post_type, user, content, created_at, images } = post;
           return (
             <div
               key={id}
               id={`${id}`}
-              ref={lastPostRef}
-              className="text-base post mt-2"
+              className="text-base mt-2"
+              ref={
+                sortedPostsByTime.length === index + 1 ? lastElementRef : null
+              }
             >
               <div
                 className={`mx-4  md:mx-16 p-3 transition-all duration-300 ease-linear  ${
@@ -116,48 +98,39 @@ const Posts = ({
                     : "border-b border-y-[#4B5563]"
                 }`}
               >
-                {/* <HomeInfo
+                <HomeInfo
                   school={user.school}
                   name={user.generated_username}
                   created_at={created_at}
-                /> */}
+                />
                 <PostType post_type={post_type} />
-                <div onClick={() => onPostClick(post, index)}>
-                  <Gist content={content} images={images} />
-                </div>
+                <Link to={`/comment/${id}`} onClick={() => onPostClick(post)}>
+                  <Gist content={content} images={images} showFullGist={true} />
+                </Link>
 
                 <GistLinks post={post} onPostClick={onPostClick} />
               </div>
             </div>
           );
-        }
-        return (
-          <div key={id} id={`${id}`} className="text-base mt-2">
-            <div
-              className={`mx-4  md:mx-16 p-3 transition-all duration-300 ease-linear  ${
-                selectedSchool.toLowerCase() != "all"
-                  ? `b${post_type} rounded-lg`
-                  : "border-b border-y-[#4B5563]"
-              }`}
-            >
-              {/* <HomeInfo
-                school={user.school}
-                name={user.generated_username}
-                created_at={created_at}
-              /> */}
-              <PostType post_type={post_type} />
-              <Link to={`/comment/${id}`} onClick={() => onPostClick(post)}>
-                <Gist content={content} images={images} showFullGist={true} />
-              </Link>
-
-              <GistLinks post={post} onPostClick={onPostClick} />
-            </div>k
-          </div>
-        );
-      })}
-      {isLoadingMorePosts && (
+        })}
+        </div>
+        {/* {isLoadingMorePosts && (
         <div className="grid place-content-center py-4">
           <FaSpinner color="ff0000" className=" animate-spin text-3xl" />
+        </div>
+      )} */}
+      {/* </div> */}
+      {isFetchingNextPage && (
+        <div className="flex gap-2 justify-center items-center">
+          <span className="w-3 h-3 rounded-full transition-all ease-linear bg-[#f33f5e] animate-bounce duration-300"></span>
+          <span
+            className="w-3 h-3 rounded-full transition-all ease-linear bg-[#ff008a9e] animate-bounce"
+            style={{ animationDelay: "300ms" }}
+          ></span>
+          <span
+            className="w-3 h-3 rounded-full transition-all ease-linear bg-[#b416fe66] animate-bounce"
+            style={{ animationDelay: "600ms" }}
+          ></span>
         </div>
       )}
     </div>

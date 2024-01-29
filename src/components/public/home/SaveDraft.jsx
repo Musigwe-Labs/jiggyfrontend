@@ -1,10 +1,7 @@
-//SaveDraft.jsx
 
 
 export default function SaveDraft({content, setCreatePost, setStatus, setContent } ){
-	// const {content, setCreatePost, setStatus } =depes
-	console.log({content, setCreatePost, setStatus } )
-
+	
 	function handleSaveDraft(){
 		localStorage.setItem('draft', content)
 		setStatus('resolved')

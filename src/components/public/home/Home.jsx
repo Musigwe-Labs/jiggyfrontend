@@ -56,26 +56,28 @@ const Home = () => {
     error,
     fetchNextPage,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["posts", currentPageIndex],
+    queryKey: ["posts"],
+    initialPageParam: 1,
     queryFn: getPosts,
-    getNextPageParam: (lastPage, pages) => {
-      // console.log(lastPage.data.next);
+    getNextPageParam(lastPage, allPages) {
+      return lastPage.data.next && allPages.length + 1;
     },
   });
+
   const restoreScroll = useRestoreScroll("home-" + selectedTab, selectedTab);
 
   //memoized destructured data to prevent infinite rerender issue
   // Note: it later occured to me that, alternatively, one could access the "data" properties directly rather than destructuring to avoid using memoization.
   const initialPosts = useMemo(
     () =>
-      postsResult
+      postsResult !== undefined
         ? postsResult.pages.map((page) => [...page.data.results])
         : postsResult,
     [postsResult]
   );
+
   //using react-query to handle fetching userdetails
   // const { data: userDataResult, error: userDetailsError } = useQuery({
   //   queryKey: ["userDetails"],
@@ -93,37 +95,11 @@ const Home = () => {
     setSelectedPostIndex(post);
   };
 
-  //infinite scrolling
-  const handleScroll = async () => {
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-    if (!(scrollTop + clientHeight >= scrollHeight - 20)) {
-      return;
-    }
-
-    !isFetching && fetchNextPage();
-    console.log(postsResult);
-  };
+  //posts initialization
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isLoading]);
-  // const handleScroll = async() => {
-  //   if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoading) {
-  //     console.log("ooh");
-  //     return;
-  //   }
-  //   console.log("yeah");
-  //   // setCurrentPageIndex(prevIndex =>prevIndex+1)
-  //   !isFetching && fetchNextPage()
-  // }
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, [isLoading]);
-
-//posts initialization
-  useEffect(() => {
-    let allPosts = initialPosts && initialPosts.flat().filter((post) => post.school === null);
+    let allPosts =
+      initialPosts &&
+      initialPosts.flat().filter((post) => post.school === null);
     setPosts(allPosts);
   }, [postsResult]);
 
@@ -138,8 +114,8 @@ const Home = () => {
       setHasMorePosts(Boolean(postsResult));
       setAppError(null);
     } else if (error) {
-        console.log(error)
-        setAppError(error);
+      console.log(error);
+      setAppError(error);
     }
 
     // if (Boolean(userDetails)) {
@@ -152,11 +128,12 @@ const Home = () => {
   //Refetch posts after posting
   const reloadPosts = async () => {
     await queryClient.refetchQueries({
-      queryKey: ["posts", 1],
+      queryKey: ["posts"],
+      initialPageParam: 1,
       exact: true,
       type: "active",
     });
-    let allPosts = initialPosts && initialPosts.flat().filter((post) => post.school === null);
+    let allPosts = initialPosts.filter((post) => post.school === null);
     setPosts(allPosts);
   };
 
@@ -164,11 +141,13 @@ const Home = () => {
   let handleSchoolFilter = (school) => {
     setSelectedSchool(school.toUpperCase());
     if (school !== "all" && initialPosts.flat().length > 0) {
-      let schoolPosts = initialPosts.flat().filter(
-        (post) =>
-          post.school &&
-          post.school.school_acronym.toLowerCase() === school.toLowerCase()
-      );
+      let schoolPosts = initialPosts
+        .flat()
+        .filter(
+          (post) =>
+            post.school &&
+            post.school.school_acronym.toLowerCase() === school.toLowerCase()
+        );
       setPosts(schoolPosts);
     } else {
       let allPosts = initialPosts.flat().filter((post) => post.school === null);
@@ -209,13 +188,13 @@ const Home = () => {
             />
             <div className="sticky top-0 bg-black pt-4">
               <div className="flex justify-between items-center">
-                 <HomeHeader
-                    setProfilePage={setProfilePage}
-                    userDetails={userDetails}
-              />
-              <NotificationButton />
+                <HomeHeader
+                  setProfilePage={setProfilePage}
+                  userDetails={userDetails}
+                />
+                <NotificationButton />
               </div>
-             
+
               <HomeTabs />
 
               {userDetails && (
@@ -294,7 +273,6 @@ const Home = () => {
                 scrollFetch={{
                   fetchNextPage,
                   hasNextPage,
-                  isFetching,
                   isFetchingNextPage,
                 }}
               />
@@ -303,6 +281,8 @@ const Home = () => {
             )}
 
             {userDetails && <CreatePostBtn setCreatePost={setCreatePost} />}
+           
+            {/* <button onClick={() => fetchNextPage()}>Next</button> */}
           </div>
           <HomeFooter />
         </>

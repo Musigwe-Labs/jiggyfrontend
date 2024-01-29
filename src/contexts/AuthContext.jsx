@@ -10,7 +10,6 @@
  const AuthContext = createContext();
 
  const AuthContextProvider = ({children}) => {
-  console.log(children)
    const initialState = ()=> ({
       userDetails: {},
       key:getUSerLoginToken(),

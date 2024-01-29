@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 // import profile_pic from "../../../assets/profile_pics/pic1.png";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { useAuthContext } from "../../../contexts/AuthContext";
+import UserAvatar from '../../private/common/UserAvatar'
 
 const HomeHeader = ({ setProfilePage, userDetails }) => {
   const { key } = useAuthContext();
@@ -17,7 +18,7 @@ const HomeHeader = ({ setProfilePage, userDetails }) => {
             key === "" ? navigate("/login") : setProfilePage(true);
           }}
         >
-         <FaRegCircleUser size={20} />
+         <UserAvatar nameInitial={userDetails?.user?.generated_username? userDetails?.user?.generated_username[0] :  null} size='8' textSize='2xl' />
         </div>
        ):(
        <FaRegCircleUser />

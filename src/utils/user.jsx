@@ -1,8 +1,9 @@
 import axios from "axios";
 
-export async function getPosts({ queryKey: [, currentPageIndex] }) {
+export async function getPosts({ pageParam = 1 }) {
   const response = await axios.get(
-    `annon/posts/paginated/?page=${currentPageIndex}`
+    `annon/posts/paginated/?page=${pageParam}`,
+    // {params: {_limit: 4}}
   );
   return response;
 }
@@ -28,7 +29,7 @@ export async function getUser({ queryKey: [, key] }) {
   }
 }
 export async function getNotifications({ queryKey: [, key] }) {
-  const url = "https://jiggybackend.com.ng/annon/notifications/view/?page=1";
+  const url = "/annon/notifications/view/?page=1";
   const headers = {
     Authorization: `Token ${key}`,
   };

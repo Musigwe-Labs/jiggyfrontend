@@ -16,7 +16,6 @@ import { BsChat, BsChatFill, BsMessenger } from "react-icons/bs";
 //add two div side by side the secondone transparent on key press,chande profile state
   const Profile = ({ setProfilePage, profilePage }) => {
   const { logout, userDetails } = useContext(AuthContext);
-console.log(userDetails)
 
   function handleClick(e){
     e.stopPropagation()
