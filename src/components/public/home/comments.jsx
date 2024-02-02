@@ -109,6 +109,7 @@ const Comment = ({ reloadPosts }) => {
           exact: true,
           type: "active",
         });
+        console.log(data)
         setUserComment(null)
         setStatus({ ...status, loading: false, successful: true });
         setAppError({message:'comment sent', status:'success' })
