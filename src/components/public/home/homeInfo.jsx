@@ -2,7 +2,7 @@
 import { AiOutlineMore } from "react-icons/ai";
 import profile_pic from "../../../assets/profile_pics/pic1.png";
 import timeGap from "../../../services/dateCheck";
-import UserAvatar from "../../private/common/userAvatar";
+import UserAvatar from "../../private/common/userAvatar"
 
 
 const HomeInfo = (props) => {

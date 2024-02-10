@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 // import profile_pic from "../../../assets/profile_pics/pic1.png";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { useAuthContext } from "../../../contexts/AuthContext";
-import UserAvatar from '../../private/common/UserAvatar'
+import UserAvatar from '../../private/common/userAvatar'
 
 const HomeHeader = ({ setProfilePage, userDetails }) => {
   const { key } = useAuthContext();

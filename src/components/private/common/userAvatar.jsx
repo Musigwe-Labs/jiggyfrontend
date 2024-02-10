@@ -1,6 +1,6 @@
 
 
-const userAvatar = ({nameInitial, size='20px', textSize='xl' , classes=''}) => {
+const UserAvatar = ({nameInitial, size='20px', textSize='xl' , classes=''}) => {
   
   return (
     
@@ -11,4 +11,4 @@ const userAvatar = ({nameInitial, size='20px', textSize='xl' , classes=''}) => {
   );
 };
 
-export default userAvatar;
+export default UserAvatar;
