@@ -24,7 +24,6 @@ import {
   Help,
   WhatsNew
 } from './utils/exportRoutes'
-import { useEffect } from 'react'
 import RestoreScroll from './utils/restoreScroll.jsx'
 
 const router= createBrowserRouter([
