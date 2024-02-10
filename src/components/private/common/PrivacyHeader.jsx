@@ -1,9 +1,7 @@
-import { HiOutlineRefresh, HiRefresh } from "react-icons/hi";
+import { HiOutlineRefresh } from "react-icons/hi";
 import profile_pic from "../../../assets/profile_pics/pic1.png";
-import { FiRefreshCcw, FiRefreshCw } from "react-icons/fi";
-import { LiaCameraRetroSolid } from "react-icons/lia";
 import { useState } from "react";
-import UserAvatar from './UserAvatar'
+import UserAvatar from './userAvatar'
 
 const PrivacyHeader = ({generated_username}) => {
   const [profilePic, setProfilePic] = useState(profile_pic)
@@ -31,4 +29,4 @@ const PrivacyHeader = ({generated_username}) => {
   );
 };
 
-export default PrivacyHeader;
+export default PrivacyHeader
