@@ -16,7 +16,7 @@ import Tick from "../../../assets/Tick.svg";
 import { useQuery } from "@tanstack/react-query";
 import { getSchoolList } from "../../../utils/user";
 import { useMemo } from "react";
-import SaveDraft from './saveDraft'
+import SaveDraft from './SaveDraft'
 import { queryClient } from "../../../App";
 
 
