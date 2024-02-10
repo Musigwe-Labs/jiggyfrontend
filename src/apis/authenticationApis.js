@@ -19,7 +19,6 @@ export const registerUser = async ( data, setSuccess, setError, setRegister) => 
 export const loginUser = async ( data, setSuccess, setError, setSigning) => {
     setSigning(true);
     try{
-        console.log('sgnin in')
         const response = await axios.post('account/rest-auth/login/', data)
         setSuccess(response.data)
     }

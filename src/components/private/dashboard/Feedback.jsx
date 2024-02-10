@@ -13,7 +13,6 @@ function Feedback() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(rangeRef.current.value);
   const sendEmail = (e) => {
     e.preventDefault();
     setIsLoading(true);

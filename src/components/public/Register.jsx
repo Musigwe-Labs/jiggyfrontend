@@ -45,7 +45,6 @@ const Register = () => {
       school: selectedOption.value.school_acronym,
     };
 
-    console.log('data: ', data)
     if (password !== confirmPassword) {
       alert("Password mismatch");
     } else {
@@ -71,8 +70,6 @@ const Register = () => {
     axios
       .get("account/registration/annoyuser/")
       .then((response) => {
-        console.log("response is", response);
-
         const fetchedOptions = response.data.map((school) => ({
           value: school,
           label: school.name,

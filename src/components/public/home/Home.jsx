@@ -12,23 +12,14 @@ import Trending from "./trending/Trending";
 import Posts from "./posts";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { FiBookOpen, FiGlobe, FiPhone } from "react-icons/fi";
-import { GiDualityMask } from "react-icons/gi";
 import { BsCheckCircleFill, BsFileWordFill } from "react-icons/bs";
 import Spinner from "../../common/Spinner";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useErrorContext } from "../../../contexts/ErrorContext";
-import ChatCircle from "../../../assets/chatCircle.svg";
-import Connect from "../../../assets/Connect.svg";
-import FireSimple from "../../../assets/fireSimple.svg";
-import Eye from "../../../assets/Eye.svg";
 
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { getPosts, getUser } from "../../../utils/user";
-import {
-  mountScrollListener,
-  unmountScrollListener,
-  scrollPage,
-} from "../../../utils/scrollPage";
+
 import { useRestoreScroll } from "../../../utils/restoreScroll";
 import { useHomeTabContext } from "../../../contexts/homeTabContext";
 import { queryClient } from "../../../App";
@@ -186,7 +177,7 @@ const Home = () => {
               setCreatePost={setCreatePost}
               createPost={createPost}
             />
-            <div className="sticky top-0 bg-black pt-4">
+            <div className="sticky top-0 bg-black pt-4 z-50">
               <div className="flex justify-between items-center">
                 <HomeHeader
                   setProfilePage={setProfilePage}
