@@ -2,14 +2,14 @@
 import "./App.css"
 import ErrorFallBack from "./components/error/ErrorFallBack";
 import SharePost from "./components/public/home/sharePost";
-// import Alert from "./components/public/Alert";
 
 //context usgae
-import { AuthContextProvider, useAuthContext } from "./contexts/AuthContext";
-import { ErrorContextProvider, useErrorContext } from "./contexts/ErrorContext";
+import { AuthContextProvider } from "./contexts/AuthContext";
+import { ErrorContextProvider } from "./contexts/ErrorContext";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { PostSharingContextProvider } from "./contexts/postSharingContext";
 import { HomeTabContextProvider } from "./contexts/homeTabContext";
+import { WebSocketProvider } from "./contexts/webSocketContext";
 
 export const queryClient= new QueryClient()
 
@@ -18,8 +18,9 @@ export const  AllContextProvider=({children})=>{
   return (
     <div className="bg-black text-white min-h-screen">
       <QueryClientProvider client={queryClient} >
-        <ErrorContextProvider>
-          <AuthContextProvider>
+        <WebSocketProvider>
+          <ErrorContextProvider>
+            <AuthContextProvider>
               <PostSharingContextProvider>
                 <HomeTabContextProvider>
                   <ErrorFallBack>
@@ -28,8 +29,9 @@ export const  AllContextProvider=({children})=>{
                   </ErrorFallBack>
                 </HomeTabContextProvider>
               </PostSharingContextProvider>
-          </AuthContextProvider>
-        </ErrorContextProvider>
+            </AuthContextProvider>
+          </ErrorContextProvider>
+        </WebSocketProvider>
       </QueryClientProvider >
     </div>
   )

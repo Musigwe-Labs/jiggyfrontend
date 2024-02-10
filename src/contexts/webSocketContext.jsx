@@ -8,7 +8,7 @@ const WebSocketContext = createContext()
 const WebSocketProvider = ({ children }) => {
   const[isRecievedData,setIsRecievedData]= useState(false)
 
-  const socket = new WebSocket('wss://jiggybackend.com.ng/ws/eventstream/')
+  const socket = new WebSocket('wss://jiggybackend.onrender.com/ws/eventstream/')
   useEffect(() => {
     // Establish WebSocket connection
     socket.addEventListener('open',()=>{
@@ -23,6 +23,7 @@ const WebSocketProvider = ({ children }) => {
       console.error("WebSocket error:", error)
     })
     socket.addEventListener('close',()=>{
+      console.log('web socket connection closed')
       // window.location.reload()
     })
   })
