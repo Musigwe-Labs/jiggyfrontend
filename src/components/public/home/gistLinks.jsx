@@ -1,75 +1,53 @@
 /* eslint-disable react/prop-types */
-import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
-import "./home.css";
-
-import { FaRegComments } from "react-icons/fa";
-import { AiOutlineEye, AiOutlineShareAlt } from "react-icons/ai";
-import { IoMdFlame } from "react-icons/io";
-import ChatCircle from "../../../assets/chatCircle.svg";
-import Connect from "../../../assets/Connect.svg";
-import FireSimple from "../../../assets/fireSimple.svg";
-import Eye from "../../../assets/Eye.svg";
-
-import axios from "../../../services/axios";
-import { AuthContext } from "../../../contexts/AuthContext";
-import { usePostSharingContext } from "../../../contexts/postSharingContext";
+import { Link } from "react-router-dom"
+import { useContext, useState } from "react"
+import "./home.css"
+import ChatCircle from "../../../assets/chatCircle.svg"
+import Connect from "../../../assets/Connect.svg"
+import Eye from "../../../assets/Eye.svg"
+import axios from "../../../services/axios"
+import { AuthContext } from "../../../contexts/AuthContext"
+import { usePostSharingContext } from "../../../contexts/postSharingContext"
 import {useSound} from 'use-sound'
 import popSound from "../../../assets/sound/pop-sound.mp3"
 
-
-// import axios from 'axios'
-
 const GistLinks = ({ post, onPostClick }) => {
-  let { likes, comments, views, shared, user } = post;
-  const { setSharePost, setSelectedPostId } = usePostSharingContext();
+  let { likes, comments, views, user } = post;
+  const { setSharePost, setSelectedPostId } = usePostSharingContext()
   const [play]= useSound(popSound)
 
-  const [isLiked, setIsLiked] = useState(false); //currently using a state but we will have to get this info from the backend
-  // const [isSeen , setIsSeen] = useState(false)  //currently using a state but we will have to get this info from the backend
-  // const [likes, setLikes] = useState()
-  const { key, userDetails } = useContext(AuthContext);
+  const [isLiked, setIsLiked] = useState(false)
+  const { key, userDetails } = useContext(AuthContext)
   const handleLiked = async (event) => {
-    console.log('liked: ', isLiked)
     if(!isLiked){
-      console.log('playing')
       play()
     }
     setIsLiked(!isLiked);
     try {
       const headers = {
         Authorization: `Token ${key}`,
-      };
-      console.log(post);
+      }
       await axios.post(
         `/annon/posts/${post.id}/increase-likes/`,
         userDetails.id,
         { headers }
-      );
+      )
     } catch (error) {
-      console.error("Error sending like", error);
     }
-  };
+  }
   let handlePostSharing = (post) => {
     setSharePost({ post: post, view: true });
-  };
+  }
   return (
     <div className="flex justify-between mt-4 text-white">
       <Link
         className="flex items-center gap-1 cursor-pointer"
-        onClick={() => {
-          // setSelectedPostId(post.id)
-        }}
         to={`/comment/${post.id}`}
       >
         <img src={ChatCircle} width={15} height={15} alt="comments" />
         <p className="text-xs font-semibold self-end">{comments.length}</p>
       </Link>
       <div className="flex items-center gap-1 cursor-pointer">
-        {/* <IoMdFlame
-          className={`${isLiked && "liked"} text-2xl cursor-pointer`}
-          onClick={handleLiked}
-        /> */}
         <div>
           <svg
             width="15"
@@ -105,7 +83,6 @@ const GistLinks = ({ post, onPostClick }) => {
         alt="share"
       />
     </div>
-  );
-};
-
-export default GistLinks;
+  )
+}
+export default GistLinks

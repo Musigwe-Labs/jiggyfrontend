@@ -18,7 +18,6 @@ const Gist = ({ content, showFullGist, images }) => {
         />
       )}
     </div>
-  );
-};
-
-export default Gist;
+  )
+}
+export default Gist

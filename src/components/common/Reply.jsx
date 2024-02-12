@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Reply({ reply, person, isFirstChat, isJiggyChat }) {
     let friendChatbg = isFirstChat ? "bg-[#AD2344]" : "bg-[#373E4E]"
   return (
@@ -17,5 +15,5 @@ export default function Reply({ reply, person, isFirstChat, isJiggyChat }) {
         {reply}
       </div>
     </div>
-  );
+  )
 }

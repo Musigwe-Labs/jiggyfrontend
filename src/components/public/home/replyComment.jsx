@@ -1,37 +1,28 @@
-import React, { useContext, useState } from "react";
-import { FaReplyAll } from "react-icons/fa";
-import { AuthContext } from "../../../contexts/AuthContext";
-import axios from "../../../services/axios";
-import _ from "lodash";
+import { useContext, useState } from "react"
+import { FaReplyAll } from "react-icons/fa"
+import { AuthContext } from "../../../contexts/AuthContext"
+import axios from "../../../services/axios"
+import _ from "lodash"
 
 export const ReplyComment = ({commentId}) => {
-  const [openReplyComment, setopenReplyComment] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-
-  const { key } = useContext(AuthContext);
-
+  const [openReplyComment, setopenReplyComment] = useState(false)
+  const [inputValue, setInputValue] = useState("")
+  const { key } = useContext(AuthContext)
   const headers = {
     Authorization: `Token ${key}`,
-  };
+  }
   const handleSendReply = async () => {
     try {
       if (inputValue) {
-        // setStatus({ ...status, loading: true });
-        const data = { content: inputValue, comment: commentId };
-        console.log(data);
-        await axios.post("annon/replies/create/", data, { headers });
-        // await reloadPosts();
-        setInputValue("");
-        setopenReplyComment(false);
-        // console.log(post.comments);
-        // setStatus({ ...status, loading: false, successful: true });
+        const data = { content: inputValue, comment: commentId }
+        await axios.post("annon/replies/create/", data, { headers })
+        setInputValue("")
+        setopenReplyComment(false)
       }
     } catch (error) {
-    //   setStatus({ ...status, error: error });
     }
-  };
-
-  const throttledApiRequest = _.throttle(handleSendReply, 2000);
+  }
+  const throttledApiRequest = _.throttle(handleSendReply, 2000)
   return (
     <div className="my-2">
       {!openReplyComment ? (
@@ -66,5 +57,5 @@ export const ReplyComment = ({commentId}) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}

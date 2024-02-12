@@ -1,7 +1,5 @@
-import React from "react";
-import { HiArrowLeft } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
-
+import { HiArrowLeft } from "react-icons/hi"
+import { useNavigate } from "react-router-dom"
 function Help() {
     const navigate = useNavigate()
   return (
@@ -20,7 +18,6 @@ function Help() {
         What can we help you with?
       </h2>
     </div>
-  );
+  )
 }
-
 export default Help;

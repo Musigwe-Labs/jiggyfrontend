@@ -1,46 +1,35 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useMemo, useLayoutEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import CommentInfo from "./commentInfo";
-import Gist from "./gist";
-import GistLinks from "./gistLinks";
-import profile_pic from "../../../assets/profile_pics/pic1.png";
-import {
-  FaArrowLeftLong,
-  FaForward,
-  FaReply,
-  FaReplyAll,
-  FaReplyd,
-} from "react-icons/fa6";
-import { FaSpinner } from "react-icons/fa";
-import axios from "../../../services/axios";
-import { IoIosCheckmark, IoIosSend } from "react-icons/io";
-import _ from "lodash";
-import SingleComment from "./singleComment";
-import Spinner from "../../common/Spinner";
-import GoBackButton from "./goBackButton";
+import { useState, useEffect, useMemo, useLayoutEffect } from "react"
+import { Link, useParams } from "react-router-dom"
+import { useAuthContext } from "../../../contexts/AuthContext"
+import CommentInfo from "./commentInfo"
+import Gist from "./gist"
+import GistLinks from "./gistLinks"
+import { FaSpinner } from "react-icons/fa"
+import axios from "../../../services/axios"
+import { IoIosCheckmark, IoIosSend } from "react-icons/io"
+import _ from "lodash"
+import SingleComment from "./singleComment"
+import Spinner from "../../common/Spinner"
+import GoBackButton from "./goBackButton"
 import {getComments} from '../../../utils/user'
 import { useErrorContext}  from  '../../../contexts/ErrorContext'
-import { useQuery, useQueryClient, QueryClient} from '@tanstack/react-query'
-import { useRestoreScroll } from "../../../utils/restoreScroll";
-import { queryClient } from "../../../App";
-
-
+import { useQuery} from '@tanstack/react-query'
+import { useRestoreScroll } from "../../../utils/restoreScroll"
+import { queryClient } from "../../../App"
 
 const Comment = ({ reloadPosts }) => {
-  // const [userDetails, setUserDetails] = useState([]);
   const [userComment, setUserComment] = useState(null)
   const {setAppError}= useErrorContext()
   const { userDetails:{user}, key}= useAuthContext()
-  const [inputValue, setInputValue] = useState("");
-  const [inputHeight, setInputHeight] = useState("35px");
+  const [inputValue, setInputValue] = useState("")
+  const [inputHeight, setInputHeight] = useState("35px")
   const [status, setStatus] = useState({
     loading: false,
     succesful: false,
     error: "",
-  });
-  const { id } = useParams();
+  })
+  const { id } = useParams()
   const restoreScroll=useRestoreScroll('comments-'+id)
   const {isPending:isLoading, data, error }=useQuery({
     queryKey:['comments '+id, id, key],
@@ -62,29 +51,24 @@ const Comment = ({ reloadPosts }) => {
       })
     }
   }, [userComment])
-
   useEffect(() => {
       if(error){
-          setAppError(error)
+        setAppError(error)
       }
-  }, [post, error]);
-
+  }, [post, error])
   const handleInputChange = (event) => {
     const { value, scrollHeight } = event.target;
     setInputValue(value);
 
     // Calculate the new height within the maximum limit
-    const newHeight = Math.min(scrollHeight, maxInputHeight);
-
-    setInputHeight(`${newHeight}px`); //Update the height based on newHeight
-  };
-
+    const newHeight = Math.min(scrollHeight, maxInputHeight)
+    setInputHeight(`${newHeight}px`) //Update the height based on newHeight
+  }
   useEffect(() => {
     if (inputValue === "") {
       setInputHeight("35px");
     }
-  }, [inputValue]);
-
+  }, [inputValue])
   function showUserCommentOffline(){
     setUserComment({content:inputValue, replies:[], user:user.generated_username, id:""})
     window.scrollTo({
@@ -93,35 +77,30 @@ const Comment = ({ reloadPosts }) => {
       behavior:'smooth'
     })
   }
-
   const handleSendComment = async () => {
     setStatus({ ...status, loading: true });
     showUserCommentOffline()
     try {
       // if (inputValue) {
-        const data = { content: inputValue, post: post.id };  
-        await axios.post("annon/posts/comment/", data, { headers });
-        console.log(inputValue);
-        setInputValue("");
-        // await reloadPosts();
+        const data = { content: inputValue, post: post.id }
+        await axios.post("annon/posts/comment/", data, { headers })
+        setInputValue("")
         await queryClient.refetchQueries({
           queryKey: ['commments '+id, id, key],
           exact: true,
           type: "active",
-        });
-        console.log(data)
+        })
         setUserComment(null)
-        setStatus({ ...status, loading: false, successful: true });
+        setStatus({ ...status, loading: false, successful: true })
         setAppError({message:'comment sent', status:'success' })
       }
     catch (error) {
-      setStatus({ ...status, error: error });
+      setStatus({ ...status, error: error })
     }
-  };
-
-  const throttledApiRequest = _.throttle(handleSendComment, 2000);
+  }
+  const throttledApiRequest = _.throttle(handleSendComment, 2000)
   if (!post) {
-    return <Spinner />;
+    return <Spinner />
   }
   return (
     <div className="relative h-screen h-[100svh] pts-4 px-3 flex flex-col">
@@ -157,12 +136,11 @@ const Comment = ({ reloadPosts }) => {
       </div>
       <form
         onSubmit={(e) => {
-          e.preventDefault();
+          e.preventDefault()
         }}
         className="mt-auto w-[100%] border-t border-gray-500 left-0 relative bottom-0 py-2"
       >
         <textarea
-          //   style={{ height: inputHeight }}
           className={`resize-none p-2 pr-14 block w-full border-b bg-transparent rounded-md  focus:outline-none ${status.loading? 'text-slate-300':''}`}
           placeholder="Comment your thought"
           rows={{ inputHeight }}
@@ -186,8 +164,6 @@ const Comment = ({ reloadPosts }) => {
         </button>
       </form>
     </div>
-  );
-};
-export default Comment;
-
-
+  )
+}
+export default Comment

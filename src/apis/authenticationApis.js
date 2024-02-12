@@ -1,5 +1,4 @@
-import axios from "../services/axios";
-
+import axios from "../services/axios"
 export const registerUser = async ( data, setSuccess, setError, setRegister) => {
     setRegister(true)
     try{
@@ -13,9 +12,8 @@ export const registerUser = async ( data, setSuccess, setError, setRegister) => 
             setError(err.response.data)
         }
     }
-    setRegister(false);
+    setRegister(false)
 }
-
 export const loginUser = async ( data, setSuccess, setError, setSigning) => {
     setSigning(true);
     try{
@@ -23,10 +21,9 @@ export const loginUser = async ( data, setSuccess, setError, setSigning) => {
         setSuccess(response.data)
     }
     catch (err) {
-        console.log(err)
         setError(err)
     }
-    setSigning(false);
+    setSigning(false)
 }
 // for google sign in
 export const loginUserWithGoogle= async (data, setSuccess, setError, setSigning)=>{
@@ -42,7 +39,7 @@ export const loginUserWithGoogle= async (data, setSuccess, setError, setSigning)
             setError(err.response.data)
         }
     }
-    setSigning(false);
+    setSigning(false)
 }
 
 export const userInfo = async ( key, setUserinfo) => {
@@ -50,13 +47,8 @@ export const userInfo = async ( key, setUserinfo) => {
         const response = await axios.get('account/rest-auth/user/',{
             headers: { 'Accept' : 'application/json', 'Authorization' : `Token ${key}` }
         })
-        setUserinfo(response.data);
+        setUserinfo(response.data)
     }
     catch (err) {
-        if (!err?.response) {
-            // setError('No Response from Server')
-        } else {
-            // setError(err.response.data);
-        }
     }
 }

@@ -1,10 +1,8 @@
-import React from "react";
-import { HiArrowLeft } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
-import Star from "../common/Star";
-
+import { HiArrowLeft } from "react-icons/hi"
+import { useNavigate } from "react-router-dom"
+import Star from "../common/Star"
 function WhatsNew() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <div className="px-6 md:px-12 py-8 ">
       <div className=" mb-6 flex gap-8 items-center">
@@ -45,7 +43,6 @@ function WhatsNew() {
         </div>
       </div>
     </div>
-  );
+  )
 }
-
-export default WhatsNew;
+export default WhatsNew

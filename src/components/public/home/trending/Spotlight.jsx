@@ -1,25 +1,16 @@
-import React from "react";
-import {
-  HiChat,
-  HiDotsVertical,
-  HiEye,
-  HiFire,
-  HiShare,
-  HiUser,
-} from "react-icons/hi";
-import { PostType } from "../postType";
-import GistLinks from "../gistLinks";
-import Gist from "../gist";
-import timeGap from "../../../../services/dateCheck";
-
+import {HiUser} from "react-icons/hi"
+import { PostType } from "../postType"
+import GistLinks from "../gistLinks"
+import Gist from "../gist"
+import timeGap from "../../../../services/dateCheck"
 const Spotlight = ({ posts, onPostClick }) => {
   return (
     <div className="my-4 mx-4">
       <h2 className="font-bold text-2xl my-2 text-[#00CCCC]">Spotlight</h2>
       <div className="grid spotlight grid-cols-[repeat(10,_85vw)] md:grid-cols-[repeat(10,_45vw)] gap-4 w-full overflow-auto">
         {posts.map((post) => {
-          let { id, content, user, post_type, created_at } = post;
-          let { generated_username, picture, school } = user;
+          let { id, content, user, post_type, created_at } = post
+          let { generated_username, picture, school } = user
           return (
             <div
               key={id}
@@ -41,11 +32,11 @@ const Spotlight = ({ posts, onPostClick }) => {
               </div>
               <GistLinks post={post} />
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Spotlight;
+export default Spotlight

@@ -108,12 +108,6 @@ const Home = () => {
       console.log(error);
       setAppError(error);
     }
-
-    // if (Boolean(userDetails)) {
-    // } else if (userDetailsError) {
-    //   setAppError(userDetailsError);
-    // }
-   
   }, [currentPageIndex, key, userDetails, error, selectedTab]);
 
   //Refetch posts after posting
@@ -123,11 +117,10 @@ const Home = () => {
       initialPageParam: 1,
       exact: true,
       type: "active",
-    });
-    let allPosts = initialPosts.filter((post) => post.school === null);
-    setPosts(allPosts);
-  };
-
+    })
+    let allPosts = initialPosts.filter((post) => post.school === null)
+    setPosts(allPosts)
+  }
   //School filtering
   let handleSchoolFilter = (school) => {
     setSelectedSchool(school.toUpperCase());
@@ -144,27 +137,10 @@ const Home = () => {
       let allPosts = initialPosts.flat().filter((post) => post.school === null);
       setPosts(allPosts);
     }
-  };
-
-  // if (!key) {
-  //   return <Spinner />;
-  // }
-
-  // if (createPost) {
-  //   return (
-  //     <CreatePostPage
-  //       userSchool={userDetails.user.school}
-  //       reloadPosts={reloadPosts}
-  //       setCreatePost={setCreatePost}
-  //     />
-  //   );
-  // }
-
+  }
   return (
     <>
-      {!key ? 
-        <Spinner />
-       : (
+      {!key ? <Spinner />: (
         <>
             <div className="grow">
               <Profile
@@ -270,16 +246,12 @@ const Home = () => {
             ) : (
               <Trending posts={posts} />
             )}
-
             {userDetails && <CreatePostBtn setCreatePost={setCreatePost} />}
-           
-            {/* <button onClick={() => fetchNextPage()}>Next</button> */}
           </div>
           <HomeFooter />
         </>
       )}
     </>
-  );
-};
-
-export default React.memo(Home);
+  )
+}
+export default React.memo(Home)

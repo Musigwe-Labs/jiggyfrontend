@@ -1,6 +1,5 @@
 import Logo from '../../../assets/logo.png'
 import { Link } from 'react-router-dom'
-
 const PubLinks = () => {
     return (
         <div className='flex justify-center md:justify-between items-center px-2 py-6 md:py-3 m-0'> 
@@ -15,5 +14,4 @@ const PubLinks = () => {
         </div>
     )
 }
-
 export default PubLinks

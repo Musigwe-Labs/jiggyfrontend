@@ -1,5 +1,3 @@
-import React from "react";
-
 export const PostType = ({post_type}) => {
   return (
     <p
@@ -7,5 +5,5 @@ export const PostType = ({post_type}) => {
     >
       {post_type?.toUpperCase()}
     </p>
-  );
-};
+  )
+}

@@ -1,21 +1,19 @@
-import React, { useRef, useState } from "react";
-import { HiArrowLeft } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
-import emailjs from "@emailjs/browser";
-import Alert from "../../public/Alert";
-import { FaSpinner } from "react-icons/fa6";
-
+import { useRef, useState } from "react"
+import { HiArrowLeft } from "react-icons/hi"
+import { useNavigate } from "react-router-dom"
+import emailjs from "@emailjs/browser"
+import Alert from "../../public/Alert"
+import { FaSpinner } from "react-icons/fa6"
 function Feedback() {
-  const navigate = useNavigate();
-  const rangeRef = useRef(0);
-  const form = useRef();
-  const [rangeValue, setRangeValue] = useState(4);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
+  const navigate = useNavigate()
+  const rangeRef = useRef(0)
+  const form = useRef()
+  const [rangeValue, setRangeValue] = useState(4)
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const sendEmail = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+    e.preventDefault()
+    setIsLoading(true)
     emailjs
       .sendForm(
         "service_ulp4ujp",
@@ -25,28 +23,22 @@ function Feedback() {
       )
       .then(
         (result) => {
-          console.log(result);
-          setIsSuccess(true);
-          setIsLoading(false);
+          setIsSuccess(true)
+          setIsLoading(false)
           // form.current
         },
         (error) => {
-          console.log(error.text);
-          setIsSuccess(false);
+          setIsSuccess(false)
         }
-      );
-  };
-
+      )
+  }
   const emojis = [
     { emoji: "😖", value: "Worst" },
     { emoji: "😧", value: "Not Good" },
     { emoji: "😐", value: "Fine" },
     { emoji: "😃", value: "Look Good" },
     { emoji: "😍", value: "Very Good" },
-  ];
-
-  // if()
-
+  ]
   return (
     <div className="px-6 md:px-12 py-8 ">
       <div className="font-bold text-[2rem] mb-6 flex gap-8 items-center">
@@ -132,7 +124,6 @@ function Feedback() {
       </form>
       {isSuccess && <Alert text={"Feedback successfully recieved"} />}
     </div>
-  );
+  )
 }
-
-export default Feedback;
+export default Feedback

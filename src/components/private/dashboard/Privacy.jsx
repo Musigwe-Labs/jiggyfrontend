@@ -1,15 +1,14 @@
-import { BsThreeDots } from "react-icons/bs";
+import { BsThreeDots } from "react-icons/bs"
 import {
   HiArrowLeft,
   HiPlus,
   HiReply,
   HiUser,
-} from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
-import PrivacyHeader from "../common/PrivacyHeader";
-
+} from "react-icons/hi"
+import { useNavigate } from "react-router-dom"
+import PrivacyHeader from "../common/PrivacyHeader"
 export const Privacy = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <div className="pt-16">
       <header className="px-[1.7rem] bg-[#321616] py-6 rounded-b-2xl">
@@ -116,5 +115,5 @@ export const Privacy = () => {
         </i>
       </button>
     </div>
-  );
-};
+  )
+}

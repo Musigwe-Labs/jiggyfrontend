@@ -1,29 +1,24 @@
-import React, { useState } from 'react';
-import EyeOpenIcon from '../../assets/blue-eye.png';
-import EyeClosedIcon from '../../assets/closed-eye.png';
-
-
+import React, { useState } from 'react'
+import EyeOpenIcon from '../../assets/blue-eye.png'
+import EyeClosedIcon from '../../assets/closed-eye.png'
 function PasswordInput({ onPasswordChange, onConfirmPasswordChange, password, confirmPassword }) {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordMatch, setPasswordMatch] = useState(true);
-
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [passwordMatch, setPasswordMatch] = useState(true)
   const handlePasswordChange = (e) => {
-    const newPassword = e.target.value;
-    onPasswordChange(newPassword); // Call the callback to update the password in Register.jsx
+    const newPassword = e.target.value
+    onPasswordChange(newPassword) // Call the callback to update the password in Register.jsx
     if (confirmPassword) {
-      setPasswordMatch(newPassword === confirmPassword);
+      setPasswordMatch(newPassword === confirmPassword)
     }
-  };
-
+  }
   const handleConfirmPasswordChange = (e) => {
-    const newConfirmPassword = e.target.value;
-    onConfirmPasswordChange(newConfirmPassword); // Call the callback to update the confirmPassword in Register.jsx
+    const newConfirmPassword = e.target.value
+    onConfirmPasswordChange(newConfirmPassword) // Call the callback to update the confirmPassword in Register.jsx
     if (password) {
-      setPasswordMatch(password === newConfirmPassword);
+      setPasswordMatch(password === newConfirmPassword)
     }
-  };
-
+  }
   return (
     <div>
       <div className="relative z-10 mb-[-12px] ml-3 text-gray-300 text-md bg-black max-w-max">
@@ -78,7 +73,6 @@ function PasswordInput({ onPasswordChange, onConfirmPasswordChange, password, co
         )}
       </div>
     </div>
-  );
+  )
 }
-
-export default PasswordInput;
+export default PasswordInput

@@ -30,7 +30,4 @@ export default {
     },
   },
   plugins: [],
-};
-
-// font-family: 'Open Sans', sans-serif;
-// font-family: '', sans-serif;
+}

@@ -4,16 +4,12 @@ import { AiOutlineUser } from 'react-icons/ai'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { userInfo } from '../../../apis/authenticationApis'
 import HomeFooter from '../../public/home/homeFooter'
-
 const Dashboard = () => {
-
     const { key, logout } = useContext(AuthContext);
     const [userinfo, setUserinfo] = useState(null);
-
     useEffect(() => {
         userInfo(key, setUserinfo);
     }, [key])
-
     return (
         <div className="grid md:grid-cols-8 pt-16">
             <AuthSidebar />
@@ -25,7 +21,6 @@ const Dashboard = () => {
                     </div>
                     <span className='text-md'></span>
                 </div> 
-
                 <div className='flex justify-between md:justify-start md:space-x-24 pt-2 border-b border-gray-900 px-10'>
                     <span className='text-gray-300 border-b-4 border-blue-500 pb-1 px-3'>
                        {userinfo !== null ? (
@@ -36,7 +31,6 @@ const Dashboard = () => {
                         Trending
                     </span>
                 </div>
-
                 <div className='flex justify-between items-center mt-2 pt-2 border-b border-gray-900'>
                     <span className='text-red-600 text-2xl font-medium pb-1'>
                         Chat with stranger !
@@ -48,7 +42,6 @@ const Dashboard = () => {
                         </span>
                     </div>
                 </div>
-
                 <div className='grid md:grid-cols-2'>
                     <div className='col-span-1'>
                         <p className='text-gray-200 mt-2 md:mt-4'>
@@ -57,14 +50,12 @@ To help you stay safe, chats are anonymous unless you tell someone who you are (
 YOU MUST BE 18 OR OLDER TO USE JIGGY.
                         </p>
                     </div>
-
                     <div className='col-span-1'>
                         <div className='w-full flex mt-8 justify-center items-center'>
                             <span className='text-xl font-medium text-gray-100'>
                                 Start chatting
                             </span>
                         </div>
-                        
                         <div className='w-full flex mt-4 justify-center items-center'>
                             <button className='w-[130px] rounded-lg bg-red-700 text-lg text-gray-100 py-1'>Text</button>
                         </div>
@@ -75,5 +66,4 @@ YOU MUST BE 18 OR OLDER TO USE JIGGY.
         </div>
     )
 }
-
 export default Dashboard

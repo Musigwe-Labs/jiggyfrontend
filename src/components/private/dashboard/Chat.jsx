@@ -1,23 +1,17 @@
-import React from "react";
-import { FaArrowLeft, FaEllipsisV } from "react-icons/fa";
-import Reply from "../../common/Reply";
-import { useNavigate } from "react-router-dom";
-
+import { FaArrowLeft, FaEllipsisV } from "react-icons/fa"
+import Reply from "../../common/Reply"
+import { useNavigate } from "react-router-dom"
 export default function Chat({ friend, profilePic, chat }) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <div>
       <nav className="flex items-center px-8 py-6">
         <button className="pr-6" onClick={() => navigate(-1)}>
           <FaArrowLeft />
         </button>
-        <img
-          src="src/assets/profile_pics/pic1.png"
-          className="w-[26px] h-[26px] lg:w-12 lg:h-12"
-        />
+        <img src="src/assets/profile_pics/pic1.png" className="w-[26px] h-[26px] lg:w-12 lg:h-12" />
         <div className="pl-4">
           <h5 className="text-lg lg:text-xl">Anonymous</h5>
-          {/* <p className='opacity-70'>last seen recently</p> */}
         </div>
         <button className="ml-auto">
           <FaEllipsisV />
@@ -42,5 +36,5 @@ export default function Chat({ friend, profilePic, chat }) {
       </section>
       <input type="text" />
     </div>
-  );
+  )
 }

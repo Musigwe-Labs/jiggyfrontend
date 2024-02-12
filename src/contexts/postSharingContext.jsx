@@ -1,23 +1,16 @@
-import {useState, createContext, useContext} from 'react';
-
+import {useState, createContext, useContext} from 'react'
 const PostSharingContext=createContext()
-
 function PostSharingContextProvider ( {children} ){
-    const [sharePost, setSharePost] = useState({ post: {}, view: false });
-
+    const [sharePost, setSharePost] = useState({ post: {}, view: false })
     return <PostSharingContext.Provider value={{sharePost, setSharePost, }} >
      		{children}
      </PostSharingContext.Provider>
-};
-
-
+}
 function  usePostSharingContext(){
   const context= useContext(PostSharingContext)
   if(!context){
-    return console.error('usePostSharingContext must be used within postSharing Provider')
+    return
   }
-
   return context
 }
-
-export  {PostSharingContextProvider, usePostSharingContext };
+export  {PostSharingContextProvider, usePostSharingContext }

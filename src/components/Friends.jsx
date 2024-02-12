@@ -1,6 +1,5 @@
-import friendsDummyApi from "../utils/friendsDummyApi.json";
-import { useNavigate, useParams } from "react-router-dom";
-
+import friendsDummyApi from "../utils/friendsDummyApi.json"
+import { useNavigate, useParams } from "react-router-dom"
 export default function Friends() {
   return (
     <div className=" p-4 border-[#C4C4C447] border-t-[1px]">
@@ -18,21 +17,17 @@ export default function Friends() {
         )}
       </ul>
     </div>
-  );
+  )
 }
-
 const Friend = ({ profilePic, friend, last_message, message_time }) => {
   let { friend_name } = useParams();
-let navigate = useNavigate();
-let openChat = () => {
+  let navigate = useNavigate();
+  let openChat = () => {
     friend_name = friend;
     navigate(`/chat/${friend_name}`)
-}
+  }
   return (
-    <li
-      className="grid grid-cols-[1fr_4fr_1fr] gap-4"
-      onClick={openChat}
-    >
+    <li className="grid grid-cols-[1fr_4fr_1fr] gap-4" onClick={openChat}>
       <div>
         <img
           src={`src/assets/profile_pics/${profilePic}`}
@@ -45,5 +40,5 @@ let openChat = () => {
       </div>
       <p className="dull_color">{message_time}</p>
     </li>
-  );
-};
+  )
+}

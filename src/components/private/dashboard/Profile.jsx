@@ -1,21 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useContext, memo } from "react";
-import { AuthContext } from "../../../contexts/AuthContext";
-import { Link } from "react-router-dom";
-import {
-  HiChevronRight,
-  HiCog,
-  HiEye,
-  HiLockClosed,
-  HiOutlinePencilAlt,
-  HiOutlineLogout,
-} from "react-icons/hi";
-import PrivacyHeader from "../common/PrivacyHeader";
-import { BsChat, BsChatFill, BsMessenger } from "react-icons/bs";
-
+import { useContext, memo } from "react"
+import { AuthContext } from "../../../contexts/AuthContext"
+import { Link } from "react-router-dom"
+import {HiOutlineLogout} from "react-icons/hi"
+import PrivacyHeader from "../common/PrivacyHeader"
 //add two div side by side the secondone transparent on key press,chande profile state
   const Profile = ({ setProfilePage, profilePage }) => {
-  const { logout, userDetails } = useContext(AuthContext);
+  const { logout, userDetails } = useContext(AuthContext)
 
   function handleClick(e){
     e.stopPropagation()
@@ -55,14 +46,6 @@ import { BsChat, BsChatFill, BsMessenger } from "react-icons/bs";
                 <span className="text-[.4rem] mt-[-.2rem]">⭐</span>
               </div>
             </Link>
-
-            {/* <Link
-              to="/help"
-              className="text-[#907378] flex gap-2 items-center border-b py-2 px-3"
-            >
-              <p>Help</p>
-              <span className="text-[1rem]">❔</span>
-            </Link> */}
           </section>
         </div>
         <div className="w-full grid place-items-center">
@@ -75,16 +58,12 @@ import { BsChat, BsChatFill, BsMessenger } from "react-icons/bs";
           </button>
         </div>
       </div>
-      <div
-        className="h-100% w-1/4 bg-black opacity-60
-        "
+      <div className="h-100% w-1/4 bg-black opacity-60"
         onClick={handleClick}
         onMouseDown={handleClick}
         onTouchStart={handleClick}
       ></div>
     </div>
-  );
-};
-
-
+  )
+}
 export default memo(Profile)

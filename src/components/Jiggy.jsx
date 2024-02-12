@@ -1,14 +1,14 @@
-import  { useRef } from "react";
-import Reply from "./common/Reply";
-import { BsSend } from "react-icons/bs";
+import  { useRef } from "react"
+import Reply from "./common/Reply"
+import { BsSend } from "react-icons/bs"
 export default function Jiggy() {
   const chat = [
     { person: "stranger", reply: "I commented on Figma", isFirstChat: true },
     { person: "you", reply: "Nice, How was it?" },
     { person: "Stranger", reply: "I'll send you some works to work on" },
     { person: "you", reply: "Alright, I'd be anticipating it" },
-  ];
-  const textareaRef = useRef();
+  ]
+  const textareaRef = useRef()
   return (
     <div className=" py-4">
       <div className="">
@@ -51,5 +51,5 @@ export default function Jiggy() {
         </button>
       </div>
     </div>
-  );
+  )
 }

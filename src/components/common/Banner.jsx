@@ -1,46 +1,40 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Typed from 'typed.js';
-import Logo from '../../assets/logo.png';
-import img from '../../assets/authentication-img.png';
-import { FaArrowAltCircleRight, FaArrowAltCircleDown } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-
+import React, { useEffect, useRef, useState } from 'react'
+import Typed from 'typed.js'
+import Logo from '../../assets/logo.png'
+import img from '../../assets/authentication-img.png'
+import { FaArrowAltCircleRight, FaArrowAltCircleDown } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 const Banner = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const buttonRef = useRef(null);
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  const buttonRef = useRef(null)
   const Typewriter = () => {
-    const typedElementRef = useRef(null);
+    const typedElementRef = useRef(null)
     useEffect(() => {
       const options = {
         strings: ["Your campus, Your Secret, Your story", "Get ready to embrace the mystery!"],
         typeSpeed: 50,
-        loop: true, // Add loop property to enable infinite typing
-        loopCount: Infinity, // Ensure an infinite loop
-      };
-      const typed = new Typed(typedElementRef.current, options);
+        loop: true,
+        loopCount: Infinity
+      }
+      const typed = new Typed(typedElementRef.current, options)
       return () => {
-        typed.destroy();
-      };
-    }, []);
-
+        typed.destroy()
+      }
+    }, [])
     return <span ref={typedElementRef}></span>;
-  };
+  }
 
-  useEffect(() => {
-    // Add an event listener to update the button text on window resize
+useEffect(() => {
+  // Add an event listener to update the button text on window resize
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-
+      setIsMobile(window.innerWidth <= 768)
+    }
+    window.addEventListener('resize', handleResize)
     // Clean up the event listener
     return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
   return (
     <div className='md:block md:px-6 lg:px-12 border-r border-gray-900 text-center'>
       <img src={Logo} alt='logo' className='w-[30%] pt-4 border-s-fuchsia-400' />
@@ -53,15 +47,10 @@ const Banner = () => {
         <Link to='/register'>
         <button className='my-8 px-12 py-3 cursor-pointer bg-transparent border border-gray-500 text-white flex items-center'>
           Get Started
-          {isMobile ? (
-            <FaArrowAltCircleDown className='mx-3' />
-          ) : (
-            <FaArrowAltCircleRight className='mx-3' />
-          )}
+          {isMobile?(<FaArrowAltCircleDown className='mx-3' />):(<FaArrowAltCircleRight className='mx-3' />)}
         </button></Link>
       </div>
     </div>
-  );
-};
-
-export default React.memo(Banner);
+  )
+}
+export default React.memo(Banner)

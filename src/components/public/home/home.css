@@ -12,7 +12,6 @@
   background : transparent; 
   padding: 1rem;
   resize:none; 
-  /* height:60%;  */
 }
 .post-placeholder::placeholder{
   color:rgb(139, 139, 139);
@@ -21,7 +20,6 @@
 }
 .liked{
   color: #f33f5e;
-  /* font-size: 28px; */
 }
 .Confession{
   border: 2px solid #A31A3E;
@@ -96,7 +94,6 @@ border: 2px solid #A85387;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-
 @keyframes draw {
   to {
     stroke-dashoffset: 0;

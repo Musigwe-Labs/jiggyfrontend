@@ -4,145 +4,128 @@ import {
   LiaGlobeSolid,
   LiaSchoolSolid,
   LiaTimesCircleSolid,
-} from "react-icons/lia";
-import axios from "../../../services/axios";
-import { useState, useContext, useEffect, useRef, memo } from "react";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import _ from "lodash";
-import { BsCaretDownFill, BsImages } from "react-icons/bs";
-import { FaArrowRotateRight, FaSpinner } from "react-icons/fa6";
-import { useErrorContext } from "../../../contexts/ErrorContext";
-import Tick from "../../../assets/Tick.svg";
-import { useQuery } from "@tanstack/react-query";
-import { getSchoolList } from "../../../utils/user";
-import { useMemo } from "react";
+} from "react-icons/lia"
+import axios from "../../../services/axios"
+import { useState, useEffect, useRef, useMemo , memo } from "react"
+import { useAuthContext } from "../../../contexts/AuthContext"
+import _ from "lodash"
+import { BsCaretDownFill, BsImages } from "react-icons/bs"
+import { FaArrowRotateRight, FaSpinner } from "react-icons/fa6"
+import { useErrorContext } from "../../../contexts/ErrorContext"
+import Tick from "../../../assets/Tick.svg"
+import { useQuery } from "@tanstack/react-query"
+import { getSchoolList } from "../../../utils/user"
 import SaveDraft from './SaveDraft'
-import { queryClient } from "../../../App";
-
-
 const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) => {
   const [content, setContent] = useState(()=> localStorage.getItem('draft') || '')
-  const [status, setStatus] = useState('resolved');
-  const [post_type, setSelectedOption] = useState("Others");
-  const [targeted_school, setTargetedSchool] = useState("ALL");
-  const [code, setCode] = useState(0);
-  const [openDropdown, setOpenDropdown] = useState(false);
-  const [previewImgSrcs, setPreviewImgSrcs] = useState();
-  const [imageSrc, setImageSrc] = useState([]);
-  const postBtn = useRef();
-  const [error, setError] = useState("");
-  const form = useRef();
-  const { setAppError } = useErrorContext();
-  const { key } = useAuthContext();
+  const [status, setStatus] = useState('resolved')
+  const [post_type, setSelectedOption] = useState("Others")
+  const [targeted_school, setTargetedSchool] = useState("ALL")
+  const [code, setCode] = useState(0)
+  const [openDropdown, setOpenDropdown] = useState(false)
+  const [previewImgSrcs, setPreviewImgSrcs] = useState()
+  const [imageSrc, setImageSrc] = useState([])
+  const postBtn = useRef()
+  const [error, setError] = useState("")
+  const form = useRef()
+  const { setAppError } = useErrorContext()
+  const { key } = useAuthContext()
   
   const handleTextareaChange = (e) => {
-    setContent(e.target.value);
-  };
-
+    setContent(e.target.value)
+  }
   const handleBtnClick = (e, option) => {
-    e.preventDefault();
-    setSelectedOption(option);
-  };
-
+    e.preventDefault()
+    setSelectedOption(option)
+  }
   const headers = {
     Authorization: `Token ${key}`,
     "Content-Type": "multipart/form-data",
-  };
-
+  }
   const { isPending, data: schoolListResult, error: hasError } = useQuery({
     queryKey: ["schoolList", 1, key],
     queryFn: getSchoolList,
-  });
-
+  })
   const schoolList = useMemo(
     () =>
       schoolListResult ? [...schoolListResult?.data?.results] : schoolListResult,
-    [schoolListResult]
-  );
-
+      [schoolListResult]
+  )
   const schoolCode = (school) => {
     if (school.toLowerCase() === "all") {
       setCode(0);
-      return;
+      return
     }
     let schoolIndex = schoolList.findIndex(
       (school) => school?.school_acronym === userSchool?.school_acronym
-    );
-    setCode(schoolIndex + 1);
-  };
-
+    )
+    setCode(schoolIndex + 1)
+  }
   function handleClose(){
     if(content){
       setStatus('draft-created')
     }else{
       setStatus('resolved')
-     setCreatePost(false)
+      setCreatePost(false)
     }
   }
-
   const handlePost = async () => {
     if (content) {
-      setStatus('loading');
-      const formData = new FormData(form.current, postBtn.current);
-      formData.append("post_type", post_type);
-      formData.append("images", imageSrc[0] ? imageSrc[0] : "");
-      formData.append("school", code ? code : "");
-
+      setStatus('loading')
+      const formData = new FormData(form.current, postBtn.current)
+      formData.append("post_type", post_type)
+      formData.append("images", imageSrc[0] ? imageSrc[0] : "")
+      formData.append("school", code ? code : "")
       try {
-        await axios.post("annon/posts/create/", formData, { headers });
-        await reloadPosts();
+        await axios.post("annon/posts/create/", formData, { headers })
+        await reloadPosts()
         setContent('')
-        setStatus('resolved');
-        setCreatePost(false);
-        setAppError({message:"You've created a new post", status:'success'});
+        setStatus('resolved')
+        setCreatePost(false)
+        setAppError({message:"You've created a new post", status:'success'})
       } catch (error) {
         if (error) {
-          setStatus({error:error});
-          console.log(error.message);
+          setStatus({error:error})
+          console.log(error.message)
           if (error.message == "Network Error") {
-            setAppError(error);
+            setAppError(error)
           }
           if (error.code === "ERR_BAD_RESPONSE") {
-            setError("server error");
+            setError("server error")
           }
         }
       }
     }
-  };
+  }
   useEffect(() => {
     window.onclick = (e) => {
       !e.target.classList.contains("school_btn") &&
         openDropdown &&
-        setOpenDropdown(false);
+        setOpenDropdown(false)
     } 
-  });
-
+  })
   useEffect(()=>{
-    //reset the status to resolved, if the content changes while the status is 'draft-created'. 
-
-    if( status=='draft-created' ) setStatus('resolved');
+    if( status=='draft-created' ) setStatus('resolved')
   }, [content])
-
   const handlePreviewImg = (e) => {
-    const files = e.target.files;
-    let maxAllowedSize = 3 * 1024 * 1024;
+    const files = e.target.files
+    let maxAllowedSize = 3 * 1024 * 1024
     if (files[0].size < maxAllowedSize) {
-      setImageSrc([files[0]]);
-      setPreviewImgSrcs(URL.createObjectURL(files[0]));
+      setImageSrc([files[0]])
+      setPreviewImgSrcs(URL.createObjectURL(files[0]))
     } else {
-      alert("image is too large");
+      alert("image is too large")
     }
-  };
-  const handleRemoveImage = () => {
-    setPreviewImgSrcs("");
-    setImageSrc("");
-  };
-  function reset() {
-    setAppError(null);
-    setError(null);
   }
-
-  const throttledApiRequest = _.throttle(handlePost, 3500);
+  const handleRemoveImage = () => {
+    setPreviewImgSrcs("")
+    setImageSrc("")
+  }
+  function reset() {
+    setAppError(null)
+    setError(null)
+  }
+  const throttledApiRequest = _.throttle(handlePost, 3500)
   if (error === "server error") {
     return (
       <div className="grid min-h-screen place-items-center">
@@ -158,19 +141,16 @@ const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) =
           </a>
         </div>
       </div>
-    );
+    )
   }
   return (
-
      <div className={`fixed top-0 ${ createPost? 'right-0' : 'right-[-2000px]'} z-50 py-8  h-screen h-[100svh] w-full bg-[#000] transition-all duration-500`}>      
         <div className={`save-draft wrapper absolute ${status=='draft-created'? "top-0": "top-[-500px]"}  transition-all w-full duration-200`}>
           <SaveDraft content={content} setCreatePost={setCreatePost} setStatus={setStatus} setContent={setContent} />
         </div>
       <form
         ref={form}
-        className={` flex flex-col h-full`}  
-        // onSubmit={(e) => e.preventDefaut()}
-        
+        className={` flex flex-col h-full`}
       >
         <div className="pt-8">
           <div className="flex justify-between items-center px-5  pb-2 border-b border-[#9E9898] align-center">
@@ -193,29 +173,6 @@ const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) =
               {status!= 'loading' &&  <img src={Tick} alt="create post" /> }
               {status =='loading' && <FaSpinner size={"1.5rem"} className="animate-spin" /> } 
             </button>
-            {/* <button
-
-
-              className={`text-[#F33F5E] text-lg ${
-                !status=='loading' && "bg-white"
-              } font-bold transition-all duration-300 px-3 rounded-lg ${
-                !content
-                  ? "opacity-50"
-                  : "opacity-1 hover:bg-[#F33F5E] hover:text-white"
-              }`}
-              onClick={throttledApiRequest}
-              type="submit"
-              ref={postBtn}
-              disabled={status=='loading'}
-            >
-              {status=='loading' ? (
-                <FaSpinner size={"1.5rem"} className="animate-spin" />
-              ) : isPosted ? (
-                "Posted"
-              ) : (
-                "Post"
-              )}
-            </button> */}
           </div>
           <div>
             <button
@@ -292,7 +249,6 @@ const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) =
             className="focus:outline-none text-base font-ibmPlexSans post-placeholder placeholder:font-comicSans placeholder:text-base min-h-[150px]"
           ></textarea>
         </div>
-
         <footer className="">
           <div className="px-5">
             <output className="flex gap-2">
@@ -372,7 +328,6 @@ const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) =
               accept="image/*"
               className="hidden"
               id="imageUpload"
-              // name="images"
               multiple={true}
               onChange={(e) => handlePreviewImg(e)}
             />
@@ -382,5 +337,4 @@ const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) =
      </div>  
   )
 }
-
-export default memo(CreatePostPage);
+export default memo(CreatePostPage)

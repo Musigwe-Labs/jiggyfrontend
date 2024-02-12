@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Star() {
   return (
     <div className="flex flex-col items-center">
@@ -9,5 +7,5 @@ export default function Star() {
       </div>
       <span className="text-[.4rem] mt-[-.2rem]">⭐</span>
     </div>
-  );
+  )
 }

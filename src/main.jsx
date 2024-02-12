@@ -5,7 +5,6 @@ import axios from 'axios'
 import App from './App.jsx'
 import { AllContextProvider } from './App'
 import './index.css'
-// import { WebSocketProvider } from './contexts/webSocketContext.jsx'
 
 axios.defaults.baseURL="https://jiggybackend.onrender.com"
 
@@ -88,27 +87,7 @@ const router= createBrowserRouter([
     path:'/comments/:id',
     element: <Wrapper> <Comment /> </Wrapper> 
   },
-  // {
-  //   path:'/test',
-  //   element: <Test /> 
-  // }
 ])
-
-// function Test(){
-//   useEffect(()=>{
-//     console.log('child use effect')
-//   })
-
-//   return (
-//     <RestoreScroll>
-//       <div className="h-[700px] flex justify-between w-full">
-//         <Link to={'/messages'}>msgs</Link>
-//         <Link to={'/notifications'}>notes</Link>
-//      </div>
-//     </RestoreScroll>
-//   )
-// }
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AllContextProvider>

@@ -1,7 +1,5 @@
-import React from "react";
 import { BsWhatsapp } from "react-icons/bs";
 import { FiFacebook, FiTwitter } from "react-icons/fi";
-
 const Socialmedialinks = ({ postId, content }) => {
   let url = "https://jiggy-app.netlify.app/comment/" + postId;
   let img = "/src/assets/logo.png";
@@ -31,7 +29,6 @@ const Socialmedialinks = ({ postId, content }) => {
         <BsWhatsapp size={"1.5rem"} />
       </a>
     </div>
-  );
-};
-
-export default Socialmedialinks;
+  )
+}
+export default Socialmedialinks

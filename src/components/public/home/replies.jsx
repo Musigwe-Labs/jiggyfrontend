@@ -1,6 +1,4 @@
-import React, { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
-
 const Replies = ({ replies }) => {
   const [showReplies, setShowReplies] = useState(false);
   return (
@@ -28,7 +26,6 @@ const Replies = ({ replies }) => {
             <div className="flex items-start my-2 gap-1" key={index}>
               <div
                 className="px-3 py-1 rounded-3xl mr-2 bg-gray-700"
-                // src={profile_pic}
                 alt="profile-img"
               >
                 {reply.user[0].toUpperCase()}
@@ -40,11 +37,10 @@ const Replies = ({ replies }) => {
                 <p className="text-base">{reply.content}</p>
               </div>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
-
-export default Replies;
+  )
+}
+export default Replies

@@ -1,24 +1,18 @@
-// import axios from "../../../../services/axios";
-import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { useBeforeUnload } from "react-router-dom";
-import { HiDotsVertical, HiUser } from "react-icons/hi";
-import Spotlight from "./Spotlight";
-import Gist from "../gist";
-import GistLinks from "../gistLinks";
-import { PostType } from "../postType";
-import timeGap from "../../../../services/dateCheck";
-import Spinner from "../../../common/Spinner";
-import { saveScrollPosition, setScrollPosition } from "../../../../utils/scrollPage";
+import React, { useEffect, useState } from "react"
+import { HiDotsVertical, HiUser } from "react-icons/hi"
+import Spotlight from "./Spotlight"
+import Gist from "../gist"
+import GistLinks from "../gistLinks"
+import { PostType } from "../postType"
+import timeGap from "../../../../services/dateCheck"
+import Spinner from "../../../common/Spinner"
 
 const Trending = ({ posts, onPostClick, isLoading }) => {
-  const [trendingPostsByComments, setTrendingPostsByComments] = useState([]);
-  // const [trendingPostsByViews, setTrendingPostsByViews] = useState([]);
-  const [trendingPostsByLikes, setTrendingPostsByLikes] = useState([]);
-  // let navigate = useNavigate();
+  const [trendingPostsByComments, setTrendingPostsByComments] = useState([])
+  const [trendingPostsByLikes, setTrendingPostsByLikes] = useState([])
   useEffect(() => {
-    getPosts();
-  }, [posts]);
-
+    getPosts()
+  }, [posts])
   let getPosts = async () => {
     let likeSortedPosts = await posts.sort((post1, post2) =>
       post1.likes.length > post2.likes.length && post1.views > post2.views
@@ -26,24 +20,22 @@ const Trending = ({ posts, onPostClick, isLoading }) => {
         : post1.likes.length < post2.likes.length
         ? 1
         : 0
-    );
+    )
     let commentSortedPosts = await posts.sort((post1, post2) =>
       post1.comments.length > post2.comments.length
         ? -1
         : post1.comments.length < post2.comments.length
         ? 1
         : 0
-    );
-
-    setTrendingPostsByLikes(likeSortedPosts);
-    setTrendingPostsByComments(commentSortedPosts.slice(0, 10));
-  };
-  if (isLoading) return <Spinner />;
-
+    )
+    setTrendingPostsByLikes(likeSortedPosts)
+    setTrendingPostsByComments(commentSortedPosts.slice(0, 10))
+  }
+  if (isLoading) return <Spinner />
   return (
     <div>
       <Spotlight posts={trendingPostsByComments} onPostClick={onPostClick} />
-      <div className="px-8">
+      <div className="px-8">  
         {trendingPostsByLikes.map((post) => {
           let { id, content, user, post_type, created_at } = post;
           let { generated_username, picture, school } = user;
@@ -69,11 +61,10 @@ const Trending = ({ posts, onPostClick, isLoading }) => {
               </div>
               <GistLinks post={post} />
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
-
-export default Trending;
+  )
+}
+export default Trending

@@ -1,18 +1,15 @@
-import { FaArrowRotateRight } from "react-icons/fa6";
+import { FaArrowRotateRight } from "react-icons/fa6"
 import { useErrorContext } from "../../contexts/ErrorContext";
-
 
 export default function ErrorOccurred({setError}){
     const {setAppError}= useErrorContext()
-
     function resetError(){
         if(!setError){
             setAppError(null)
         }else{
             setError(null)
-            setAppError(null)            
+            setAppError(null)
         }
-        
     }
     return(
     <div className="grid min-h-screen place-items-center">

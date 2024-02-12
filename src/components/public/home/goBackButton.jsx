@@ -1,11 +1,7 @@
 import { useNavigate} from "react-router-dom"
-import { FaArrowLeftLong } from "react-icons/fa6";
-
-
+import { FaArrowLeftLong } from "react-icons/fa6"
 export default function GoBack(){
     const navigate= useNavigate()
-    // console.log(useHistory)
-
     return (
          <button>
             <FaArrowLeftLong
@@ -14,6 +10,5 @@ export default function GoBack(){
              onClick={()=>navigate(-1)}
             />
           </button>
-
     )
 }

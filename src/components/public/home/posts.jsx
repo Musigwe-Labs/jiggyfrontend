@@ -2,7 +2,6 @@
 import {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -11,16 +10,12 @@ import GistLinks from "./gistLinks";
 import HomeInfo from "./homeInfo";
 import { PostType } from "./postType";
 import Spinner from "../../common/Spinner";
-import { HiRefresh } from "react-icons/hi";
-import { FaSpinner } from "react-icons/fa6";
 import ErrorOccurred from "../../error/ErrorOccurred";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-
 const Posts = ({
   posts,
   error,
-  setError,
   onPostClick,
   filterBy,
   isLoading,
@@ -29,7 +24,6 @@ const Posts = ({
 }) => {
   const [sortedPostsByTime, setSortedPostsByTime] = useState([]);
   const lastPostRef = useRef();
-  const [isLoadingMorePosts, setIsLoadingMorePosts] = useState(false);
   let { fetchNextPage, hasNextPage, isFetchingNextPage } = scrollFetch;
   const queryClient = useQueryClient();
 
@@ -46,40 +40,34 @@ const Posts = ({
       if (node) lastPostRef.current.observe(node);
     },
     [isLoading, hasNextPage]
-  );
-
+  )
   useEffect(() => {
     sortPosts();
-  }, [posts, filterBy]);
-
+  }, [posts, filterBy])
   const sortPosts = async () => {
     let postsToBeSorted = posts;
     const sortedPosts = await postsToBeSorted.sort((post1, post2) => {
       let post1date = new Date(post1.created_at);
       let post2date = new Date(post2.created_at);
-
       return post1date > post2date ? -1 : post1date < post2date ? 1 : 0;
-    });
-    setSortedPostsByTime(sortedPosts);
-  };
+    })
+    setSortedPostsByTime(sortedPosts)
+  }
   if (error && posts.length <= 0) {
     return (
       <ErrorOccurred
         setError={() => {
-          queryClient.invalidateQueries({ queryKey: ["posts"] });
+          queryClient.invalidateQueries({ queryKey: ["posts"] })
         }}
       />
-    );
+    )
   }
-  if (isLoading) return <Spinner />;
-
+  if (isLoading) return <Spinner />
   return (
     <div className="mb-4">
       <div
-        // onEndReached={() => !isFetching && fetchNextPage()}
         className="pb-[29px] posts transition duration-300 ease-linear"
       >
-        {/* <List /> */}
         {sortedPostsByTime.map((post, index) => {
           let { id, post_type, user, content, created_at, images } = post;
           return (
@@ -114,12 +102,6 @@ const Posts = ({
           );
         })}
         </div>
-        {/* {isLoadingMorePosts && (
-        <div className="grid place-content-center py-4">
-          <FaSpinner color="ff0000" className=" animate-spin text-3xl" />
-        </div>
-      )} */}
-      {/* </div> */}
       {isFetchingNextPage && (
         <div className="flex gap-2 justify-center items-center">
           <span className="w-3 h-3 rounded-full transition-all ease-linear bg-[#f33f5e] animate-bounce duration-300"></span>
@@ -134,7 +116,6 @@ const Posts = ({
         </div>
       )}
     </div>
-  );
-};
-
-export default Posts;
+  )
+}
+export default Posts

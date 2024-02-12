@@ -1,13 +1,9 @@
 /* eslint-disable react/prop-types */
 import { createContext, useContext, useEffect, useState } from 'react'
-// import { AuthContext } from './AuthContext'
-
-
 const WebSocketContext = createContext()
 
 const WebSocketProvider = ({ children }) => {
   const[isRecievedData,setIsRecievedData]= useState(false)
-
   const socket = new WebSocket('wss://jiggybackend.onrender.com/ws/eventstream/')
   useEffect(() => {
     // Establish WebSocket connection
@@ -24,7 +20,6 @@ const WebSocketProvider = ({ children }) => {
     })
     socket.addEventListener('close',()=>{
       console.log('web socket connection closed')
-      // window.location.reload()
     })
   })
 
@@ -34,9 +29,7 @@ const WebSocketProvider = ({ children }) => {
     </WebSocketContext.Provider>
   )
 }
-
 const useWebSocket = () => {
   return useContext(WebSocketContext)
 }
-
-export { WebSocketProvider, useWebSocket }
+export { WebSocketProvider, useWebSocket}

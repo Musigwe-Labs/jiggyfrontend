@@ -1,5 +1,3 @@
-import React from 'react'
-
 const TermsOfService = () => {
   return (
     <div className='grid text-center py-2'>
@@ -10,5 +8,4 @@ const TermsOfService = () => {
     </div>
   )
 }
-
 export default TermsOfService

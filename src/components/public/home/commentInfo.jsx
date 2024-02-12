@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { BsThreeDots } from 'react-icons/bs'
 import profile_pic from '../../../assets/profile_pics/pic1.png'
-
 const CommentInfo = (props) => {
   return (
         <div className='flex justify-between items-center'>
@@ -15,5 +14,4 @@ const CommentInfo = (props) => {
         </div>
   )
 }
-
 export default CommentInfo 

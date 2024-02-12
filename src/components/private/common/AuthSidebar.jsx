@@ -1,4 +1,4 @@
-import { HiUser } from "react-icons/hi";
+import { HiUser } from "react-icons/hi"
 
 const AuthSidebar = () => {
   return (
@@ -9,7 +9,6 @@ const AuthSidebar = () => {
         </div>
       </div>
     </div>
-  );
-};
-
-export default AuthSidebar;
+  )
+}
+export default AuthSidebar

@@ -1,17 +1,12 @@
-import { useState } from "react";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
-
-import { AiFillHome as HomeIcon } from "react-icons/ai";
-import { FaRegBell as BellIcon } from "react-icons/fa";
-import { BsEnvelope as MessageIcon } from "react-icons/bs";
-import { saveScrollPosition } from "../../../utils/scrollPage";
-
+import { useState } from "react"
+import { NavLink, useNavigate, useLocation } from "react-router-dom"
+import { AiFillHome as HomeIcon } from "react-icons/ai"
+import { FaRegBell as BellIcon } from "react-icons/fa"
+import { BsEnvelope as MessageIcon } from "react-icons/bs"
 const HomeFooter = () => {
   const location = useLocation();
   const urlpath = location.pathname;
   const navigate = useNavigate();
-  const [clickedIcon, setCliCkedIcon] = useState(null);
-
   const navlinks = [
     {
       id: 0,
@@ -28,33 +23,11 @@ const HomeFooter = () => {
       url: "/notifications",
       icon: <BellIcon size={20} />,
     },
-  ];
-
-  //my styles
-  // // ]
-  //     const navlinks = [
-  //     {
-  //         id: 0,
-  //         url: "/home",
-  //         icon: HomeIcon
-  //     },
-  //     {
-  //         id: 1,
-  //         url: "/messages",
-  //         icon: Envelope
-  //     },
-  //     {
-  //         id: 2,
-  //         url: "/notifications",
-  //         icon: BellIcon
-  //     }
-  // ]
-
+  ]
   function handleClick(url) {
     const tab = urlpath.slice(1);
     navigate(url);
   }
-
   return (
     <div className="w-full hidden z-10 items-center  justify-between  bottom-0 border-t border-y-[#4B5563] bg-black py-3 px-2 fixed h-20 gap-8">
       {navlinks.map((nav) => {
@@ -75,32 +48,9 @@ const HomeFooter = () => {
           >
             {nav.icon}
           </NavLink>
-        );
+        )
       })}
-      {/*<Bell />*/}
     </div>
-
-    // <div className='w-full flex z-10 justify-evenly fixed bottom-0 border-t border-y-[#4B5563] bg-black py-3 '>
-    //     {
-    //         navlinks.map(nav => {
-    //             return(
-    //                 <Link
-    //                     to={nav.url}
-    //                     key={nav.id}
-    //                     className={`cursor-pointer ${urlpath === nav.url ? 'text-[#f33f5e]' : 'text-gray-400'} hover:text-[#f33f5e]`}
-    //                 >
-    //                     {nav.icon}
-    //                 </Link>
-    //             )
-    //         })
-    //     }
-
-    // // </div>
-    // <div>
-    //     <img  src={HomeIcon} />
-
-    // </div>
-  );
-};
-
-export default HomeFooter;
+  )
+}
+export default HomeFooter

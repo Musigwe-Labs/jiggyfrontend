@@ -1,5 +1,3 @@
-import React from "react";
-
 const Report = () => {
   return (
     <div className="fixed inset-full">
@@ -9,7 +7,6 @@ const Report = () => {
         <button>Report Account</button>
       </div>
     </div>
-  );
-};
-
-export default Report;
+  )
+}
+export default Report

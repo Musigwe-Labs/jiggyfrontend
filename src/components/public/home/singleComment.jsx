@@ -1,9 +1,7 @@
 import {memo} from 'react'
-import { ReplyComment } from "./replyComment";
-import Replies from "./replies";
-
+import { ReplyComment } from "./replyComment"
+import Replies from "./replies"
 function SingleComment({comment}){
-  console.log('rerendeering')
   return (
     <>
       {comment && 
@@ -30,8 +28,4 @@ function SingleComment({comment}){
     </> 
   )
 }
-
-
 export default memo(SingleComment)
-
-// wrap long texts and make themm break

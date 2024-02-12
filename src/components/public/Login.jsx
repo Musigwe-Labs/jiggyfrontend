@@ -1,45 +1,32 @@
-import { useEffect, useState, useLayoutEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-// import AuthIcons from '../common/AuthIcons'
-import TermsOfService from "../common/TermsOfService";
-import Banner from "../common/Banner";
-// import { useLoginUserMutation } from '../../services/authApi'
-import GoogleButton from "./GoogleButton";
-import { useLocation } from "react-router-dom";
-import { loginUser } from "../../apis/authenticationApis";
-import EyeOpenIcon from "../../assets/blue-eye.png";
-import EyeClosedIcon from "../../assets/closed-eye.png";
-
-
+import { useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import TermsOfService from "../common/TermsOfService"
+import Banner from "../common/Banner"
+import GoogleButton from "./GoogleButton"
+import { useLocation } from "react-router-dom"
+import { loginUser } from "../../apis/authenticationApis"
+import EyeOpenIcon from "../../assets/blue-eye.png"
+import EyeClosedIcon from "../../assets/closed-eye.png"
 import { useAuthContext } from '../../contexts/AuthContext'
 import { useErrorContext } from '../../contexts/ErrorContext'
 import {getUser} from '../../utils/user'
 
-//import {  } from '../..//ErrorContext'
-
-
 const getTokenFromSearchParams = (search) => {
   const query = new URLSearchParams(search); // parse params to object format
   const token = query.get("token") ? query.get("token") : null;
-  return token;
-};
-
-
+  return token
+}
 const Login = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const {setAppError} = useErrorContext()
   const { key, redirect, setAuthContext } = useAuthContext()
-  // const { redirect, setRedirect} =useAuthContext()
-  // console.log('redirect', redirect)
-
-  /**const [email, setEmail] = useState();*/
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [signing, setSigning] = useState(false);
-  const [success, setSuccess] = useState(null);
-  const [error, setError] = useState(null);
-  const { search } = useLocation();  
+  const [showPassword, setShowPassword] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [signing, setSigning] = useState(false)
+  const [success, setSuccess] = useState(null)
+  const [error, setError] = useState(null)
+  const { search } = useLocation()
   useEffect(() => {
     if(success==null && Boolean(search)){
         const token=getUrlToken(search)
@@ -55,15 +42,13 @@ const Login = () => {
       runAsync()
       async function runAsync(){
         const key=success.key
-        //load user_details from backend
         try{
           const user=  await getUser({ queryKey: [null, key] })
           localStorage.setItem("login", JSON.stringify({ key: success.key }));
           setAuthContext({ key: success.key})
         }catch (err){
-          console.log(err)
           if(err?.response?.status==401){
-            removeFieldFromLS('login') // remove lodin from localStorag
+            removeFieldFromLS('login')
             setAuthContext({key:null})
             setAppError({message:'account not found'})
           }else{
@@ -72,9 +57,7 @@ const Login = () => {
         }
       }
     }
-     
    if (error !== null) {
-    console.log(error)
     setSigning(false)
     if(error?.response?.data?.type=='validation_error'){
       setAppError({message:'account not found '})
@@ -83,19 +66,11 @@ const Login = () => {
     }
   }
   }, [success, error])
-
   const handleLogin = (e) => {
     e.preventDefault();
     const data = { email, password };
     loginUser(data, setSuccess, setError, setSigning);
   }
- 
-  // useEffect(() => {
-  //   if (localStorage.getItem("login") !== null) {
-  //     navigate("/dashboard");
-  //   }
-  // }, [navigate]);
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 px-6 lg:px-24 mt-4">
       <Banner />
@@ -190,7 +165,6 @@ const Login = () => {
         <TermsOfService />
       </div>
     </div>
-  );
-};
-
-export default Login;
+  )
+}
+export default Login
