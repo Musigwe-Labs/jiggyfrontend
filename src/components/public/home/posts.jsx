@@ -22,8 +22,8 @@ const Posts = ({
   selectedSchool,
   scrollFetch,
 }) => {
-  const [sortedPostsByTime, setSortedPostsByTime] = useState([]);
-  const lastPostRef = useRef();
+  const [sortedPostsByTime, setSortedPostsByTime] = useState([])
+  const lastPostRef = useRef()
   let { fetchNextPage, hasNextPage, isFetchingNextPage } = scrollFetch;
   const queryClient = useQueryClient();
 

@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
-import  { createContext, useContext, useCallback, useEffect, useState } from 'react'
-import axios from 'axios'
+import  { createContext, useContext, useCallback, useState } from 'react'
 // Posts Context
 const PostsContext = createContext()
 export const PostsProvider = ({ children }) => {
@@ -27,7 +26,7 @@ export const PostsProvider = ({ children }) => {
     <PostsContext.Provider value={{ posts, updatePosts }}>
       {children}
     </PostsContext.Provider>
-  )
+  ) 
 }
 export const usePosts = () => {
   return useContext(PostsContext)

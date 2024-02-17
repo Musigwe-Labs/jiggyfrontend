@@ -1,29 +1,29 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useMemo, useLayoutEffect } from "react"
-import { Link, useParams } from "react-router-dom"
-import { useAuthContext } from "../../../contexts/AuthContext"
+import { useParams } from "react-router-dom"
+import { queryClient } from "../../../App"
 import CommentInfo from "./commentInfo"
 import Gist from "./gist"
 import GistLinks from "./gistLinks"
 import { FaSpinner } from "react-icons/fa"
-import axios from "../../../services/axios"
 import { IoIosCheckmark, IoIosSend } from "react-icons/io"
+import axios from "../../../services/axios"
 import _ from "lodash"
 import SingleComment from "./singleComment"
-import Spinner from "../../common/Spinner"
 import GoBackButton from "./goBackButton"
-import {getComments} from '../../../utils/user'
+import Spinner from "../../common/Spinner"
+import { useAuthContext } from "../../../contexts/AuthContext"
 import { useErrorContext}  from  '../../../contexts/ErrorContext'
 import { useQuery} from '@tanstack/react-query'
+import {getComments} from '../../../utils/user'
 import { useRestoreScroll } from "../../../utils/restoreScroll"
-import { queryClient } from "../../../App"
 
 const Comment = ({ reloadPosts }) => {
   const [userComment, setUserComment] = useState(null)
   const {setAppError}= useErrorContext()
   const { userDetails:{user}, key}= useAuthContext()
   const [inputValue, setInputValue] = useState("")
-  const [inputHeight, setInputHeight] = useState("35px")
+  const [inputHeight, setInputHeight] = useState("40px")
   const [status, setStatus] = useState({
     loading: false,
     succesful: false,
@@ -42,7 +42,6 @@ const Comment = ({ reloadPosts }) => {
   const maxInputHeight = 220; // Adjust this value as needed
   
   useLayoutEffect(()=>{
-    console.log(document.body.scrollHeight)
     if(userComment){
       window.scrollTo({ 
         left:0, 
@@ -66,7 +65,7 @@ const Comment = ({ reloadPosts }) => {
   }
   useEffect(() => {
     if (inputValue === "") {
-      setInputHeight("35px");
+      setInputHeight("40px");
     }
   }, [inputValue])
   function showUserCommentOffline(){
@@ -81,7 +80,6 @@ const Comment = ({ reloadPosts }) => {
     setStatus({ ...status, loading: true });
     showUserCommentOffline()
     try {
-      // if (inputValue) {
         const data = { content: inputValue, post: post.id }
         await axios.post("annon/posts/comment/", data, { headers })
         setInputValue("")
@@ -138,10 +136,11 @@ const Comment = ({ reloadPosts }) => {
         onSubmit={(e) => {
           e.preventDefault()
         }}
-        className="mt-auto w-[100%] border-t border-gray-500 left-0 relative bottom-0 py-2"
+        className="mt-auto w-[100%] border-t border-gray-500 relative py-2"
       >
         <textarea
-          className={`resize-none p-2 pr-14 block w-full border-b bg-transparent rounded-md  focus:outline-none ${status.loading? 'text-slate-300':''}`}
+          className={`resize-none p-2 pr-14 block w-full text-xl border-b bg-transparent rounded-md  focus:outline-none ${status.loading? 'text-slate-300':''}`}
+          style={{height:inputHeight}}
           placeholder="Comment your thought"
           rows={{ inputHeight }}
           value={inputValue}
@@ -151,7 +150,7 @@ const Comment = ({ reloadPosts }) => {
         <button
           type="submit"
           onClick={() => throttledApiRequest()}
-          className={`ml-3 rounded-xl disabled:opacity-50 transition-opacity duration-200 ease-linear font-bold text-sm absolute top-[38%] right-4`}
+          className={`rounded-xl disabled:opacity-50 transition-opacity duration-200 ease-linear absolute top-1/2 transform -translate-y-1/2 right-2`}
           disabled={status.loading || !inputValue}
         >
           {status.loading && inputValue ? (
