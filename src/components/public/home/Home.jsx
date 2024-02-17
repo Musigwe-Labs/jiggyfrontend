@@ -153,7 +153,7 @@ const Home = () => {
               setCreatePost={setCreatePost}
               createPost={createPost}
             />
-            <div className="sticky top-0 bg-black pt-4 z-50">
+            <div className="sticky top-0 bg-black pt-4">
               <div className="flex justify-between items-center">
                 <HomeHeader
                   setProfilePage={setProfilePage}

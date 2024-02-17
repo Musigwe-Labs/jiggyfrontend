@@ -144,7 +144,7 @@ const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) =
     )
   }
   return (
-     <div className={`fixed top-0 ${ createPost? 'right-0' : 'right-[-2000px]'} z-50 py-8  h-screen h-[100svh] w-full bg-[#000] transition-all duration-500`}>      
+     <div className={`fixed top-0 ${ createPost? 'right-0' : 'right-[-2000px]'} z-50 py-8  h-screen h-[100svh] w-full bg-[#000] transition-all duration-500`}>
         <div className={`save-draft wrapper absolute ${status=='draft-created'? "top-0": "top-[-500px]"}  transition-all w-full duration-200`}>
           <SaveDraft content={content} setCreatePost={setCreatePost} setStatus={setStatus} setContent={setContent} />
         </div>
