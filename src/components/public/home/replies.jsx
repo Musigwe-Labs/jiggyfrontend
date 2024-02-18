@@ -1,13 +1,14 @@
-import { FaCaretDown } from "react-icons/fa";
+import { useState } from "react"
+import { FaCaretDown , FaCaretUp } from "react-icons/fa"
 const Replies = ({ replies }) => {
-  const [showReplies, setShowReplies] = useState(false);
+  const [showReplies, setShowReplies] = useState(false)
   return (
     <div>
       <button
         onClick={() => setShowReplies(!showReplies)}
         className="text-[#ff0000] text-sm flex items-center gap-1 transition-all duration-200 ease-linear hover:bg-gray-900 px-3 rounded-3xl py-1"
       >
-        <FaCaretDown /> {replies.length}{" "}
+        {showReplies ?<FaCaretUp /> : <FaCaretDown />} {replies.length}{" "}
         {replies.length > 1 ? "replies" : "reply"}{" "}
       </button>
       <div
