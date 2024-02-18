@@ -101,7 +101,7 @@ const Comment = ({ reloadPosts }) => {
     return <Spinner />
   }
   return (
-    <div className="relative h-screen h-[100svh] pts-4 px-3 flex flex-col">
+    <div className="relative min-h-screen min-h-[100svh] pts-4 px-3 flex flex-col bg-black">
       <div className="flex align-center">
         <div className="flex align-center">
           <GoBackButton />
@@ -119,7 +119,7 @@ const Comment = ({ reloadPosts }) => {
         <Gist content={post.content} images={post.images} showFullGist={true} />
         <GistLinks post={post} />
       </div>
-      <div className="mt-4 mb-10">
+      <div className="mt-4 mb-4">
         <p className=" comments-length px-3 my-3 text-gray-400">
           {post.comments.length}{" "}
           {post.comments.length <=1 ? "comment" : "comments"}
@@ -136,7 +136,7 @@ const Comment = ({ reloadPosts }) => {
         onSubmit={(e) => {
           e.preventDefault()
         }}
-        className="mt-auto w-[100%] border-t border-gray-500 relative py-2"
+        className="mt-auto w-[100%] border-t border-gray-500 sticky bottom-0 left-0 bg-black py-2"
       >
         <textarea
           className={`resize-none p-2 pr-14 block w-full text-xl border-b bg-transparent rounded-md  focus:outline-none ${status.loading? 'text-slate-300':''}`}
