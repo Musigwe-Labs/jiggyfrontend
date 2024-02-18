@@ -9,7 +9,7 @@ import axios from "../../../services/axios"
 import { useState, useEffect, useRef, useMemo , memo } from "react"
 import { useAuthContext } from "../../../contexts/AuthContext"
 import _ from "lodash"
-import { BsCaretDownFill, BsImages } from "react-icons/bs"
+import { BsCaretUpFill , BsCaretDownFill, BsImages } from "react-icons/bs"
 import { FaArrowRotateRight, FaSpinner } from "react-icons/fa6"
 import { useErrorContext } from "../../../contexts/ErrorContext"
 import Tick from "../../../assets/Tick.svg"
@@ -178,20 +178,26 @@ const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) =
             <button
               name="post_type"
               className={`${post_type} rounded-full px-2 mx-3 mt-3 mb-1 text-sm border-[1px]`}
+              onClick={(e)=>e.preventDefault()}
             >
               {post_type}
             </button>
             <div className="inline-block">
               <div className="relative">
                 <button
-                  onClick={() => setOpenDropdown(!openDropdown)}
-                  className="flex school_btn items-center gap-2  rounded-2xl border-[1px] px-2 "
+                  onClick={
+                    (e)=>{
+                      e.preventDefault()
+                      setOpenDropdown(!openDropdown)
+                    }
+                  }
+                  className="flex school_btn items-center gap-2 rounded-2xl border-[1px] px-2 "
                 >
                   <span className="font-semibold text-sm  school_btn">
                     {targeted_school}
                   </span>
                   <span className="school_btn">
-                    <BsCaretDownFill className="school_btn" />
+                    {openDropdown ? <BsCaretUpFill /> : <BsCaretDownFill />}
                   </span>
                 </button>
                 <div
@@ -203,9 +209,10 @@ const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) =
                     Choose audience
                   </h5>
                   <button
-                    onClick={() => {
-                      schoolCode("ALL");
-                      setTargetedSchool("ALL");
+                    onClick={(e)=>{
+                      e.preventDefault()
+                      schoolCode("ALL")
+                      setTargetedSchool("ALL")
                     }}
                     className="flex w-full py-2 px-2 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
                   >
@@ -218,9 +225,10 @@ const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) =
                     )}
                   </button>
                   <button
-                    onClick={() => {
-                      schoolCode(userSchool?.school_acronym);
-                      setTargetedSchool(userSchool?.school_acronym);
+                    onClick={(e)=>{
+                      e.preventDefault()
+                      schoolCode(userSchool?.school_acronym)
+                      setTargetedSchool(userSchool?.school_acronym)
                     }}
                     className="flex w-full py-2 px-2 transition duration-300 gap-4 my-1 items-center hover:bg-[#ffffff32]"
                   >

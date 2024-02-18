@@ -4,7 +4,7 @@ import {
   useEffect,
   useRef,
   useState,
-} from "react";
+} from "react"
 import Gist from "./gist";
 import GistLinks from "./gistLinks";
 import HomeInfo from "./homeInfo";
