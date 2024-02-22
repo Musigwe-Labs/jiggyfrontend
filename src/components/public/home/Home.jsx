@@ -18,6 +18,7 @@ import Spinner from "../../common/Spinner";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useErrorContext } from "../../../contexts/ErrorContext";
 import { useHomeTabContext } from "../../../contexts/homeTabContext";
+import { useWebSocket } from "../../../contexts/webSocketContext"
 
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { getPosts, getUser } from "../../../utils/user";
@@ -36,6 +37,8 @@ const Home = () => {
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(false);
   
+  const { isReceivedData, setIsRecievedData } = useWebSocket()
+
   const navigate = useNavigate();
 
   const { selectedTab } = useHomeTabContext();
@@ -43,22 +46,25 @@ const Home = () => {
   const { setAppError } = useErrorContext();
 
   //using react-query to handle fetching posts
-  const {
-    isPending: isLoading,
-    data: postsResult,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["posts"],
-    initialPageParam: 1,
-    queryFn: getPosts,
-    getNextPageParam(lastPage, allPages) {
-      return lastPage.data.next && allPages.length + 1;
-    },
-  });
-
+  // useEffect(() => {
+    const {
+      isPending: isLoading,
+      data: postsResult,
+      error,
+      fetchNextPage,
+      hasNextPage,
+      isFetchingNextPage,
+    } = useInfiniteQuery({
+      queryKey: ["posts"],
+      initialPageParam: 1,
+      queryFn: getPosts,
+      getNextPageParam(lastPage, allPages) {
+        return lastPage.data.next && allPages.length + 1;
+      },
+    });
+  //   // Reset the WebSocket flag
+  //   setIsRecievedData(!isReceivedData)
+  // },[isReceivedData])
   const restoreScroll = useRestoreScroll("home-" + selectedTab, selectedTab);
 
   //memoized destructured data to prevent infinite rerender issue
@@ -87,7 +93,6 @@ const Home = () => {
     setSelectedPost(post);
     setSelectedPostIndex(post);
   };
-
 
   //posts initialization
   useEffect(() => {
