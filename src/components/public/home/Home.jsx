@@ -14,14 +14,15 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { FiBookOpen, FiGlobe } from "react-icons/fi";
 import { BsCheckCircleFill } from "react-icons/bs";
 import Spinner from "../../common/Spinner";
+
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useErrorContext } from "../../../contexts/ErrorContext";
+import { useHomeTabContext } from "../../../contexts/homeTabContext";
 
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { getPosts, getUser } from "../../../utils/user";
 
 import { useRestoreScroll } from "../../../utils/restoreScroll";
-import { useHomeTabContext } from "../../../contexts/homeTabContext";
 import { queryClient } from "../../../App";
 
 const Home = () => {
@@ -31,12 +32,13 @@ const Home = () => {
   const [selectedPostIndex, setSelectedPostIndex] = useState(null);
   const [isAll, setIsAll] = useState(false);
   const [posts, setPosts] = useState([]);
-  const { selectedTab } = useHomeTabContext();
   const [selectedSchool, setSelectedSchool] = useState("ALL");
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(false);
-
+  
   const navigate = useNavigate();
+
+  const { selectedTab } = useHomeTabContext();
   const { key, userDetails } = useAuthContext();
   const { setAppError } = useErrorContext();
 
@@ -86,6 +88,7 @@ const Home = () => {
     setSelectedPostIndex(post);
   };
 
+
   //posts initialization
   useEffect(() => {
     let allPosts =
@@ -97,7 +100,7 @@ const Home = () => {
   useEffect(() => {
 
     if (userDetails != null && !error) {
-      // fetchPosts()
+    //  fetchPosts()
     }
     if (Boolean(posts)) {
       //The posts is fetched and its stored in state using the tanstack/react-query Api

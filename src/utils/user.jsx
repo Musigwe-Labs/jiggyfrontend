@@ -1,10 +1,41 @@
 import axios from "axios"
-export async function getPosts({ pageParam = 1 }) {
-  const response = await axios.get(
-    `annon/posts/paginated/?page=${pageParam}`,
-  )
+import { useWebSocket } from "../contexts/webSocketContext"
+import { useEffect, useState } from "react"
+
+// export async function getPosts({ pageParam = 1 }) {
+//   const response = await axios.get(
+//     `annon/posts/paginated/?page=${pageParam}`,
+//   )
+//   return response
+// }
+
+export function getPosts({ pageParam = 1 }) {
+  const [posts, setPosts] = useState([])
+  const { isReceivedData, setIsReceivedData } = useWebSocket()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch posts from the server using axios
+        const response = await axios.get(`annon/posts/paginated/?page=${pageParam}`)
+        const fetchedPosts = response.data
+        // Set the fetched posts in state
+        setPosts(fetchedPosts)
+        // Reset the WebSocket flag
+        setIsReceivedData(false)
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    // Fetch data when pageParam or isReceivedData changes
+    fetchData()
+  }, [pageParam, isReceivedData, setIsReceivedData])
+
   return response
 }
+
+
 export async function getSchoolList({ queryKey: [, currentPageIndex, key] }) {
   const headers = {
     Authorization: `Token ${key}`,
