@@ -46,7 +46,6 @@ const Home = () => {
   const { setAppError } = useErrorContext();
 
   //using react-query to handle fetching posts
-  // useEffect(() => {
     const {
       isPending: isLoading,
       data: postsResult,
@@ -57,14 +56,14 @@ const Home = () => {
     } = useInfiniteQuery({
       queryKey: ["posts"],
       initialPageParam: 1,
-      queryFn: getPosts,
+      queryFn: useEffect(()=>{
+        getPosts()
+        setIsRecievedData(!isReceivedData)
+      },[isReceivedData]),
       getNextPageParam(lastPage, allPages) {
         return lastPage.data.next && allPages.length + 1;
       },
     });
-  //   // Reset the WebSocket flag
-  //   setIsRecievedData(!isReceivedData)
-  // },[isReceivedData])
   const restoreScroll = useRestoreScroll("home-" + selectedTab, selectedTab);
 
   //memoized destructured data to prevent infinite rerender issue

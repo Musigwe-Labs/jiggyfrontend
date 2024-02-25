@@ -13,7 +13,7 @@ const WebSocketProvider = ({ children }) => {
     socket.addEventListener('message',(event)=>{
       const data = JSON.parse(event.data)
       console.log('recieving data',data)
-      setIsRecievedData(true)
+      setIsRecievedData(!isRecievedData)
     })
     socket.addEventListener('error', (error) => {
       console.error("WebSocket error:", error)
