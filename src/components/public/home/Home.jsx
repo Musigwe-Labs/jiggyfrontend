@@ -51,20 +51,17 @@ const Home = () => {
       data: postsResult,
       error,
       fetchNextPage,
-      hasNextPage,
+      hasNextPage, 
       isFetchingNextPage,
     } = useInfiniteQuery({
       queryKey: ["posts"],
       initialPageParam: 1,
-      queryFn: useEffect(()=>{
-        getPosts()
-        setIsRecievedData(!isReceivedData)
-      },[isReceivedData]),
+      queryFn: getPosts,
       getNextPageParam(lastPage, allPages) {
         return lastPage.data.next && allPages.length + 1;
       },
     });
-  const restoreScroll = useRestoreScroll("home-" + selectedTab, selectedTab);
+    const restoreScroll = useRestoreScroll("home-" + selectedTab, selectedTab);
 
   //memoized destructured data to prevent infinite rerender issue
   // Note: it later occured to me that, alternatively, one could access the "data" properties directly rather than destructuring to avoid using memoization.
