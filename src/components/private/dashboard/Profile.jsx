@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useContext, memo } from "react"
+import { FaArrowLeftLong } from 'react-icons/fa6'
 import { AuthContext } from "../../../contexts/AuthContext"
 import { Link } from "react-router-dom"
 import {HiOutlineLogout} from "react-icons/hi"
@@ -16,7 +17,10 @@ import PrivacyHeader from "../common/PrivacyHeader"
     <div className={`fixed top-0 ${profilePage? 'left-0' : 'left-[-1000px]'} z-50 flex w-[100%] bg-[rgba(20,20,20,.3)] transition-[left] duration-500`}>
       <div className="shadow-[0_0_5px_0px] shadow-[rgba(150,150,105,.4)] flex flex-col justify-between h-screen h-[100svh] pt-6 pb-6 w-3/4 bg-black ">
         <div>
-          <header className="flex flex-col  font-bold items-center">
+            <button className='ml-3' onClick={handleClick}>
+              <FaArrowLeftLong size={25} className="cursor-pointer" />
+          </button>
+          <header className="flex flex-col font-bold items-center">
             <h2 className="text-3xl font-['Playfair_Display',_serif] ml-6 font-bold from-[#f33f5e] via-[#ff008a9e] to-[#b416fe66] bg-gradient-to-r bg-clip-text text-transparent">
               <span className="font-['Over_the_Rainbow',_cursive] font-extrbold text-[2.2rem]">
                 J

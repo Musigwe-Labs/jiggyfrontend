@@ -20,7 +20,7 @@ import { useErrorContext } from "../../../contexts/ErrorContext";
 import { useHomeTabContext } from "../../../contexts/homeTabContext";
 import { useWebSocket } from "../../../contexts/webSocketContext"
 
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { getPosts, getUser } from "../../../utils/user";
 
 import { useRestoreScroll } from "../../../utils/restoreScroll";
@@ -40,11 +40,16 @@ const Home = () => {
   const { isReceivedData, setIsRecievedData } = useWebSocket()
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { selectedTab } = useHomeTabContext();
   const { key, userDetails } = useAuthContext();
   const { setAppError } = useErrorContext();
 
+    useEffect(() => {
+    // Trigger the query when myState changes
+    queryClient.invalidateQueries('queryKey');
+  }, [isReceivedData, queryClient])
   //using react-query to handle fetching posts
     const {
       isPending: isLoading,
@@ -254,7 +259,7 @@ const Home = () => {
           </div>
           <HomeFooter />
         </>
-      )}
+      )};
     </>
   )
 }
