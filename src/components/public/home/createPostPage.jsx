@@ -227,6 +227,7 @@ const CreatePostPage = ({createPost, setCreatePost, reloadPosts, userSchool }) =
                   <button
                     onClick={(e)=>{
                       e.preventDefault()
+                      setCode(1)
                       schoolCode(userSchool?.school_acronym)
                       setTargetedSchool(userSchool?.school_acronym)
                     }}

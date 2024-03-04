@@ -8,7 +8,7 @@ import Eye from "../../../assets/Eye.svg"
 import axios from "../../../services/axios"
 import { AuthContext } from "../../../contexts/AuthContext"
 import { usePostSharingContext } from "../../../contexts/postSharingContext"
-import {useSound} from 'use-sound'
+import { useSound } from 'use-sound'
 import popSound from "../../../assets/sound/pop-sound.mp3"
 
 const GistLinks = ({ post, onPostClick }) => {

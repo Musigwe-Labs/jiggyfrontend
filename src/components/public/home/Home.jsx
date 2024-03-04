@@ -161,6 +161,7 @@ const Home = () => {
               reloadPosts={reloadPosts}
               setCreatePost={setCreatePost}
               createPost={createPost}
+              userSchool={userDetails.user.school}
             />
             <div className="sticky top-0 bg-black pt-4">
               <div className="flex justify-between items-center">
@@ -197,7 +198,10 @@ const Home = () => {
                   >
                     <div
                       className="flex justify-between p-2 cursor-pointer items-center"
-                      onClick={() => handleSchoolFilter("all")}
+                      onClick={()=>{
+                        handleSchoolFilter("all")
+                        setIsAll(!isAll)
+                      }}
                     >
                       <FiGlobe size={20} color="#752626" />
                       <p
@@ -212,11 +216,10 @@ const Home = () => {
                       />
                     </div>
                     <div
-                      onClick={() =>
-                        handleSchoolFilter(
-                          userDetails?.user?.school?.school_acronym
-                        )
-                      }
+                      onClick={() =>{
+                        handleSchoolFilter(userDetails?.user?.school?.school_acronym)
+                        setIsAll(!isAll)
+                      }}
                       className="flex justify-between p-2 cursor-pointer items-center mb-2"
                     >
                       <FiBookOpen size={20} fill="#752626" />
